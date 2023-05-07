@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+    background-color: #997950;
 }
 
 .App-logo {
@@ -35,4 +35,33 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+#App-content {
+    position: relative;
+    z-index: 1;
+}
+
+#help-dialog {
+    position: fixed;
+    top: 10vh;
+    left: 15vw;
+    z-index: 3;
+    width: 70%;
+    height: 80vh;
+    border-radius: 15%;
+    background-color: #dccebc;
+    border: solid 0.3em #c08a3c;
+    box-shadow: 0 0 20px rgb(0,0,0,0.4);
+}
+
+#help {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100%;
+}
+
+.hidden {
+    display:none;
 }
