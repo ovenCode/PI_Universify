@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using webapi.Models;
 
-namespace webapi.Models;
+namespace webapi.Data;
 
 public partial class UniversifyDbContext : DbContext
 {
@@ -15,54 +16,58 @@ public partial class UniversifyDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Administrator> Administratorzy { get; set; }
+    public virtual DbSet<Administrator> Administratorzy { get; set; } = null!;
 
-    public virtual DbSet<Alergen> Alergeny { get; set; }
+    public virtual DbSet<Alergen> Alergeny { get; set; } = null!;
 
-    public virtual DbSet<Budynek> Budynki { get; set; }
+    public virtual DbSet<Budynek> Budynki { get; set; } = null!;
 
-    public virtual DbSet<Danie> Dania { get; set; }
+    public virtual DbSet<Danie> Dania { get; set; } = null!;
 
-    public virtual DbSet<Dieta> Diety { get; set; }
+    public virtual DbSet<Dieta> Diety { get; set; } = null!;
 
-    public virtual DbSet<Grupa> Grupy { get; set; }
+    public virtual DbSet<Grupa> Grupy { get; set; } = null!;
 
-    public virtual DbSet<GrupaStudencka> GrupyStudenckie { get; set; }
+    public virtual DbSet<GrupaStudencka> GrupyStudenckie { get; set; } = null!;
 
-    public virtual DbSet<Kategoria> Kategorie { get; set; }
+    public virtual DbSet<Kategoria> Kategorie { get; set; } = null!;
 
-    public virtual DbSet<Miejsce> Miejsca { get; set; }
+    public virtual DbSet<KierunekStudiów> KierunekiStudiów { get; set; } = null!;
 
-    public virtual DbSet<Nauczyciel> Nauczyciele { get; set; }
+    public virtual DbSet<Miejsce> Miejsca { get; set; } = null!;
 
-    public virtual DbSet<Parking> Parkingi { get; set; }
+    public virtual DbSet<Nauczyciel> Nauczyciele { get; set; } = null!;
 
-    public virtual DbSet<Produkt> Produkty { get; set; }
+    public virtual DbSet<Parking> Parkingi { get; set; } = null!;
 
-    public virtual DbSet<Przedmiot> Przedmioty { get; set; }
+    public virtual DbSet<Produkt> Produkty { get; set; } = null!;
 
-    public virtual DbSet<Rola> Role { get; set; }
+    public virtual DbSet<Profil> Profile { get; set; } = null!;
 
-    public virtual DbSet<Składnik> Składniki { get; set; }
+    public virtual DbSet<Przedmiot> Przedmioty { get; set; } = null!;
 
-    public virtual DbSet<Specjalizacja> Specjalizacje { get; set; }
+    public virtual DbSet<Rola> Role { get; set; } = null!;
 
-    public virtual DbSet<Stołówka> Stołówki { get; set; }
+    public virtual DbSet<Składnik> Składniki { get; set; } = null!;
 
-    public virtual DbSet<Student> Studenci { get; set; }
+    public virtual DbSet<Specjalizacja> Specjalizacje { get; set; } = null!;
 
-    public virtual DbSet<TypMiejsca> TypyMiejsc { get; set; }
+    public virtual DbSet<Stołówka> Stołówki { get; set; } = null!;
 
-    public virtual DbSet<Uprawnienie> Uprawnienia { get; set; }
+    public virtual DbSet<Student> Studenci { get; set; } = null!;
 
-    public virtual DbSet<Użytkownik> Użytkownicy { get; set; }
+    public virtual DbSet<TypMiejsca> TypyMiejsc { get; set; } = null!;
 
-    public virtual DbSet<Wydział> Wydziały { get; set; }
+    public virtual DbSet<Uprawnienie> Uprawnienia { get; set; } = null!;
 
-    public virtual DbSet<Zamówienie> Zamówienia { get; set; }
+    public virtual DbSet<Użytkownik> Użytkownicy { get; set; } = null!;
+
+    public virtual DbSet<Wydział> Wydziały { get; set; } = null!;
+
+    public virtual DbSet<Zamówienie> Zamówienia { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlite("Name=ConnectionStrings:UniversifyDB");
+        => optionsBuilder.UseSqlite(@"DataSource=.\\Data\\UniversifyDB.db;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -80,9 +85,12 @@ public partial class UniversifyDbContext : DbContext
                 .HasColumnType("INT")
                 .HasColumnName("ID_UŻYTKOWNIKA");
 
-            entity.HasOne(d => d.IdUżytkownikaNavigation).WithMany(p => p.Administratorzy)
-                .HasForeignKey(d => d.IdUżytkownika)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+            entity.HasOne(d => d.Użytkownik).WithOne(p => p.Administrator)
+                .HasForeignKey<Administrator>(d => d.IdUżytkownika)
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
+            entity.HasOne(d => d.Rola).WithOne(p => p.Administrator)
+                .HasForeignKey<Administrator>(d => d.IdRoli)
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
         });
 
         modelBuilder.Entity<Alergen>(entity =>
@@ -95,6 +103,10 @@ public partial class UniversifyDbContext : DbContext
             entity.Property(e => e.Nazwa)
                 .HasColumnType("NCHAR(50)")
                 .HasColumnName("NAZWA");
+
+            entity.HasOne(e => e.Dieta).WithMany(p => p.Alergeny)
+            .HasForeignKey(e => e.IdDiety)
+            .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
         });
 
         modelBuilder.Entity<Budynek>(entity =>
@@ -116,16 +128,19 @@ public partial class UniversifyDbContext : DbContext
         {
             entity.HasKey(e => e.IdDania);
 
+            entity.ToTable("Dania");
+
             entity.Property(e => e.IdDania).HasColumnName("ID_DANIA");
             entity.Property(e => e.IdSkładnika).HasColumnName("ID_SKŁADNIKA");
+            entity.Property(e => e.IdDiety).HasColumnName("ID_DIETY");
             entity.Property(e => e.IlośćKalorii).HasColumnName("ILOŚĆ_KALORII");
             entity.Property(e => e.Nazwa)
                 .HasColumnType("NCHAR(50)")
                 .HasColumnName("NAZWA");
 
-            entity.HasOne(d => d.IdSkładnikaNavigation).WithMany(p => p.Dania)
-                .HasForeignKey(d => d.IdSkładnika)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+            entity.HasOne(d => d.Dieta).WithMany(p => p.Dania)
+            .HasForeignKey(d => d.IdDiety)
+            .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
         });
 
         modelBuilder.Entity<Dieta>(entity =>
@@ -143,17 +158,9 @@ public partial class UniversifyDbContext : DbContext
                 .HasColumnType("NCHAR(70)")
                 .HasColumnName("NAZWA");
 
-            entity.HasOne(d => d.IdAlergenuNavigation).WithMany(p => p.Dieties)
-                .HasForeignKey(d => d.IdAlergenu)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.IdDaniaNavigation).WithMany(p => p.Dieties)
-                .HasForeignKey(d => d.IdDania)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.IdKategoriiNavigation).WithMany(p => p.Diety)
+            entity.HasOne(d => d.Kategoria).WithMany(p => p.Diety)
                 .HasForeignKey(d => d.IdKategorii)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
         });
 
         modelBuilder.Entity<Grupa>(entity =>
@@ -166,6 +173,10 @@ public partial class UniversifyDbContext : DbContext
             entity.Property(e => e.Nazwa)
                 .HasColumnType("NCHAR(50)")
                 .HasColumnName("NAZWA");
+
+            entity.HasMany(d => d.Nauczyciele).WithMany(p => p.Grupy);
+
+            entity.HasMany(d => d.Studenci).WithMany(p => p.Grupy);
         });
 
         modelBuilder.Entity<GrupaStudencka>(entity =>
@@ -192,6 +203,18 @@ public partial class UniversifyDbContext : DbContext
                 .HasColumnName("NAZWA");
         });
 
+        modelBuilder.Entity<KierunekStudiów>(entity =>
+        {
+            entity.HasKey(e => e.IdKierunkuStudiów);
+
+            entity.ToTable("KierunkiStudiów");
+
+            entity.Property(e => e.IdKierunkuStudiów).HasColumnName("ID_KIERUNKU_STUDIÓW");
+            entity.Property(e => e.NazwaKierunku)
+                .HasColumnType("NCHAR(80)")
+                .HasColumnName("Nazwa_Kierunku");
+        });
+
         modelBuilder.Entity<Miejsce>(entity =>
         {
             entity.HasKey(e => e.IdMiejsca);
@@ -206,9 +229,13 @@ public partial class UniversifyDbContext : DbContext
                 .HasColumnType("INT")
                 .HasColumnName("ID_TYPU");
 
-            entity.HasOne(d => d.IdTypuNavigation).WithMany(p => p.Miejsca)
+            entity.HasOne(d => d.Typ).WithMany(p => p.Miejsca)
                 .HasForeignKey(d => d.IdTypu)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
+
+            entity.HasOne(d => d.Parking).WithMany(p => p.Miejsca)
+                .HasForeignKey(d => d.IdParkingu)
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
         });
 
         modelBuilder.Entity<Nauczyciel>(entity =>
@@ -218,26 +245,25 @@ public partial class UniversifyDbContext : DbContext
             entity.ToTable("Nauczyciele");
 
             entity.Property(e => e.IdNauczyciela).HasColumnName("ID_NAUCZYCIELA");
-            entity.Property(e => e.IdPrzedmiotu).HasColumnName("ID_PRZEDMIOTU");
             entity.Property(e => e.IdSpecjalizacji).HasColumnName("ID_SPECJALIZACJI");
             entity.Property(e => e.IdUżytkownika).HasColumnName("ID_UŻYTKOWNIKA");
             entity.Property(e => e.IdWydziału).HasColumnName("ID_WYDZIAŁU");
 
-            entity.HasOne(d => d.IdPrzedmiotuNavigation).WithMany(p => p.Nauczyciele)
-                .HasForeignKey(d => d.IdPrzedmiotu)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+            entity.HasMany(d => d.Przedmioty).WithMany(p => p.Nauczyciele);
 
-            entity.HasOne(d => d.IdSpecjalizacjiNavigation).WithMany(p => p.Nauczyciele)
+            entity.HasMany(d => d.Grupy).WithMany(p => p.Nauczyciele);
+
+            entity.HasOne(d => d.Specjalizacja).WithMany(p => p.Nauczyciele)
                 .HasForeignKey(d => d.IdSpecjalizacji)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
 
-            entity.HasOne(d => d.IdUżytkownikaNavigation).WithMany(p => p.Nauczyciele)
-                .HasForeignKey(d => d.IdUżytkownika)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+            entity.HasOne(d => d.Użytkownik).WithOne(p => p.Nauczyciel)
+                .HasForeignKey<Nauczyciel>(d => d.IdUżytkownika)
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
 
-            entity.HasOne(d => d.IdWydziałuNavigation).WithMany(p => p.Nauczyciele)
+            entity.HasOne(d => d.Wydział).WithMany(p => p.Nauczyciele)
                 .HasForeignKey(d => d.IdWydziału)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
         });
 
         modelBuilder.Entity<Parking>(entity =>
@@ -250,13 +276,6 @@ public partial class UniversifyDbContext : DbContext
             entity.Property(e => e.Adres)
                 .HasColumnType("NCHAR(60)")
                 .HasColumnName("ADRES");
-            entity.Property(e => e.IdMiejsca)
-                .HasColumnType("INT")
-                .HasColumnName("ID_MIEJSCA");
-
-            entity.HasOne(d => d.IdMiejscaNavigation).WithMany(p => p.Parkingis)
-                .HasForeignKey(d => d.IdMiejsca)
-                .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<Produkt>(entity =>
@@ -273,6 +292,35 @@ public partial class UniversifyDbContext : DbContext
             entity.Property(e => e.Nazwa)
                 .HasColumnType("NCHAR(70)")
                 .HasColumnName("NAZWA");
+
+            entity.HasOne(e => e.Stołówka).WithMany(p => p.Produkty)
+                .HasForeignKey(d => d.IdStołówki)
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
+        });
+
+        modelBuilder.Entity<Profil>(entity =>
+        {
+            entity.HasKey(e => e.IdProfilu);
+
+            entity.ToTable("Profile");
+
+            entity.Property(e => e.IdProfilu).HasColumnName("ID_PROFILU");
+            entity.Property(e => e.IdUżytkownika)
+                .HasColumnType("INT")
+                .HasColumnName("ID_UŻYTKOWNIKA");
+            entity.Property(e => e.ObrazProfilu)
+                .HasColumnType("NCHAR(60)")
+                .HasColumnName("OBRAZ_PROFILU");
+            entity.Property(e => e.PasekProfilu)
+                .HasColumnType("NCHAR(150)")
+                .HasColumnName("PASEK_PROFILU");
+            entity.Property(e => e.GłównaZawartość)
+                .HasColumnType("NVARCHAR(1500)")
+                .HasColumnName("GŁÓWNA_ZAWARTOŚĆ");
+
+            entity.HasOne(d => d.Użytkownik).WithOne(p => p.Profil)
+                .HasForeignKey<Profil>(d => d.IdUżytkownika)
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
         });
 
         modelBuilder.Entity<Przedmiot>(entity =>
@@ -282,9 +330,6 @@ public partial class UniversifyDbContext : DbContext
             entity.ToTable("Przedmioty");
 
             entity.Property(e => e.IdPrzedmiotu).HasColumnName("ID_PRZEDMIOTU");
-            entity.Property(e => e.IdNauczyciela)
-                .HasColumnType("INT")
-                .HasColumnName("ID_NAUCZYCIELA");
             entity.Property(e => e.IlośćSemestrów)
                 .HasColumnType("INT")
                 .HasColumnName("ILOŚĆ_SEMESTRÓW");
@@ -298,9 +343,9 @@ public partial class UniversifyDbContext : DbContext
                 .HasColumnType("INT")
                 .HasColumnName("SEMESTR_ROZPOCZĘCIA");
 
-            entity.HasOne(d => d.IdNauczycielaNavigation).WithMany(p => p.Przedmioty)
-                .HasForeignKey(d => d.IdNauczyciela)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+            entity.HasMany(d => d.Nauczyciele).WithMany(p => p.Przedmioty);
+
+            entity.HasMany(d => d.Studenci).WithMany(p => p.Przedmioty);
         });
 
         modelBuilder.Entity<Rola>(entity =>
@@ -314,22 +359,22 @@ public partial class UniversifyDbContext : DbContext
             entity.Property(e => e.Nazwa)
                 .HasColumnType("NCHAR(50)")
                 .HasColumnName("NAZWA");
-
-            entity.HasOne(d => d.IdUprawnieniaNavigation).WithMany(p => p.Role)
-                .HasForeignKey(d => d.IdUprawnienia)
-                .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<Składnik>(entity =>
         {
             entity.HasKey(e => e.IdSkładnika);
 
-            entity.ToTable("Składniki");
+            entity.ToTable("Skladniki");
 
             entity.Property(e => e.IdSkładnika).HasColumnName("ID_SKŁADNIKA");
             entity.Property(e => e.Nazwa)
                 .HasColumnType("NCHAR(50)")
                 .HasColumnName("NAZWA");
+
+            entity.HasOne(e => e.Danie).WithMany(p => p.Składniki)
+                .HasForeignKey(d => d.IdDania)
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
         });
 
         modelBuilder.Entity<Specjalizacja>(entity =>
@@ -348,7 +393,7 @@ public partial class UniversifyDbContext : DbContext
         {
             entity.HasKey(e => e.IdStołówki);
 
-            entity.ToTable("Stołówki");
+            entity.ToTable("Stolówki");
 
             entity.Property(e => e.IdStołówki)
                 .ValueGeneratedNever()
@@ -360,17 +405,9 @@ public partial class UniversifyDbContext : DbContext
                 .HasColumnType("NCHAR(1000)")
                 .HasColumnName("INFORMACJE_DODATKOWE");
 
-            entity.HasOne(d => d.IdBudynkuNavigation).WithMany(p => p.Stołówkis)
+            entity.HasOne(d => d.Budynek).WithMany(p => p.Stołówki)
                 .HasForeignKey(d => d.IdBudynku)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.IdProduktuNavigation).WithMany(p => p.Stołówkis)
-                .HasForeignKey(d => d.IdProduktu)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.IdZamówieniaNavigation).WithMany(p => p.Stołówki)
-                .HasForeignKey(d => d.IdZamówienia)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
         });
 
         modelBuilder.Entity<Student>(entity =>
@@ -385,17 +422,21 @@ public partial class UniversifyDbContext : DbContext
             entity.Property(e => e.IdUżytkownika).HasColumnName("ID_UŻYTKOWNIKA");
             entity.Property(e => e.RokStudiów).HasColumnName("ROK_STUDIÓW");
 
-            entity.HasOne(d => d.IdGrupyStudenckiejNavigation).WithMany(p => p.Studencis)
+            entity.HasOne(d => d.GrupaStudencka).WithMany(p => p.Studenci)
                 .HasForeignKey(d => d.IdGrupyStudenckiej)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
 
-            entity.HasOne(d => d.IdPrzedmiotuNavigation).WithMany(p => p.Studenci)
-                .HasForeignKey(d => d.IdPrzedmiotu)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+            entity.HasOne(d => d.KierunekStudiów).WithMany(p => p.Studenci)
+                .HasForeignKey(d => d.IdKierunkuStudiów)
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
 
-            entity.HasOne(d => d.IdUżytkownikaNavigation).WithMany(p => p.Studenci)
-                .HasForeignKey(d => d.IdUżytkownika)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+            entity.HasMany(d => d.Grupy).WithMany(p => p.Studenci);
+
+            entity.HasMany(d => d.Przedmioty).WithMany(p => p.Studenci);
+
+            entity.HasOne(d => d.Użytkownik).WithOne(p => p.Student)
+                .HasForeignKey<Student>(d => d.IdUżytkownika)
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
         });
 
         modelBuilder.Entity<TypMiejsca>(entity =>
@@ -418,13 +459,17 @@ public partial class UniversifyDbContext : DbContext
             entity.Property(e => e.Nazwa)
                 .HasColumnType("NCHAR(80)")
                 .HasColumnName("NAZWA");
+
+            entity.HasOne(d => d.Rola).WithMany(p => p.Uprawnienia)
+                .HasForeignKey(d => d.IdRoli)
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
         });
 
         modelBuilder.Entity<Użytkownik>(entity =>
         {
             entity.HasKey(e => e.IdUżytkownika);
 
-            entity.ToTable("Użytkownicy");
+            entity.ToTable("Uzytkownicy");
 
             entity.Property(e => e.IdUżytkownika).HasColumnName("ID_UŻYTKOWNIKA");
             entity.Property(e => e.Budynek)
@@ -454,7 +499,7 @@ public partial class UniversifyDbContext : DbContext
         {
             entity.HasKey(e => e.IdWydziału);
 
-            entity.ToTable("Wydziały");
+            entity.ToTable("Wydzialy");
 
             entity.Property(e => e.IdWydziału).HasColumnName("ID_WYDZIAŁU");
             entity.Property(e => e.Nazwa)
@@ -477,17 +522,21 @@ public partial class UniversifyDbContext : DbContext
                 .HasColumnType("NCHAR(70)")
                 .HasColumnName("NAZWA");
 
-            entity.HasOne(d => d.IdDaniaNavigation).WithMany(p => p.Zamówienia)
-                .HasForeignKey(d => d.IdDania)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+            entity.HasOne(d => d.Danie).WithOne(p => p.Zamówienie)
+                .HasForeignKey<Zamówienie>(d => d.IdDania)
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
 
-            entity.HasOne(d => d.IdDietyNavigation).WithMany(p => p.Zamówienia)
+            entity.HasOne(d => d.Dieta).WithMany(p => p.Zamówienia)
                 .HasForeignKey(d => d.IdDiety)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
 
-            entity.HasOne(d => d.IdUżytkownikaNavigation).WithMany(p => p.Zamówienia)
+            entity.HasOne(d => d.Użytkownik).WithMany(p => p.Zamówienia)
                 .HasForeignKey(d => d.IdUżytkownika)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
+
+            entity.HasOne(d => d.Stołówka).WithMany(p => p.Zamówienia)
+                .HasForeignKey(d => d.IdStołówki)
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
         });
 
         OnModelCreatingPartial(modelBuilder);

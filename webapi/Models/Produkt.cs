@@ -13,5 +13,7 @@ public partial class Produkt
 
     public string Jednostka { get; set; } = null!;
 
-    public virtual ICollection<Stołówka> Stołówkis { get; set; } = new List<Stołówka>();
+    public long IdStołówki { get; set; }
+
+    public virtual Stołówka Stołówka { get; set; } = null!;
 }

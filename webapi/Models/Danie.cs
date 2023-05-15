@@ -13,9 +13,11 @@ public partial class Danie
 
     public long IdSkładnika { get; set; }
 
-    public virtual ICollection<Dieta> Dieties { get; set; } = new List<Dieta>();
+    public long IdDiety { get; set; }
 
-    public virtual Składnik IdSkładnikaNavigation { get; set; } = null!;
+    public virtual Dieta Dieta { get; set; } = null!;
 
-    public virtual ICollection<Zamówienie> Zamówienia { get; set; } = new List<Zamówienie>();
+    public virtual ICollection<Składnik> Składniki { get; set; } = new List<Składnik>();
+
+    public virtual Zamówienie? Zamówienie { get; set; }
 }

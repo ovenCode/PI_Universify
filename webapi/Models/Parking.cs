@@ -7,9 +7,7 @@ public partial class Parking
 {
     public long IdParkingu { get; set; }
 
-    public long IdMiejsca { get; set; }
-
     public string Adres { get; set; } = null!;
 
-    public virtual Miejsce IdMiejscaNavigation { get; set; } = null!;
+    public virtual ICollection<Miejsce> Miejsca { get; set; } = new List<Miejsce>();
 }

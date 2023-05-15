@@ -9,5 +9,7 @@ public partial class Grupa
 
     public string Nazwa { get; set; } = null!;
 
-    public virtual ICollection<Student> Studencis { get; set; } = new List<Student>();
+    public virtual ICollection<Student> Studenci { get; set; } = new List<Student>();
+
+    public virtual ICollection<Nauczyciel> Nauczyciele { get; set; } = new List<Nauczyciel>();
 }

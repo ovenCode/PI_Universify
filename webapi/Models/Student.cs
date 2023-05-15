@@ -13,11 +13,17 @@ public partial class Student
 
     public long IdGrupyStudenckiej { get; set; }
 
+    public long IdKierunkuStudiów { get; set; }
+
     public long RokStudiów { get; set; }
 
-    public virtual Grupa IdGrupyStudenckiejNavigation { get; set; } = null!;
+    public virtual GrupaStudencka GrupaStudencka { get; set; } = null!;
 
-    public virtual Przedmiot IdPrzedmiotuNavigation { get; set; } = null!;
+    public virtual KierunekStudiów KierunekStudiów { get; set; } = null!;
 
-    public virtual Użytkownik IdUżytkownikaNavigation { get; set; } = null!;
+    public virtual ICollection<Grupa> Grupy { get; set; } = new List<Grupa>();
+
+    public virtual ICollection<Przedmiot> Przedmioty { get; set; } = new List<Przedmiot>();
+
+    public virtual Użytkownik Użytkownik { get; set; } = null!;
 }

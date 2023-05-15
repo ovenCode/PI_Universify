@@ -9,7 +9,8 @@ public partial class Administrator
 
     public long IdUżytkownika { get; set; }
 
-    public long? IdRoli { get; set; }
+    public long IdRoli { get; set; }
 
-    public virtual Użytkownik IdUżytkownikaNavigation { get; set; } = null!;
+    public virtual Użytkownik Użytkownik { get; set; } = null!;
+    public virtual Rola Rola { get; set; } = null!;
 }

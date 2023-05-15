@@ -11,5 +11,5 @@ public partial class Budynek
 
     public string Adres { get; set; } = null!;
 
-    public virtual ICollection<Stołówka> Stołówkis { get; set; } = new List<Stołówka>();
+    public virtual ICollection<Stołówka> Stołówki { get; set; } = new List<Stołówka>();
 }

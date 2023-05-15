@@ -11,5 +11,6 @@ public partial class Rola
 
     public long IdUprawnienia { get; set; }
 
-    public virtual Uprawnienie IdUprawnieniaNavigation { get; set; } = null!;
+    public virtual ICollection<Uprawnienie> Uprawnienia { get; set; } = new List<Uprawnienie>();
+    public virtual Administrator? Administrator { get; set; }
 }
