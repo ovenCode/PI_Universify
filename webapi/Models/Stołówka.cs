@@ -15,9 +15,9 @@ public partial class Stołówka
 
     public string? InformacjeDodatkowe { get; set; }
 
-    public virtual Budynek IdBudynkuNavigation { get; set; } = null!;
+    public virtual Budynek Budynek { get; set; } = null!;
 
-    public virtual Produkt IdProduktuNavigation { get; set; } = null!;
+    public virtual ICollection<Produkt> Produkty { get; set; } = new List<Produkt>();
 
-    public virtual Zamówienie IdZamówieniaNavigation { get; set; } = null!;
+    public virtual ICollection<Zamówienie> Zamówienia { get; set; } = new List<Zamówienie>();
 }

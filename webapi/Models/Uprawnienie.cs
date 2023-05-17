@@ -7,7 +7,9 @@ public partial class Uprawnienie
 {
     public long IdUprawnienia { get; set; }
 
+    public long IdRoli { get; set; }
+
     public string Nazwa { get; set; } = null!;
 
-    public virtual ICollection<Rola> Role { get; set; } = new List<Rola>();
+    public virtual Rola Rola { get; set; } = null!;
 }

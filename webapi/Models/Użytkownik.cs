@@ -21,11 +21,13 @@ public partial class Użytkownik
 
     public string? Budynek { get; set; }
 
-    public virtual ICollection<Administrator> Administratorzy { get; set; } = new List<Administrator>();
+    public virtual Administrator? Administrator { get; set; }
 
-    public virtual ICollection<Nauczyciel> Nauczyciele { get; set; } = new List<Nauczyciel>();
+    public virtual Nauczyciel? Nauczyciel { get; set; }
 
-    public virtual ICollection<Student> Studenci { get; set; } = new List<Student>();
+    public virtual Student? Student { get; set; }
 
     public virtual ICollection<Zamówienie> Zamówienia { get; set; } = new List<Zamówienie>();
+
+    public virtual Profil Profil { get; set; } = null!;
 }

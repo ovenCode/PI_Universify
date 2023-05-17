@@ -15,10 +15,6 @@ public partial class Przedmiot
 
     public long IlośćSemestrów { get; set; }
 
-    public long IdNauczyciela { get; set; }
-
-    public virtual Nauczyciel IdNauczycielaNavigation { get; set; } = null!;
-
     public virtual ICollection<Nauczyciel> Nauczyciele { get; set; } = new List<Nauczyciel>();
 
     public virtual ICollection<Student> Studenci { get; set; } = new List<Student>();

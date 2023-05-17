@@ -17,11 +17,11 @@ public partial class Dieta
 
     public long IdDania { get; set; }
 
-    public virtual Alergen IdAlergenuNavigation { get; set; } = null!;
+    public virtual ICollection<Alergen> Alergeny { get; set; } = new List<Alergen>();
 
-    public virtual Danie IdDaniaNavigation { get; set; } = null!;
+    public virtual ICollection<Danie> Dania { get; set; } = null!;
 
-    public virtual Kategoria IdKategoriiNavigation { get; set; } = null!;
+    public virtual Kategoria Kategoria { get; set; } = null!;
 
     public virtual ICollection<Zamówienie> Zamówienia { get; set; } = new List<Zamówienie>();
 }
