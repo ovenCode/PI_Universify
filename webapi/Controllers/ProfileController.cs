@@ -1,4 +1,6 @@
 ﻿using System.Globalization;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
@@ -179,7 +181,7 @@ namespace webapi.Controllers
                             {
                                 { "name", DateTimeFormatInfo.CurrentInfo.GetMonthName(month) },
                                 { "days", Enumerable.Range(1, DateTime.DaysInMonth(DateTime.Now.Year, month))
-                                    .Select(day => new Dictionary<string, dynamic>() { { "number", day } })
+                                    .Select(day => new Dictionary<string, dynamic>() { { "number", day }, { "upcoming", new List<JsonObject>() { new JsonObject(new KeyValuePair<string,JsonNode?>[] { new KeyValuePair<string, JsonNode?>("name", ""), new KeyValuePair<string, JsonNode?>("date", $"{day}/{month}") }) } } })
                                     .ToList()
                                 }
                             }).ToList()
@@ -229,14 +231,14 @@ namespace webapi.Controllers
                     {"calendar",new Dictionary<String, dynamic>()
                     {
                         {"name",""},
-                        {"currentMonth", DateTime.Now.Month},
+                        {"currentMonth", DateTimeFormatInfo.CurrentInfo.GetMonthName(DateTime.Now.Month)},
                         {
                             "months", Enumerable.Range(1, 12)
                             .Select(month => new Dictionary<string, dynamic>()
                             {
                                 { "name", DateTimeFormatInfo.CurrentInfo.GetMonthName(month) },
                                 { "days", Enumerable.Range(1, DateTime.DaysInMonth(DateTime.Now.Year, month))
-                                    .Select(day => new Dictionary<string, dynamic>() { { "number", day } })
+                                    .Select(day => new Dictionary<string, dynamic>() { { "number", day }, { "upcoming", new List<JsonObject>() { new JsonObject(new KeyValuePair<string,JsonNode?>[] { new KeyValuePair<string, JsonNode?>("name", ""), new KeyValuePair<string, JsonNode?>("date", $"{day}/{month}") }) } } })
                                     .ToList()
                                 }
                             }).ToList()

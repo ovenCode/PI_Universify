@@ -161,9 +161,4 @@ namespace webapi.Controllers
             Student = new Student { IdStudenta = student?.IdStudenta ?? Convert.ToInt64(0), IdUżytkownika = student?.IdUżytkownika ?? Convert.ToInt64(0), IdPrzedmiotu = student?.IdPrzedmiotu ?? Convert.ToInt64(0), IdGrupyStudenckiej = student?.IdGrupyStudenckiej ?? Convert.ToInt64(0), IdKierunkuStudiów = student?.IdKierunkuStudiów ?? Convert.ToInt64(0), RokStudiów = student?.RokStudiów ?? Convert.ToInt64(0), GrupaStudencka = grupaStudencka ?? new GrupaStudencka(), KierunekStudiów = kierunekStudiów ?? new KierunekStudiów() }
         };
     }
-
-    public class Content
-    {
-        public string? Value { get; set; }
-    }
 }

@@ -103,8 +103,14 @@
 #calendar-month {
     display: flex;
     grid-row: 3;
-    justify-content: center;
+    justify-content: space-between;
     border-bottom: 0.2em solid #e3d8ca;
+}
+
+.button {
+    padding: 0.5em;
+    background-color: #533113;
+    color: #BFBCCB;    
 }
 
 #calendar-days {
@@ -135,7 +141,37 @@
 #profile-upcoming {
     grid-row: 2;
     display: flex;
-    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    flex-direction: column;
+    width: 80%;
+    min-height: 30%;
+    height: 100px;
+    margin: 0.5em auto 0.5em auto;
+}
+
+.profile-event,.profile-event-title,.profile-event-date {
+    display: flex;
+}
+
+.profile-event {
+    flex-direction: row;
+    padding: 0.3em;
+    background-color: #C0A787;
+    width: 80%;
+    margin: 0.2em;
+}
+
+.profile-event > div {
+    font-size: 0.9em;
+}
+
+.profile-event-title {
+    margin-left: 0.3em;
+}
+
+.profile-event-date {
+    margin: auto;
 }
 
 #profile-feed {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import './AppLogin.css';
 
-const AppLogin = ({ login }) => {
+const AppLogin = ({ login, toggleVis }) => {
 
     const data = {
         title: "Login",
@@ -11,7 +11,7 @@ const AppLogin = ({ login }) => {
     return (
         <div className="loginApp">
             <h1 id="loginTitle">{data.title}</h1>
-            <form className="loginForm" method="post" onSubmit={async (event) => { event.preventDefault(); logIn({ event, login }); }}>
+            <form className="loginForm" method="post" onSubmit={async (event) => { event.preventDefault(); logIn({ event, login }); toggleVis("Profile"); }}>
                 <div className="loginInput">
                     <label>Username</label>
                     <input type="text" name="username" required />
@@ -42,7 +42,7 @@ async function logIn({ event, login }) {
     console.log(data);
 
     if (data) {
-        login(['true', '-1']);
+        login(data);
     }
 }
 

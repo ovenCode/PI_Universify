@@ -47,7 +47,7 @@ export const App = () => {
             : App.renderForecastsTable(this.state.forecasts);*/
 
     const [isVisible, setVisible] = useState("Login");
-    const [isUserLoggedIn, setLoggedIn] = useState(['false', '-1']);
+    const [isUserLoggedIn, setLoggedIn] = useState([false, '-1']);
 
     const toggleVis = (val) => {
         console.log(val);
@@ -67,19 +67,17 @@ export const App = () => {
         const profileClassName = "mainContent hidden";
         const loginClassName = "";
         //let x = 0;
-        
+    console.log(isUserLoggedIn);
 
     return (
         <div className="App">
-            <Header profile={[profileClassName, loginClassName]} toggleVis={toggleVis} />
-                        {/*<h1 id="tabelLabel" >Weather forecast</h1>
-                        <p>This component demonstrates fetching data from the server.</p>*/}
+            <Header profile={[profileClassName, loginClassName]} toggleVis={toggleVis} isUserLoggedIn={isUserLoggedIn} setLoggedIn={setLoggedIn} />
             <div id="App-content">
-                {(isVisible === "Login" || isVisible === "Login ShowHelp") && <AppLogin id="login" className={loginClassName} login={setLoggedIn} />}
-                {(isVisible === "Profile" || isVisible === "Profile ShowHelp") && <Profile id="profile" className={profileClassName} isVisible={isVisible} />}
-                {(isVisible === "Parking" || isVisible === "Parking ShowHelp") && <Parking className="mainContent" />}
-                {(isVisible === "Cantine" || isVisible === "Cantine ShowHelp") && <Cantine className="mainContent" />}
-                {(isVisible === "Subject" || isVisible === "Subject ShowHelp") && <Subject className="mainContent" />}
+                {isUserLoggedIn[0] === false && <AppLogin id="login" className={loginClassName} login={setLoggedIn} toggleVis={toggleVis} />}
+                {isUserLoggedIn[0] === "True" && (isVisible === "Profile" || isVisible === "Profile ShowHelp") && <Profile id="profile" className={profileClassName} userId={isUserLoggedIn[1]} />}
+                {isUserLoggedIn[0] === "True" && (isVisible === "Parking" || isVisible === "Parking ShowHelp") && <Parking className="mainContent" userId={isUserLoggedIn[1]} />}
+                {isUserLoggedIn[0] === "True" && (isVisible === "Cantine" || isVisible === "Cantine ShowHelp") && <Cantine className="mainContent" userId={isUserLoggedIn[1]} />}
+                {isUserLoggedIn[0] === "True" && (isVisible === "Subject" || isVisible === "Subject ShowHelp") && <Subject className="mainContent" userId={isUserLoggedIn[1]} />}
                 {isVisible.includes("ShowHelp") && <ShowHelp className="dialog" />}
                         </div>
                         {/*<Footer/>*/}

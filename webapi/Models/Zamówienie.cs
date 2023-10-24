@@ -17,7 +17,7 @@ public partial class Zamówienie
 
     public long IdDania { get; set; }
 
-    public byte[] DzieńZamówienia { get; set; } = null!;
+    public string DzieńZamówienia { get; set; } = null!;
 
     public virtual Danie Danie { get; set; } = null!;
 

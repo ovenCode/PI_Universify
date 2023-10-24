@@ -2,9 +2,11 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
+    /*position: relative;*/
     background-color: #997950;
     font-family: "Google Noto Sans Bold";
     height: fit-content;
+    z-index: 1;
 }
 
 #cantine {
@@ -23,13 +25,37 @@
     margin: 10px 0 0 0;
 }
 
+#cantine-title {
+    display: flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+#choose-cantine {
+    padding: 0.8em;
+    background-color: #533113;
+    font-size: 0.8em;
+    width: 80%;
+    margin: 5px;
+    color: #BFBCCB;
+    text-align: center;
+}
+
+    #choose-cantine:hover {
+        cursor: pointer;
+        background-color: rgba(83,49,19,0.4);
+    }
+
 #cantine-info {
     display: flex;
+    align-items: center;
 }
 
 #cantine-address {
     display: flex;
     flex-direction: column;
+    padding: 0 1em;
 }
 
 #cantine-content {
@@ -43,14 +69,15 @@
 #cantine-orders-content {
     display: flex;
     align-self: flex-start;
+    height: 100%;
     margin: 15px 0 0 0;
+    padding: 0 1em;
 }
 
 #cantine-orders-block {
     display: flex;
     flex-direction: column;
     width: 100%;
-    background-color: blue;
     justify-content: flex-start;
     align-items: center;
 }
@@ -58,13 +85,45 @@
 #cantine-orders {
     display: flex;
     flex-direction:column;
-    justify-self: center;
-    background-color: orange;
     width: 100%;
     height: 100%;
+    align-items: center;
+    overflow-y: auto;
+}
+
+.cantine-order {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    width: 100%;
+    background-color: #C0A787;
+}
+
+.order-name {
+    padding: 0 1em 0 1em;
+}
+
+.order-date {
+    padding: 0 1em 0 1em;
+}
+
+.order-modify {
+    display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #533113;
+    color: #BFBCCB;
+    padding: 0.5em;
+    margin: 0.2em;
+    width: fit-content;
 }
+
+    .order-modify:hover {
+        cursor: pointer;
+        background-color: rgba(83,49,19,0.4);
+    }
 
 #cantine-order-actions {
     display: flex;
@@ -77,10 +136,11 @@
 }
 
     #cantine-order-actions > div {
-        padding: 1em;
+        padding: 0.7em;
         background-color: #533113;
+        font-size: 0.8em;
         width: 80%;
-        margin: 10px;
+        margin: 5px;
         color: #BFBCCB;
     }
 
@@ -94,4 +154,68 @@
     margin: auto;
     justify-content: center;
     align-items: center;
+
+}
+
+.dialog {
+    position: fixed;
+    z-index: 2;
+    background-color: #d5c4af;
+    padding: 1.5em;
+    box-shadow: 0 0 20px rgb(0,0,0,0.4);
+}
+
+.dialog-close {
+    align-self: flex-end;
+    padding: 0.7em;
+    margin: auto 0 0 auto;
+    background-color: #533113;
+    color: #BFBCCB;
+}
+
+    .dialog-close:hover {
+        cursor: pointer;
+        background-color: rgba(83,49,19,0.4);        
+    }
+
+#choose-cantine-dialog {
+    display: flex;
+    width: 30%;
+    height: 20%;
+    top: 15vh;
+    left: 35vw;
+}
+
+#select-label {
+    padding: 0.5em;
+    margin: auto;
+}
+
+#select-cantine {
+    height: 4em;
+    margin: auto;
+    padding: 0.5em;
+    width: 80%;
+}
+
+#order-modify-dialog {
+    display: flex;
+    width: 50%;
+    height: 70%;
+    top: 15vh;
+    left: 25vw;
+}
+
+#order-new-dialog {
+    display: flex;
+    width: 50%;
+    height: 70%;
+    top: 15vh;
+    left: 25vw;
+}
+
+
+
+.hidden {
+    display: none;
 }

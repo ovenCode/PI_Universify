@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useState, useEffect, useRef } from 'react';
 import "./Profile.css";
 
 
 
 const Profile = (props) => {
-    const [isVisible, setVisible] = useState(props.isVisible);
     //const [loading, setLoading] = useState(true);
-    const [profileInfo, setProfileInfo] = useState({ picture: "", info: { name: "", lastname: "", mail: "", group: "", curriculum: "" }, sidebar: { info: "", }, content: { calendar: { name: "Some calendar", currentMonth: "", months: [{ name: "", days: [{ number: 1 }]}]}, upcoming: [ "",], feed: ["",] } });
+    const [profileInfo, setProfileInfo] = useState({ picture: "", info: { name: "", lastname: "", mail: "", group: "", curriculum: "" }, sidebar: { info: "", }, content: { calendar: { name: "Some calendar", currentMonth: "", months: [{ name: "", days: [{ number: 1, upcoming: [{name: "", date: ""}] }]}]}, feed: ["",] } });
     //const [img, setPicture] = useState({ img: "" });
-    const id = 2;
+    const id = props.userId;
     // ON MOUNT EFFECT
     useEffect(() => {
         let ignore = false;
@@ -18,11 +16,11 @@ const Profile = (props) => {
         return () => {
             ignore = true;
         }
-    }, []);
+    }, [id]);
 
     return (
         <div id="profile-page">
-            {isVisible === "Profile" && <div id="profile">
+            <div id="profile">
                 <div id="profile-container">
                     <div id="profile-picture"><RenderPicture id="picture-image" img={profileInfo.picture} /></div>
                     <div id="profile-info"><RenderProfileInfo data={profileInfo.info} /></div>
@@ -30,7 +28,7 @@ const Profile = (props) => {
                 <div id="profile-sidebar">TEST 3</div>
                 <div id="profile-divider"></div>
                 <div id="profile-content"><RenderProfileContent content={profileInfo.content} /></div>
-            </div>}
+            </div>
         </div>
     )
 }
@@ -49,8 +47,10 @@ const loadProfileInfo = async (props) => {
         console.log("NEXT");
         //console.log(response);
         //console.log(response.json());
-        console.log("This is the response: " + data);
-        console.log("loadProfileInfo::props: " + props);
+        console.log("This is the response: ");
+        console.log(data);
+        console.log("loadProfileInfo::props: ");
+        console.log(props);
 
         if (!props.ignore) {
             //props.setLoading(false);
@@ -84,25 +84,71 @@ const RenderProfileInfo = ({ data }) => {
 }
 
 const RenderProfileContent = ({ content }) => {
-    //
+    const [upcomingEvents, setEvents] = useState([{ name: '', date: '' }]);
+    const [selectedDay, setDay] = useState('0');
+    const calEvent = useRef(null);
+
+    useEffect(() => {
+        let ignore = false;
+        let temp = [];
+        if (!ignore) {
+            content.calendar.months.forEach(month => month.days.forEach(day => day.upcoming.forEach(event => temp.push(event))));
+            setEvents(temp);
+        }
+
+        if (calEvent.current !== null && calEvent.current.children.length === upcomingEvents.length) {
+            calEvent.current.children[upcomingEvents.findIndex(event => event.date === `${new Date(Date.now()).getDate()}/${new Date(Date.now()).getMonth() + 1}`) !== -1 ? upcomingEvents.findIndex(event => event.date === `${new Date(Date.now()).getDate()}/${new Date(Date.now()).getMonth() + 1}`) + 1 : 0].scrollIntoView(false);
+        }
+
+        return () => {
+            ignore = true;
+        };
+    }, [content.calendar]);
+
+    /*useEffect(() => {
+        if (calEvent.current != null) {
+            console.log("Current latest event");
+            console.log(calEvent.current);
+            calEvent.current.scrollIntoView(false);
+        }
+    },[calEvent.current]);*/
+
+    useEffect(() => {
+        if (calEvent.current !== null && selectedDay !== 0) {
+            calEvent.current.children[upcomingEvents.findIndex(event => event.date === selectedDay) !== -1 ? upcomingEvents.findIndex(event => event.date === selectedDay) + 1 : 0].scrollIntoView(false);
+        }
+    },[selectedDay]);
+
     const ProfileContent = (<div>
-        <div id="profile-calendar"><Calendar calendar={content.calendar}/></div>
-        <div id="profile-upcoming">{content.upcoming}</div>
+        <div id="profile-calendar"><Calendar calendar={content.calendar} handleDay={setDay} /></div>
+        <div id="profile-upcoming" ref={calEvent}>{upcomingEvents.map((event, id) => 
+            <div key={id} className="profile-event"> {/*event.date.substring((`${event.date}` === `${selectedDay}` ? calEvent : event.date.indexOf('/') + 1)) === `${new Date(Date.now()).getMonth() + 1}` ? event.date.substring(0, event.date.indexOf('/')) === `${new Date(Date.now()).getDate()}` ? calEvent : null : null*/}
+            <div className="profile-event-title">{event.name}</div>
+            <div className="profile-event-date">{event.date}</div>
+        </div>
+        )}</div>
         <div id="profile-feed">Some feed {content.feed}</div>
     </div>);
 
     return ProfileContent;
 }
 
-const Calendar = ({ calendar }) => {
-    var id = 0;
+const Calendar = ({ calendar, handleDay }) => {
+
+    const [monthShown, setMonth] = useState(calendar.months[0]);
+    useEffect(() => {
+        if (calendar.months.length > 1) {
+            setMonth(calendar.months[new Date(Date.now()).getMonth()]);
+        }
+    },[calendar.months]);
+
     return (<div className="calendar">
         <div id="calendar-name">{calendar.name}</div>
-        <div id="calendar-month">{calendar.currentMonth}</div>
-        <div id="calendar-days">{calendar.months[0].days.map(day => <div key={id++} style={{
-            gridRow: (day.number/7)%5 === 0 ? (day.number/7)%5 + 1 : (day.number/7)%5,
-            gridColumn: day.number%7 === 0 ? 7 : day.number%7
-        }}>{day.number}</div>)}</div>
+        <div id="calendar-month"><div className="button" onClick={() => setMonth(calendar.months[calendar.months.findIndex(month => month.name == monthShown.name) - 1])}>{'<|'}</div>{monthShown.name}<div className="button" onClick={() => setMonth(calendar.months[calendar.months.findIndex(month => month.name == monthShown.name) + 1])}>{'|>'}</div></div>
+        <div id="calendar-days">{monthShown.days.map((day, id) => <div key={id} style={{
+            gridRow: (day.number / 7) % 5 === 0 ? (day.number / 7) % 5 + 1 : (day.number / 7) % 5,
+            gridColumn: day.number % 7 === 0 ? 7 : day.number % 7
+        }} onClick={() => { console.log(`${day.number}/${calendar.months.findIndex(month => month.name === monthShown.name) + 1}`); handleDay(`${day.number}/${calendar.months.findIndex(month => month.name === monthShown.name) + 1}`); }}>{day.number}</div>)}</div>
     </div>);
 }
 

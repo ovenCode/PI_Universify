@@ -29,7 +29,10 @@ namespace webapi.Controllers
           {
               return NotFound();
           }
-            return await _context.Stołówki.ToListAsync();
+            return await _context.Stołówki
+                .Include(s => s.Zamówienia).ThenInclude(z => z.Danie)
+                .Include(s => s.Zamówienia).ThenInclude(z => z.Dieta)
+                .Include(s => s.Budynek).ToListAsync();
         }
 
         // GET: api/Stołówki/5
@@ -40,7 +43,10 @@ namespace webapi.Controllers
           {
               return NotFound();
           }
-            var stołówka = await _context.Stołówki.FindAsync(id);
+            var stołówka = await _context.Stołówki
+                .Include(s => s.Zamówienia).ThenInclude(z => z.Danie)
+                .Include(s => s.Zamówienia).ThenInclude(z => z.Dieta)
+                .Include(s => s.Budynek).SingleOrDefaultAsync(s => s.IdStołówki == id);
 
             if (stołówka == null)
             {
@@ -134,5 +140,19 @@ namespace webapi.Controllers
         {
             return (_context.Stołówki?.Any(e => e.IdStołówki == id)).GetValueOrDefault();
         }
-    }
+
+        private static StołówkaDTO ItemToDTO(Stołówka stołówka) => new StołówkaDTO
+        {
+            IdStołówki = stołówka.IdStołówki,
+            IdBudynku = stołówka.IdBudynku,
+            IdZamówienia = stołówka.IdZamówienia,
+            IdProduktu = stołówka.IdProduktu,
+            InformacjeDodatkowe = stołówka.InformacjeDodatkowe,
+            Budynek = stołówka.Budynek,
+            Produkty = stołówka.Produkty,
+            Zamówienia = stołówka.Zamówienia
+        };
+    }    
 }
+
+

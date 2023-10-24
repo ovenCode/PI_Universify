@@ -10,13 +10,14 @@
 
 #header-background {
     height: 8vh;
+    min-height: 34px;
     width: 100%;
     display: flex;
     background-color: #43270F;
     box-shadow: 0 10px 40px -1px rgba(67, 39, 15, 5);
     margin: 0 0 0 0;
-    color: #BFBCCB;
     z-index: 5;
+    color: #BFBCCB;
     position: relative;
     font-family: 'Google Noto Sans Bold';
 }
@@ -70,6 +71,16 @@
 
     to {
         width: 100%;
+    }
+}
+
+@keyframes nav-submenu {
+    from {
+        margin-top: -160%;
+    }
+
+    to {
+        margin-top: 0.1em;
     }
 }
 
@@ -153,6 +164,64 @@
     border-left: 0;
     border-right: 0;
     border-top: 0;
+}
+
+#nav-menu {
+    display: grid;
+    grid-template-rows: 8vh max-content;
+    align-items: center;
+    z-index: 6;
+}
+
+#nav-dropdown {
+    display: flex;
+    width: 100%;
+    height: 8vh;
+    align-items: center;
+    z-index: 6;
+    background-color: #43270F;
+}
+
+    #nav-dropdown:hover {
+        cursor: pointer;
+        background-color: rgba(83,49,19,1);
+    }
+
+#nav-submenu {
+    display: flex;
+    flex-direction: column;
+    grid-row: 2;
+    height: fit-content;
+    width: 80px;
+    z-index: 5;
+    background-color: #dccebc;
+    color: black;
+}
+
+.dropdown-button {
+    text-align: center;
+}
+
+    .dropdown-button:hover {
+        cursor: pointer;
+        background-color: rgba(171,135,95,0.4);
+    }
+
+.nav-submenu-animate {
+    animation-name: nav-submenu;
+    animation-duration: 0.3s;
+    animation-iteration-count: 1;
+    animation-timing-function: ease;
+    animation-fill-mode: forwards;
+}
+
+.nav-submenu-close-animate {
+    animation-name: nav-submenu;
+    animation-duration: 0.3s;
+    animation-iteration-count: 1;
+    animation-timing-function: ease;
+    animation-fill-mode: forwards;
+    animation-direction: reverse;
 }
 
 #help-button {

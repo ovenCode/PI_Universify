@@ -397,10 +397,10 @@ public partial class UniversifyDbContext : DbContext
 
             entity.Property(e => e.IdStołówki)
                 .ValueGeneratedNever()
-                .HasColumnName("ID_STOLÓWKI");
+                .HasColumnName("ID_STOLOWKI");
             entity.Property(e => e.IdBudynku).HasColumnName("ID_BUDYNKU");
             entity.Property(e => e.IdProduktu).HasColumnName("ID_PRODUKTU");
-            entity.Property(e => e.IdZamówienia).HasColumnName("ID_ZAMÓWIENIA");
+            entity.Property(e => e.IdZamówienia).HasColumnName("ID_ZAMOWIENIA");
             entity.Property(e => e.InformacjeDodatkowe)
                 .HasColumnType("NCHAR(1000)")
                 .HasColumnName("INFORMACJE_DODATKOWE");
@@ -512,32 +512,33 @@ public partial class UniversifyDbContext : DbContext
         {
             entity.HasKey(e => e.IdZamówienia);
 
-            entity.Property(e => e.IdZamówienia).HasColumnName("ID_ZAMÓWIENIA");
+            entity.Property(e => e.IdZamówienia).HasColumnName("ID_ZAMOWIENIA");
             entity.Property(e => e.DzieńZamówienia)
                 .HasColumnType("DATETIME")
-                .HasColumnName("DZIEN_ZAMÓWIENIA");
+                .HasColumnName("DZIEN_ZAMOWIENIA");
             entity.Property(e => e.IdDania).HasColumnName("ID_DANIA");
             entity.Property(e => e.IdDiety).HasColumnName("ID_DIETY");
             entity.Property(e => e.IdUżytkownika).HasColumnName("ID_UZYTKOWNIKA");
+            entity.Property(e => e.IdStołówki).HasColumnName("IdStolówki");
             entity.Property(e => e.Nazwa)
                 .HasColumnType("NCHAR(70)")
                 .HasColumnName("NAZWA");
 
             entity.HasOne(d => d.Danie).WithOne(p => p.Zamówienie)
                 .HasForeignKey<Zamówienie>(d => d.IdDania)
-                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
+                .OnDelete(DeleteBehavior.ClientCascade).IsRequired();
 
             entity.HasOne(d => d.Dieta).WithMany(p => p.Zamówienia)
                 .HasForeignKey(d => d.IdDiety)
-                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
+                .OnDelete(DeleteBehavior.ClientCascade).IsRequired();
 
             entity.HasOne(d => d.Użytkownik).WithMany(p => p.Zamówienia)
                 .HasForeignKey(d => d.IdUżytkownika)
-                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
+                .OnDelete(DeleteBehavior.ClientCascade).IsRequired();
 
             entity.HasOne(d => d.Stołówka).WithMany(p => p.Zamówienia)
                 .HasForeignKey(d => d.IdStołówki)
-                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
+                .OnDelete(DeleteBehavior.ClientCascade).IsRequired();
         });
 
         OnModelCreatingPartial(modelBuilder);

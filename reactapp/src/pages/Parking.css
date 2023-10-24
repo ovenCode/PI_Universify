@@ -51,12 +51,6 @@
         cursor: pointer;
     }
 
-.parking-recommendation-selected {
-    background-color: #DCCEBC;
-}
-
-
-
 .parking-row {
     display: flex;
     flex-direction: row;
@@ -75,12 +69,16 @@
     }
 
 .occupied {
-    background-color: #93754D;
+    background-color: #785f3f;
 }
 
 .parking-spot.occupied:hover {
     cursor: default;
     background-color: #93754D;
+}
+
+.selected {
+    background-color: #a07e54;
 }
 
 #parking-buttons {
