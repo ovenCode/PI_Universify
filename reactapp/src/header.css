@@ -1,0 +1,216 @@
+/*@font-face {
+    font-family: "Google Noto Sans Bold";
+    src: url("./assets/fonts/NotoSans-Bold.ttf")
+}*/
+* {
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#header-background {
+    height: 8vh;
+    width: 100%;
+    display: flex;
+    background-color: #43270F;
+    box-shadow: 0 10px 40px -1px rgba(67, 39, 15, 5);
+    margin: 0 0 0 0;
+    color: #BFBCCB;
+    z-index: 5;
+    position: relative;
+    font-family: 'Google Noto Sans Bold';
+}
+
+/*#header-background > div {
+    text-align: center;
+}
+
+#header-background > div > div {
+    padding: 1rem;
+}*/
+
+#site-logo {
+    margin: auto 0em auto 0.5em;
+}
+
+#site-logo:hover {
+    cursor: default;
+}
+
+@keyframes nav-bar-border {
+    from {
+        width: 0px;
+    }
+
+    to {
+        width: 100px;
+    }
+}
+
+@-moz-keyframes nav-bar-border {
+}
+
+@-webkit-keyframes nav-bar-border {
+}
+
+@keyframes nav-bar-border-left {
+    from {
+        width: 50%;
+    }
+
+    to {
+        width: 0%;
+    }
+}
+
+@keyframes nav-bar-border-right {
+    from {
+        width: 50%;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+#nav-bar {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto 0 auto;
+    height: 8vh;
+    width: 50%;
+    font-weight:bold;
+}
+
+.nav-button {
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #43270F;
+    padding: 0 15px 0 15px;
+    height: 6vh;
+}
+
+    /*.nav-button:hover {
+        padding-inline: 30px 30px;
+        cursor: pointer;        
+        border-bottom: 5px solid #01d2ce;
+    }*/
+
+.nav-button-border:hover {
+    /*border-image-source: linear-gradient(to right,rgba(0, 0, 0, 0.25),#010101,rgba(0, 0, 0, 0.25));*/
+    cursor: pointer;
+    background-color: rgba(83,49,19,0.4);
+    /*animation-name: nav-bar-border;
+    animation-duration: 0.3s;*/
+}
+
+.nav-button-bottom-left {
+    width: 50%;
+    height: 100%;
+    background:  rgba(0, 0, 0, 0);
+}
+
+.nav-button-border:hover .nav-button {
+    background-color: rgba(83,49,19,0.4);
+}
+
+.nav-button-border:hover .nav-button-bottom {
+    background: #d4e79e /*linear-gradient(to bottom,#533113,rgba(67, 39, 20, 0.1))*/;
+    animation-name: nav-bar-border-right;
+    animation-duration: 0.2s;
+    animation-fill-mode: forwards;
+}
+
+.nav-button-border:hover .nav-button-bottom-left {
+    animation-name: nav-bar-border-left;
+    animation-duration: 0.2s;
+    animation-fill-mode: forwards;
+}
+
+.nav-button-bottom {
+    grid-row: 2;
+    width: 100%;
+    height: 5px;
+    margin: 0 0 0 0;
+    /*background-color: blue;*/
+}
+
+.nav-button-border {
+    display: grid;
+    grid-template-rows: 8vh 5px;
+    width: fit-content;
+    margin: 0px auto 5px auto; /*
+    border: 10px solid rgba(0,0,0,0);
+    border-image-slice: 1;
+    border-width: 5px;*/
+    height: calc(8vh);
+}
+
+.only-bottom {
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+}
+
+#help-button {
+    grid-row: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 1em 0 1em;
+    font-size: 0.7em;
+}
+
+    #help-button-border:hover #help-button {
+        cursor: pointer;
+        background-color: rgba(83,49,19,0.4);
+    }
+
+#help-icon {
+    grid-row: 1;
+    height: 1.5em;
+    width: 1.5em;
+    border: solid 0.2em #BFBCCB;
+    border-radius: 50%;
+    margin: 0 0.1em 0 0.2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#help-button-border {
+    display: grid;
+    grid-template-rows: 8vh 5px;
+    height: 100%;
+    margin-bottom: 5px;
+}
+
+.help-button-bottom {
+    grid-row: 2;
+    width: 100%;
+    height: 5px;
+    margin: 0 0 0 0;
+    /*background-color: blue;*/
+}
+
+.help-button-bottom-left {
+    width: 50%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0);
+}
+
+#help-button-border:hover .help-button-bottom {
+    background: #d4e79e /*linear-gradient(to bottom,#533113,rgba(67, 39, 20, 0.1))*/;
+    animation-name: nav-bar-border-right;
+    animation-duration: 0.2s;
+    animation-fill-mode: forwards;
+}
+
+#help-button-border:hover .help-button-bottom-left {
+    animation-name: nav-bar-border-left;
+    animation-duration: 0.2s;
+    animation-fill-mode: forwards;
+}

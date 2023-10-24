@@ -1,0 +1,23 @@
+#subject-page {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background-color: #997950;
+    font-family: "Google Noto Sans Bold";
+    height: 92vh;
+}
+
+#subject {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    background: #dccebc;
+    width: 60%;
+    height: 80vh;
+    margin: 50px 0 60px 0;
+}
+
+    #subject > div {
+        margin: 10px 0 0 0;
+    }

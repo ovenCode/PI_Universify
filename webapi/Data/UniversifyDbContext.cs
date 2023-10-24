@@ -83,7 +83,7 @@ public partial class UniversifyDbContext : DbContext
                 .HasColumnName("ID_ROLI");
             entity.Property(e => e.IdUżytkownika)
                 .HasColumnType("INT")
-                .HasColumnName("ID_UŻYTKOWNIKA");
+                .HasColumnName("ID_UZYTKOWNIKA");
 
             entity.HasOne(d => d.Użytkownik).WithOne(p => p.Administrator)
                 .HasForeignKey<Administrator>(d => d.IdUżytkownika)
@@ -131,9 +131,9 @@ public partial class UniversifyDbContext : DbContext
             entity.ToTable("Dania");
 
             entity.Property(e => e.IdDania).HasColumnName("ID_DANIA");
-            entity.Property(e => e.IdSkładnika).HasColumnName("ID_SKŁADNIKA");
+            entity.Property(e => e.IdSkładnika).HasColumnName("ID_SKLADNIKA");
             entity.Property(e => e.IdDiety).HasColumnName("ID_DIETY");
-            entity.Property(e => e.IlośćKalorii).HasColumnName("ILOŚĆ_KALORII");
+            entity.Property(e => e.IlośćKalorii).HasColumnName("ILOSC_KALORII");
             entity.Property(e => e.Nazwa)
                 .HasColumnType("NCHAR(50)")
                 .HasColumnName("NAZWA");
@@ -209,7 +209,7 @@ public partial class UniversifyDbContext : DbContext
 
             entity.ToTable("KierunkiStudiów");
 
-            entity.Property(e => e.IdKierunkuStudiów).HasColumnName("ID_KIERUNKU_STUDIÓW");
+            entity.Property(e => e.IdKierunkuStudiów).HasColumnName("ID_KIERUNKU_STUDIOW");
             entity.Property(e => e.NazwaKierunku)
                 .HasColumnType("NCHAR(80)")
                 .HasColumnName("Nazwa_Kierunku");
@@ -246,8 +246,8 @@ public partial class UniversifyDbContext : DbContext
 
             entity.Property(e => e.IdNauczyciela).HasColumnName("ID_NAUCZYCIELA");
             entity.Property(e => e.IdSpecjalizacji).HasColumnName("ID_SPECJALIZACJI");
-            entity.Property(e => e.IdUżytkownika).HasColumnName("ID_UŻYTKOWNIKA");
-            entity.Property(e => e.IdWydziału).HasColumnName("ID_WYDZIAŁU");
+            entity.Property(e => e.IdUżytkownika).HasColumnName("ID_UZYTKOWNIKA");
+            entity.Property(e => e.IdWydziału).HasColumnName("ID_WYDZIALU");
 
             entity.HasMany(d => d.Przedmioty).WithMany(p => p.Nauczyciele);
 
@@ -307,7 +307,7 @@ public partial class UniversifyDbContext : DbContext
             entity.Property(e => e.IdProfilu).HasColumnName("ID_PROFILU");
             entity.Property(e => e.IdUżytkownika)
                 .HasColumnType("INT")
-                .HasColumnName("ID_UŻYTKOWNIKA");
+                .HasColumnName("ID_UZYTKOWNIKA");
             entity.Property(e => e.ObrazProfilu)
                 .HasColumnType("NCHAR(60)")
                 .HasColumnName("OBRAZ_PROFILU");
@@ -316,7 +316,7 @@ public partial class UniversifyDbContext : DbContext
                 .HasColumnName("PASEK_PROFILU");
             entity.Property(e => e.GłównaZawartość)
                 .HasColumnType("NVARCHAR(1500)")
-                .HasColumnName("GŁÓWNA_ZAWARTOŚĆ");
+                .HasColumnName("GLOWNA_ZAWARTOSC");
 
             entity.HasOne(d => d.Użytkownik).WithOne(p => p.Profil)
                 .HasForeignKey<Profil>(d => d.IdUżytkownika)
@@ -367,7 +367,7 @@ public partial class UniversifyDbContext : DbContext
 
             entity.ToTable("Skladniki");
 
-            entity.Property(e => e.IdSkładnika).HasColumnName("ID_SKŁADNIKA");
+            entity.Property(e => e.IdSkładnika).HasColumnName("ID_SKLADNIKA");
             entity.Property(e => e.Nazwa)
                 .HasColumnType("NCHAR(50)")
                 .HasColumnName("NAZWA");
@@ -397,7 +397,7 @@ public partial class UniversifyDbContext : DbContext
 
             entity.Property(e => e.IdStołówki)
                 .ValueGeneratedNever()
-                .HasColumnName("ID_STOŁÓWKI");
+                .HasColumnName("ID_STOLÓWKI");
             entity.Property(e => e.IdBudynku).HasColumnName("ID_BUDYNKU");
             entity.Property(e => e.IdProduktu).HasColumnName("ID_PRODUKTU");
             entity.Property(e => e.IdZamówienia).HasColumnName("ID_ZAMÓWIENIA");
@@ -419,8 +419,9 @@ public partial class UniversifyDbContext : DbContext
             entity.Property(e => e.IdStudenta).HasColumnName("ID_STUDENTA");
             entity.Property(e => e.IdGrupyStudenckiej).HasColumnName("ID_GRUPY_STUDENCKIEJ");
             entity.Property(e => e.IdPrzedmiotu).HasColumnName("ID_PRZEDMIOTU");
-            entity.Property(e => e.IdUżytkownika).HasColumnName("ID_UŻYTKOWNIKA");
-            entity.Property(e => e.RokStudiów).HasColumnName("ROK_STUDIÓW");
+            entity.Property(e => e.IdUżytkownika).HasColumnName("ID_UZYTKOWNIKA");
+            entity.Property(e => e.IdKierunkuStudiów).HasColumnName("IdKierunkuStudiów");
+            entity.Property(e => e.RokStudiów).HasColumnName("ROK_STUDIOW");
 
             entity.HasOne(d => d.GrupaStudencka).WithMany(p => p.Studenci)
                 .HasForeignKey(d => d.IdGrupyStudenckiej)
@@ -471,7 +472,7 @@ public partial class UniversifyDbContext : DbContext
 
             entity.ToTable("Uzytkownicy");
 
-            entity.Property(e => e.IdUżytkownika).HasColumnName("ID_UŻYTKOWNIKA");
+            entity.Property(e => e.IdUżytkownika).HasColumnName("ID_UZYTKOWNIKA");
             entity.Property(e => e.Budynek)
                 .HasColumnType("NCHAR(40)")
                 .HasColumnName("BUDYNEK");
@@ -480,10 +481,10 @@ public partial class UniversifyDbContext : DbContext
                 .HasColumnName("GRUPA");
             entity.Property(e => e.Hasło)
                 .HasColumnType("NCHAR(40)")
-                .HasColumnName("HASŁO");
+                .HasColumnName("HASLO");
             entity.Property(e => e.Imię)
                 .HasColumnType("NCHAR(30)")
-                .HasColumnName("IMIĘ");
+                .HasColumnName("IMIE");
             entity.Property(e => e.Mail)
                 .HasColumnType("NCHAR(70)")
                 .HasColumnName("MAIL");
@@ -501,7 +502,7 @@ public partial class UniversifyDbContext : DbContext
 
             entity.ToTable("Wydzialy");
 
-            entity.Property(e => e.IdWydziału).HasColumnName("ID_WYDZIAŁU");
+            entity.Property(e => e.IdWydziału).HasColumnName("ID_WYDZIALU");
             entity.Property(e => e.Nazwa)
                 .HasColumnType("NCHAR(80)")
                 .HasColumnName("NAZWA");
@@ -514,10 +515,10 @@ public partial class UniversifyDbContext : DbContext
             entity.Property(e => e.IdZamówienia).HasColumnName("ID_ZAMÓWIENIA");
             entity.Property(e => e.DzieńZamówienia)
                 .HasColumnType("DATETIME")
-                .HasColumnName("DZIEŃ_ZAMÓWIENIA");
+                .HasColumnName("DZIEN_ZAMÓWIENIA");
             entity.Property(e => e.IdDania).HasColumnName("ID_DANIA");
             entity.Property(e => e.IdDiety).HasColumnName("ID_DIETY");
-            entity.Property(e => e.IdUżytkownika).HasColumnName("ID_UŻYTKOWNIKA");
+            entity.Property(e => e.IdUżytkownika).HasColumnName("ID_UZYTKOWNIKA");
             entity.Property(e => e.Nazwa)
                 .HasColumnType("NCHAR(70)")
                 .HasColumnName("NAZWA");

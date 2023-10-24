@@ -1,0 +1,122 @@
+#parking-page {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background-color: #997950;
+    font-family: "Google Noto Sans Bold";
+    min-height: 92vh;
+    height: fit-content;
+}
+
+#parking {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    background: #dccebc;
+    width: 60%;
+    height: fit-content;
+    margin: 50px 0 60px 0;
+    padding: 10px 0 20px 0;
+}
+
+#parking > div {
+    margin: 10px 0 0 0;
+}
+
+#parkings-grid {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#parkings-grid > div {
+    margin: 0 5px 0 5px;
+}
+
+.parking-recommendation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #CEBBA1;
+    min-width: 60px;
+    width: 25%;
+    padding: 5px 10px;
+}
+
+    .parking-recommendation:hover {
+        background-color: #c7b194;
+        cursor: pointer;
+    }
+
+.parking-recommendation-selected {
+    background-color: #DCCEBC;
+}
+
+
+
+.parking-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.parking-spot {
+    background-color: #C0A787;
+    width: 1.5em;
+    height: 4em;
+    margin: 0.2em 0.05em;
+}
+
+    .parking-spot:hover {
+        background-color: #B2936C;
+        cursor: pointer;
+    }
+
+.occupied {
+    background-color: #93754D;
+}
+
+.parking-spot.occupied:hover {
+    cursor: default;
+    background-color: #93754D;
+}
+
+#parking-buttons {
+    display: flex;
+    flex-direction: row;
+}
+
+#parking-reserve {
+    padding: 0.5em;
+    background-color: #533113;
+    margin: 0 1em 0 0;
+    color: #BFBCCB;
+}
+
+    #parking-reserve:hover {
+        cursor: pointer;
+        background-color: rgba(83,49,19,0.4);
+    }
+
+    #parking-reserve.disabled {
+        background-color: #211408;
+        color: #E9E8ED;
+    }
+
+    #parking-reserve.disabled:hover {
+        cursor: default;
+    }
+
+#parking-qr {
+    padding: 0.5em;
+    background-color: #533113;
+    margin: 0 0 0 1em;
+    color: #BFBCCB;
+}
+
+#parking-qr:hover {
+    cursor: pointer;
+    background-color: rgba(83,49,19,0.4);
+}

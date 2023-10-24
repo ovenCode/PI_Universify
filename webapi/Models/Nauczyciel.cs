@@ -5,6 +5,14 @@ namespace webapi.Models;
 
 public partial class Nauczyciel
 {
+    // public Nauczyciel(Nauczyciel? teacher, Specjalizacja? specjalizacja)
+    // {
+    //     IdNauczyciela = teacher?.IdNauczyciela ?? Convert.ToInt64(0);
+    //     IdUżytkownika = teacher?.IdUżytkownika ?? Convert.ToInt64(0);
+    //     IdWydziału = teacher?.IdWydziału ?? Convert.ToInt64(0);
+    //     IdSpecjalizacji = teacher?.IdSpecjalizacji ?? Convert.ToInt64(0);
+    //     Specjalizacja = specjalizacja ?? new Specjalizacja();
+    // }
     public long IdNauczyciela { get; set; }
 
     public long IdUżytkownika { get; set; }

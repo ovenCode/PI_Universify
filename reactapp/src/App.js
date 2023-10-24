@@ -46,7 +46,8 @@ export const App = () => {
             ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
             : App.renderForecastsTable(this.state.forecasts);*/
 
-        const [isVisible,setVisible] = useState("Login");
+    const [isVisible, setVisible] = useState("Login");
+    const [isUserLoggedIn, setLoggedIn] = useState(['false', '-1']);
 
     const toggleVis = (val) => {
         console.log(val);
@@ -66,12 +67,6 @@ export const App = () => {
         const profileClassName = "mainContent hidden";
         const loginClassName = "";
         //let x = 0;
-
-        const handleHeader = (data) => {
-            //
-            //this.setState({ isVisible: data });
-            //x += 1;
-        };
         
 
     return (
@@ -80,7 +75,7 @@ export const App = () => {
                         {/*<h1 id="tabelLabel" >Weather forecast</h1>
                         <p>This component demonstrates fetching data from the server.</p>*/}
             <div id="App-content">
-                {(isVisible === "Login" || isVisible === "Login ShowHelp") && <AppLogin id="login" className={loginClassName} />}
+                {(isVisible === "Login" || isVisible === "Login ShowHelp") && <AppLogin id="login" className={loginClassName} login={setLoggedIn} />}
                 {(isVisible === "Profile" || isVisible === "Profile ShowHelp") && <Profile id="profile" className={profileClassName} isVisible={isVisible} />}
                 {(isVisible === "Parking" || isVisible === "Parking ShowHelp") && <Parking className="mainContent" />}
                 {(isVisible === "Cantine" || isVisible === "Cantine ShowHelp") && <Cantine className="mainContent" />}
@@ -109,8 +104,8 @@ const ShowHelp = () => {
     </div>);
 }
 
- const populateWeatherData = async () => {
-    const response = await fetch('weatherforecast');
-    const data = await response.json();
-    this.setState({ forecasts: data, loading: false });
-}
+// const populateWeatherData = async () => {
+//     const response = await fetch('weatherforecast');
+//     const data = await response.json();
+//     this.setState({ forecasts: data, loading: false });
+// }

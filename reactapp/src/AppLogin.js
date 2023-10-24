@@ -1,14 +1,8 @@
-import React, { Component, useState } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 
 import './AppLogin.css';
 
-const AppLogin = () => {
-    const [isUserLoggedIn, setLoggedIn] = useState(false);
-
-    const loggedToggle = () => {
-        setLoggedIn((current) => !current);
-    };
+const AppLogin = ({ login }) => {
 
     const data = {
         title: "Login",
@@ -17,7 +11,7 @@ const AppLogin = () => {
     return (
         <div className="loginApp">
             <h1 id="loginTitle">{data.title}</h1>
-            <form className="loginForm" onSubmit={logIn}>
+            <form className="loginForm" method="post" onSubmit={async (event) => { event.preventDefault(); logIn({ event, login }); }}>
                 <div className="loginInput">
                     <label>Username</label>
                     <input type="text" name="username" required />
@@ -36,8 +30,20 @@ const AppLogin = () => {
     );
 }
 
-const logIn = async () => {
-    //
+async function logIn({ event, login }) {
+    const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "text/plain" },
+        body: JSON.stringify({"username": event.target.username.value.toString(), "password": event.target.password.value.toString()})
+    };
+    const response = await fetch("/api/uzytkownicy/login", requestOptions);
+    const data = await response.json();
+
+    console.log(data);
+
+    if (data) {
+        login(['true', '-1']);
+    }
 }
 
 export { AppLogin };

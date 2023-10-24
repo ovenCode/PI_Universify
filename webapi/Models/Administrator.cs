@@ -5,6 +5,14 @@ namespace webapi.Models;
 
 public partial class Administrator
 {
+    // public Administrator() { }
+    // public Administrator(Administrator? admin, Rola? rola)
+    // {
+    //     IdAdministratora = admin?.IdAdministratora ?? Convert.ToInt64(0);
+    //     IdUżytkownika = admin?.IdUżytkownika ?? Convert.ToInt64(0);
+    //     IdRoli = admin?.IdRoli ?? Convert.ToInt64(0);
+    //     Rola = rola ?? new Rola();
+    // }
     public long IdAdministratora { get; set; }
 
     public long IdUżytkownika { get; set; }

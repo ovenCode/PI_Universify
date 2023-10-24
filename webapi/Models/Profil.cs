@@ -20,6 +20,5 @@ public partial class Profil
     public string PasekProfilu { get; set; } = null!;
 
     public string GłównaZawartość { get; set; } = null!;
-
     public virtual Użytkownik Użytkownik { get; set; } = null!;
 }

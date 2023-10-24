@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
@@ -35,7 +30,7 @@ namespace webapi.Controllers
 
         // GET: api/Profile/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<Dictionary<String, dynamic>>>> GetProfil(long id)
+        public async Task<ActionResult<Dictionary<String, dynamic>>> GetProfil(long id)
         {
             if (_context.Profile == null)
             {
@@ -48,7 +43,11 @@ namespace webapi.Controllers
                 return NotFound();
             }
 
-            return await GetProfileInfo();
+            //IEnumerable<Dictionary<String, dynamic>> profileInfo = await GetProfileInfo(id);
+            //List<Dictionary<String, dynamic>> answer = profileInfo.ToList();
+            var answer = await GetProfileInfo(id);
+
+            return answer!.Value!.ElementAt(0);
         }
 
         // PUT: api/Profile/5
@@ -124,38 +123,58 @@ namespace webapi.Controllers
 
         private async Task<ActionResult<IEnumerable<Dictionary<String, dynamic>>>> GetProfileInfo(long id = -1)
         {
-
-            Dictionary<String, dynamic> profileMap = new Dictionary<string, dynamic>();
-            List<Dictionary<String, dynamic>> profileInfo = new List<Dictionary<string, dynamic>>();
-
-            List<Profil> profile = await _context.Profile.ToListAsync();
-            List<Użytkownik> użytkownicy = await _context.Użytkownicy.ToListAsync();
-            List<Student> studenci = await _context.Studenci.ToListAsync();
-
-            for (int i = 0; i < profile.Count; i++)
+            if (id != -1)
             {
-                profileMap["picture"] = profile[i].ObrazProfilu;
-                profileMap["info"] = new Dictionary<String, dynamic>()
+#pragma warning disable CS8602 // Wyłuskanie odwołania, które może mieć wartość null.
+                //var profil = await _context.Profile.Select(p => new ProfilDTO() { IdProfilu = p.IdProfilu, ObrazProfilu = p.ObrazProfilu, Użytkownik = UzytkownicyController.ItemToDTO(p.Użytkownik, p.Użytkownik.Administrator, p.Użytkownik.Administrator.Rola, p.Użytkownik.Nauczyciel, p.Użytkownik.Nauczyciel.Specjalizacja, p.Użytkownik.Student, p.Użytkownik.Student.GrupaStudencka, p.Użytkownik.Student.KierunekStudiów), }).SingleAsync(p => p.IdProfilu == id);
+                var profil = await _context.Profile
+                    .Include(p => p.Użytkownik).ThenInclude(p => p.Administrator).ThenInclude(p => p.Rola)
+                    .Include(p => p.Użytkownik).ThenInclude(p => p.Student).ThenInclude(p => p.GrupaStudencka)
+                    .Include(p => p.Użytkownik).ThenInclude(p => p.Student).ThenInclude(p => p.KierunekStudiów)
+                    .Include(p => p.Użytkownik).ThenInclude(p => p.Nauczyciel).ThenInclude(p => p.Specjalizacja).SingleOrDefaultAsync(p => p.IdProfilu == id);
+#pragma warning restore CS8602 // Wyłuskanie odwołania, które może mieć wartość null.
+                if (profil == null)
                 {
-                    {"name", użytkownicy[i].Imię},
-                    {"lastname", użytkownicy[i].Nazwisko},
-                    {"mail", użytkownicy[i].Mail},
-                    {"group", studenci[i].GrupaStudencka}, // NEEDS TO CHANGE WHEN ADDING USERS OTHER THAN STUDENTS
-                    {"curriculum", studenci[i].KierunekStudiów}
-                };
-                profileMap["sidebar"] = new Dictionary<String, dynamic>()
+                    return new List<Dictionary<String, dynamic>>();
+                }
+                Dictionary<String, dynamic> profilMap = new Dictionary<string, dynamic>();
+                List<Dictionary<String, dynamic>> answer = new List<Dictionary<string, dynamic>>();
+                profilMap["picture"] = profil.ObrazProfilu;
+                profilMap["info"] = new Dictionary<String, dynamic>()
+                    {
+                        {"name", profil.Użytkownik.Imię},
+                        {"lastname", profil.Użytkownik.Nazwisko},
+                        {"mail", profil.Użytkownik.Mail}
+                    };
+
+                if (profil.Użytkownik.Administrator != null)
                 {
-                    // DON'T KNOW YET
-                };
-                profileMap["content"] = new Dictionary<String, dynamic>()
+                    profilMap["info"].Add("group", profil.Użytkownik.Administrator.Rola != null ? profil.Użytkownik.Administrator.Rola.Nazwa : profil.Użytkownik.Administrator.IdRoli.ToString());
+                    profilMap["info"].Add("curriculum", "");
+
+                }
+                else if (profil.Użytkownik.Nauczyciel != null)
+                {
+                    profilMap["info"].Add("group", profil.Użytkownik.Nauczyciel.Specjalizacja != null ? profil.Użytkownik.Nauczyciel.Specjalizacja.Nazwa : profil.Użytkownik.Nauczyciel.IdSpecjalizacji.ToString());
+                    profilMap["info"].Add("curriculum", "");
+                }
+                else if (profil.Użytkownik.Student != null)
+                {
+                    profilMap["info"].Add("group", profil.Użytkownik.Student.GrupaStudencka.Nazwa);
+                    profilMap["info"].Add("curriculum", profil.Użytkownik.Student.KierunekStudiów.NazwaKierunku);
+                }
+                profilMap["sidebar"] = new Dictionary<String, dynamic>() {
+                    {"info", ""}
+                 };
+                profilMap["content"] = new Dictionary<String, dynamic>()
                 {
                     // DON'T KNOW YET
                     {"calendar",new Dictionary<String, dynamic>()
                     {
-                        {"name",""},
-                        {"currentMonth", DateTime.Now.Month},
+                        {"name","Some calendar"},
+                        {"currentMonth", DateTimeFormatInfo.CurrentInfo.GetMonthName(DateTime.Now.Month)},
                         {
-                            "months", Enumerable.Range(1, DateTimeFormatInfo.CurrentInfo.MonthNames.Length)
+                            "months", Enumerable.Range(1, 12)
                             .Select(month => new Dictionary<string, dynamic>()
                             {
                                 { "name", DateTimeFormatInfo.CurrentInfo.GetMonthName(month) },
@@ -165,18 +184,83 @@ namespace webapi.Controllers
                                 }
                             }).ToList()
                         }
-                    }}
+                    }},
+                    {"upcoming", new List<String>() {""}},
+                    {"feed", new List<String>() {""}}
+                };
+                answer.Add(new Dictionary<string, dynamic>(profilMap));
+
+                return answer;
+            }
+            else
+            {
+
+                Dictionary<String, dynamic> profileMap = new Dictionary<string, dynamic>();
+                List<Dictionary<String, dynamic>> profileInfo = new List<Dictionary<string, dynamic>>();
+
+#pragma warning disable CS8602 // Wyłuskanie odwołania, które może mieć wartość null.
+                var profile = await _context.Profile.Select(p => new { p.ObrazProfilu, p.Użytkownik, p.Użytkownik.Administrator, p.Użytkownik.Administrator.Rola, p.Użytkownik.Nauczyciel, p.Użytkownik.Nauczyciel.Specjalizacja, p.Użytkownik.Student, p.Użytkownik.Student.GrupaStudencka, p.Użytkownik.Student.KierunekStudiów }).ToListAsync();
+#pragma warning restore CS8602 // Wyłuskanie odwołania, które może mieć wartość null.
+
+                //List<Użytkownik> użytkownicy = await _context.Użytkownicy.ToListAsync();
+                //List<Student> studenci = await _context.Studenci.ToListAsync();
+                List<Nauczyciel> nauczyciele = await _context.Nauczyciele.ToListAsync();
+                List<Administrator> administratorzy = await _context.Administratorzy.ToListAsync();
+
+                for (int i = 0; i < profile.Count; i++)
+                {
+                    profileMap["picture"] = profile[i].ObrazProfilu;
+                    profileMap["info"] = new Dictionary<String, dynamic>()
+                {
+                    {"name", profile[i].Użytkownik.Imię},
+                    {"lastname", profile[i].Użytkownik.Nazwisko},
+                    {"mail", profile[i].Użytkownik.Mail},
+                    {"group", profile[i].Użytkownik.Student != null ? profile[i]!.Użytkownik!.Student!.GrupaStudencka.Nazwa : (profile[i].Użytkownik.Nauczyciel != null ? profile[i]!.Użytkownik!.Nauczyciel!.Specjalizacja : profile[i]!.Użytkownik!.Administrator!.Rola.Nazwa) }, //studenci.Where(s => s.IdUżytkownika == i + 1).IsNullOrEmpty() ? (nauczyciele.Where(n => n.IdUżytkownika == i + 1).IsNullOrEmpty() ? administratorzy.Where(n => n.IdUżytkownika == i + 1).First().IdRoli : nauczyciele.Where(n => n.IdUżytkownika == i + 1).First().IdSpecjalizacji ) : studenci[i].GrupaStudencka },
+                    {"curriculum", profile[i].Użytkownik.Student != null ? profile[i]!.Użytkownik!.Student!.KierunekStudiów.NazwaKierunku : ""}//studenci.Where(s => s.IdUżytkownika == i + 1).IsNullOrEmpty() ? "" : studenci[i].KierunekStudiów }
+                };
+                    profileMap["sidebar"] = new Dictionary<String, dynamic>()
+                    {
+                        // DON'T KNOW YET
+                        {"info", ""}
+                    };
+                    profileMap["content"] = new Dictionary<String, dynamic>()
+                {
+                    // DON'T KNOW YET
+                    {"calendar",new Dictionary<String, dynamic>()
+                    {
+                        {"name",""},
+                        {"currentMonth", DateTime.Now.Month},
+                        {
+                            "months", Enumerable.Range(1, 12)
+                            .Select(month => new Dictionary<string, dynamic>()
+                            {
+                                { "name", DateTimeFormatInfo.CurrentInfo.GetMonthName(month) },
+                                { "days", Enumerable.Range(1, DateTime.DaysInMonth(DateTime.Now.Year, month))
+                                    .Select(day => new Dictionary<string, dynamic>() { { "number", day } })
+                                    .ToList()
+                                }
+                            }).ToList()
+                        }
+                    }},
+                    {"upcoming", new List<String>() { "" }},
+                    {"feed", new List<String>() { "" }}
                 };
 
-                profileInfo.Add(profileMap);
-            }
+                    profileInfo.Add(new Dictionary<string, dynamic>(profileMap));
+                }
 
-            if (id != -1)
-            {
-                profileInfo = new List<Dictionary<String, dynamic>>() { profileInfo[Convert.ToInt32(id)] };
+                return profileInfo;
             }
-
-            return profileInfo;
         }
+
+        private static ProfilDTO ItemToDTO(Profil profil) => new ProfilDTO
+        {
+            IdProfilu = profil.IdProfilu,
+            IdUżytkownika = profil.IdUżytkownika,
+            ObrazProfilu = profil.ObrazProfilu,
+            PasekProfilu = profil.PasekProfilu,
+            GłównaZawartość = profil.GłównaZawartość,
+            Użytkownik = UzytkownicyController.ItemToDTO(profil.Użytkownik)
+        };
     }
 }

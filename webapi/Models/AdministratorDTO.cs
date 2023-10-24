@@ -9,5 +9,7 @@
         public long IdRoli { get; set; }
 
         public virtual Użytkownik Użytkownik { get; set; } = null!;
+
+        public virtual Rola Rola { get; set; } = null!;
     }
 }

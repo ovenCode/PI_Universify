@@ -1,14 +1,8 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 
 import "./header.css"
 
 export default function Header(props) {
-    const [profileVisibility, setVisibility] = useState(true);
-
-    const toggleVisibility = () => {
-        setVisibility(!profileVisibility);
-    };
 
     return (
         <div id="header-background">
