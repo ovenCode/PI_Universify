@@ -16,7 +16,8 @@ const Profile = (props) => {
         return () => {
             ignore = true;
         }
-    }, [id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div id="profile-page">
@@ -88,6 +89,9 @@ const RenderProfileContent = ({ content }) => {
     const [selectedDay, setDay] = useState('0');
     const calEvent = useRef(null);
 
+    /**
+     * Setting events
+     */
     useEffect(() => {
         let ignore = false;
         let temp = [];
@@ -97,13 +101,14 @@ const RenderProfileContent = ({ content }) => {
         }
 
         if (calEvent.current !== null && calEvent.current.children.length === upcomingEvents.length) {
-            calEvent.current.children[upcomingEvents.findIndex(event => event.date === `${new Date(Date.now()).getDate()}/${new Date(Date.now()).getMonth() + 1}`) !== -1 ? upcomingEvents.findIndex(event => event.date === `${new Date(Date.now()).getDate()}/${new Date(Date.now()).getMonth() + 1}`) + 1 : 0].scrollIntoView(false);
+            //calEvent.current.children[upcomingEvents.findIndex(event => event.date === `${new Date(Date.now()).getDate()}/${new Date(Date.now()).getMonth() + 1}`) !== -1 ? upcomingEvents.findIndex(event => event.date === `${new Date(Date.now()).getDate()}/${new Date(Date.now()).getMonth() + 1}`) + 1 : 0].scrollIntoView(false);
         }
 
         return () => {
             ignore = true;
         };
-    }, [content.calendar]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); // content.calendar, upcomingEvents
 
     /*useEffect(() => {
         if (calEvent.current != null) {
@@ -115,9 +120,9 @@ const RenderProfileContent = ({ content }) => {
 
     useEffect(() => {
         if (calEvent.current !== null && selectedDay !== 0) {
-            calEvent.current.children[upcomingEvents.findIndex(event => event.date === selectedDay) !== -1 ? upcomingEvents.findIndex(event => event.date === selectedDay) + 1 : 0].scrollIntoView(false);
+            //calEvent.current.children[upcomingEvents.findIndex(event => event.date === selectedDay) !== -1 ? upcomingEvents.findIndex(event => event.date === selectedDay) + 1 : 0].scrollIntoView(false);
         }
-    },[selectedDay]);
+    },[selectedDay, upcomingEvents]);
 
     const ProfileContent = (<div>
         <div id="profile-calendar"><Calendar calendar={content.calendar} handleDay={setDay} /></div>
@@ -144,7 +149,7 @@ const Calendar = ({ calendar, handleDay }) => {
 
     return (<div className="calendar">
         <div id="calendar-name">{calendar.name}</div>
-        <div id="calendar-month"><div className="button" onClick={() => setMonth(calendar.months[calendar.months.findIndex(month => month.name == monthShown.name) - 1])}>{'<|'}</div>{monthShown.name}<div className="button" onClick={() => setMonth(calendar.months[calendar.months.findIndex(month => month.name == monthShown.name) + 1])}>{'|>'}</div></div>
+        <div id="calendar-month"><div className="button" onClick={() => setMonth(calendar.months[calendar.months.findIndex(month => month.name === monthShown.name) - 1])}>{'<|'}</div>{monthShown.name}<div className="button" onClick={() => setMonth(calendar.months[calendar.months.findIndex(month => month.name === monthShown.name) + 1])}>{'|>'}</div></div>
         <div id="calendar-days">{monthShown.days.map((day, id) => <div key={id} style={{
             gridRow: (day.number / 7) % 5 === 0 ? (day.number / 7) % 5 + 1 : (day.number / 7) % 5,
             gridColumn: day.number % 7 === 0 ? 7 : day.number % 7

@@ -24,11 +24,24 @@
     margin: 10px 0 0 0;
 }
 
+#parking-content > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#parking-content > div > img {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
 #parkings-grid {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+    overflow-x: auto;
 }
 
 #parkings-grid > div {
@@ -42,7 +55,6 @@
     flex-direction: column;
     background-color: #CEBBA1;
     min-width: 60px;
-    width: 25%;
     padding: 5px 10px;
 }
 
@@ -68,14 +80,26 @@
         cursor: pointer;
     }
 
-.occupied {
+.parking-spot-occupied {
+    width: 1.5em;
+    height: 4em;
+    margin: 0.2em 0.05em;
     background-color: #785f3f;
 }
 
-.parking-spot.occupied:hover {
+.spot-reserved {
+    background-color: #fff;
+}
+
+    .spot-reserved:hover {
+        cursor: default;
+        background-color: #fff;
+    }
+
+/* .parking-spot-occupied:hover {
     cursor: default;
     background-color: #93754D;
-}
+} */
 
 .selected {
     background-color: #a07e54;
@@ -84,6 +108,7 @@
 #parking-buttons {
     display: flex;
     flex-direction: row;
+    margin-top: .4em;
 }
 
 #parking-reserve {
@@ -107,6 +132,10 @@
         cursor: default;
     }
 
+#parking-qr-image {
+    width: 10vw;
+    height: 10vw;
+}
 #parking-qr {
     padding: 0.5em;
     background-color: #533113;
@@ -114,7 +143,7 @@
     color: #BFBCCB;
 }
 
-#parking-qr:hover {
-    cursor: pointer;
-    background-color: rgba(83,49,19,0.4);
-}
+    #parking-qr:hover {
+        cursor: pointer;
+        background-color: rgba(83,49,19,0.4);
+    }

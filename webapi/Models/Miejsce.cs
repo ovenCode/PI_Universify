@@ -9,7 +9,7 @@ public partial class Miejsce
 
     public long IdParkingu { get; set; }
 
-    public byte[] Dostępność { get; set; } = null!;
+    public bool? Dostępność { get; set; }
 
     public long IdTypu { get; set; }
 

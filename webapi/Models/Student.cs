@@ -20,8 +20,6 @@ public partial class Student
 
     public long IdUżytkownika { get; set; }
 
-    public long IdPrzedmiotu { get; set; }
-
     public long IdGrupyStudenckiej { get; set; }
 
     public long IdKierunkuStudiów { get; set; }

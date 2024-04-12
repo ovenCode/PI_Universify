@@ -29,7 +29,10 @@ namespace webapi.Controllers
           {
               return NotFound();
           }
-            return await _context.Dania.ToListAsync();
+            return await _context.Dania
+                .Include(d => d.Składniki)
+                .Include(d => d.Dieta).ThenInclude(di => di.Alergeny)
+                .ToListAsync();
         }
 
         // GET: api/Dania/5
@@ -40,7 +43,10 @@ namespace webapi.Controllers
           {
               return NotFound();
           }
-            var danie = await _context.Dania.FindAsync(id);
+            var danie = await _context.Dania
+                .Include(d => d.Składniki)
+                .Include(d => d.Dieta).ThenInclude(di => di.Alergeny)
+                .SingleOrDefaultAsync(d => d.IdDania == id);
 
             if (danie == null)
             {

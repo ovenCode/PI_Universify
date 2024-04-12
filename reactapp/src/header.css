@@ -49,9 +49,23 @@
 }
 
 @-moz-keyframes nav-bar-border {
+    from {
+        width: 0px;
+    }
+
+    to {
+        width: 100px;
+    }
 }
 
 @-webkit-keyframes nav-bar-border {
+    from {
+        width: 0px;
+    }
+
+    to {
+        width: 100px;
+    }
 }
 
 @keyframes nav-bar-border-left {

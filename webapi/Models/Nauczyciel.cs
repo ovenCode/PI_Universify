@@ -21,6 +21,8 @@ public partial class Nauczyciel
 
     public long IdSpecjalizacji { get; set; }
 
+    public long IdPrzedmiotu { get; set; }
+                                             
     public virtual ICollection<Przedmiot> Przedmioty { get; set; } = new List<Przedmiot>();
 
     public virtual ICollection<Grupa> Grupy { get; set; } = new List<Grupa>();

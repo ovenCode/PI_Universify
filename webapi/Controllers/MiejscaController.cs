@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
 using webapi.Models;
+using webapi.Models.DTOs;
 
 namespace webapi.Controllers
 {
@@ -15,6 +17,8 @@ namespace webapi.Controllers
     public class MiejscaController : ControllerBase
     {
         private readonly UniversifyDbContext _context;
+        private readonly Expression<Func<Miejsce, MiejsceDTO>> AsMiejsceDTO =
+            m => new MiejsceDTO(m);
 
         public MiejscaController(UniversifyDbContext context)
         {
@@ -23,13 +27,15 @@ namespace webapi.Controllers
 
         // GET: api/Miejsca
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Miejsce>>> GetMiejsca()
+        public async Task<ActionResult<IEnumerable<MiejsceDTO>>> GetMiejsca()
         {
           if (_context.Miejsca == null)
           {
               return NotFound();
           }
-            return await _context.Miejsca.ToListAsync();
+            return await _context.Miejsca
+                .Include(m => m.Typ)
+                .Include(m => m.Parking).Select(AsMiejsceDTO).ToListAsync();
         }
 
         // GET: api/Miejsca/5
@@ -40,7 +46,9 @@ namespace webapi.Controllers
           {
               return NotFound();
           }
-            var miejsce = await _context.Miejsca.FindAsync(id);
+            var miejsce = await _context.Miejsca
+                .Include(m => m.Typ)
+                .Include(m => m.Parking).Where(m => m.IdMiejsca == id).SingleAsync();
 
             if (miejsce == null)
             {

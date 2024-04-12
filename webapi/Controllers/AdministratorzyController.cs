@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using System.Text.Json.Nodes;
 using webapi.Data;
 using webapi.Models;
+using webapi.Models.DTOs;
 
 namespace webapi.Controllers
 {
@@ -10,6 +13,9 @@ namespace webapi.Controllers
     public class AdministratorzyController : ControllerBase
     {
         private readonly UniversifyDbContext _context;
+
+        private readonly Expression<Func<Administrator, AdministratorDTO>> AsAdministratorDTO =
+            admin => new AdministratorDTO(admin);
 
         public AdministratorzyController(UniversifyDbContext context)
         {
@@ -24,7 +30,7 @@ namespace webapi.Controllers
           {
               return NotFound();
           }
-            return await _context.Administratorzy.Select(x => ItemToDTO(x)).ToListAsync();
+            return await _context.Administratorzy.Select(AsAdministratorDTO).ToListAsync();
         }
 
         // GET: api/Administratorzy/5
@@ -35,14 +41,14 @@ namespace webapi.Controllers
           {
               return NotFound();
           }
-            var administrator = await _context.Administratorzy.FindAsync(id);
+            var administrator = await _context.Administratorzy.Where(admin => admin.IdAdministratora == id).Select(AsAdministratorDTO).SingleAsync();
 
             if (administrator == null)
             {
                 return NotFound();
             }
 
-            return ItemToDTO(administrator);
+            return administrator;
         }
 
         // PUT: api/Administratorzy/5
@@ -50,19 +56,19 @@ namespace webapi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAdministrator(long id, AdministratorDTO administrator)
         {
-            if (id != administrator.IdAdministratora)
+            if (await _context.Administratorzy.FindAsync(id) == null)
             {
                 return BadRequest();
             }
 
-            Administrator? admin = await _context.Administratorzy.FindAsync(id);
+/*            Administrator? admin = await _context.Administratorzy.FindAsync(id);
             if(admin == null)
             {
                 return NotFound();
             }
 
             admin.IdUżytkownika = administrator.IdUżytkownika;
-            admin.IdRoli = administrator.IdRoli;
+            admin.IdRoli = administrator.IdRoli;*/
 
             _context.Entry(administrator).State = EntityState.Modified;
 
@@ -88,23 +94,18 @@ namespace webapi.Controllers
         // POST: api/Administratorzy
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<AdministratorDTO>> PostAdministrator(AdministratorDTO administrator)
+        public async Task<ActionResult<AdministratorDTO>> PostAdministrator(Administrator administrator)
         {
           if (_context.Administratorzy == null)
           {
               return Problem("Entity set 'UniversifyDbContext.Administratorzy'  is null.");
           }
 
-            Administrator admin = new Administrator
-            {
-                IdAdministratora = administrator.IdAdministratora,
-                IdUżytkownika = administrator.IdUżytkownika,
-                IdRoli = administrator.IdRoli
-            };
-            _context.Administratorzy.Add(admin);
+            
+            _context.Administratorzy.Add(administrator);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetAdministrator), new { id = admin.IdAdministratora }, ItemToDTO(admin));
+            return CreatedAtAction(nameof(GetAdministrator), new { id = administrator.IdAdministratora }, administrator);
         }
 
         // DELETE: api/Administratorzy/5
@@ -132,11 +133,11 @@ namespace webapi.Controllers
             return (_context.Administratorzy?.Any(e => e.IdAdministratora == id)).GetValueOrDefault();
         }
 
-        private static AdministratorDTO ItemToDTO(Administrator admin) => new AdministratorDTO
+        /*private static AdministratorDTO ItemToDTO(Administrator admin) => new AdministratorDTO
        {
            IdAdministratora = admin.IdAdministratora,
            IdUżytkownika = admin.IdUżytkownika,
            IdRoli = admin.IdRoli
-       };
+       };*/
     }
 }

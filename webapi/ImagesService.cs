@@ -9,15 +9,19 @@
 
         public string FileName => _fileName ?? "";
 
-        public IEnumerable<String> FilesArray => _files ?? Enumerable.Empty<String>();
+        public IEnumerable<String> FilesArray { get; }
 
         public ImagesService()
         {
             _files = new List<String>();
+            List<String> temp = new List<String>();
+            
             foreach (string file in Directory.GetFiles(".\\Assets\\Images"))
             {
-                _files.Append(file);
+                temp.Add(file);
             }
+            _files = temp;
+            FilesArray = _files;
         }
 
         public Stream GetFile(string name)

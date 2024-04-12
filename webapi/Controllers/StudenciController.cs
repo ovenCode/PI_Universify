@@ -29,7 +29,11 @@ namespace webapi.Controllers
           {
               return NotFound();
           }
-            return await _context.Studenci.ToListAsync();
+            return await _context.Studenci
+                .Include(s => s.Przedmioty)
+                .Include(s => s.Grupy)
+                .Include(s => s.KierunekStudiów)
+                .ToListAsync();
         }
 
         // GET: api/Studenci/5

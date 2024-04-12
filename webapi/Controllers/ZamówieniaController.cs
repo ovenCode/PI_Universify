@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol;
 using webapi.Data;
 using webapi.Models;
 
@@ -29,7 +30,11 @@ namespace webapi.Controllers
           {
               return NotFound();
           }
-            return await _context.Zamówienia.ToListAsync();
+            return await _context.Zamówienia
+                .Include(z => z.Dieta).ThenInclude(d => d.Alergeny)
+                .Include(z => z.Danie).ThenInclude(d => d.Składniki)
+                .Include(z => z.Stołówka)
+                .ToListAsync();
         }
 
         // GET: api/Zamówienia/5
@@ -40,7 +45,11 @@ namespace webapi.Controllers
           {
               return NotFound();
           }
-            var zamówienie = await _context.Zamówienia.FindAsync(id);
+            var zamówienie = await _context.Zamówienia
+                .Include(z => z.Dieta).ThenInclude(d => d.Alergeny)
+                .Include(z => z.Danie).ThenInclude(d => d.Składniki)
+                .Include(z => z.Stołówka)
+                .SingleOrDefaultAsync(s => s.IdZamówienia == id);
 
             if (zamówienie == null)
             {
@@ -90,6 +99,10 @@ namespace webapi.Controllers
           {
               return Problem("Entity set 'UniversifyDbContext.Zamówienia'  is null.");
           }
+            zamówienie.Danie = _context.Dania.Where(d => d.IdDania == zamówienie.IdDania).First();
+            zamówienie.Dieta = _context.Diety.Where(d => d.IdDiety == zamówienie.IdDiety).First();
+            zamówienie.Stołówka = _context.Stołówki.Where(s => s.IdStołówki == zamówienie.IdStołówki).First();
+            zamówienie.Użytkownik = _context.Użytkownicy.Where(u => u.IdUżytkownika == zamówienie.IdUżytkownika).First();
             _context.Zamówienia.Add(zamówienie);
             await _context.SaveChangesAsync();
 

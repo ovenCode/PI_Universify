@@ -2,3 +2,4 @@ H:\GitHub\PI_Universify\reactapp\obj\Debug\reactapp.esproj.SuggestedBindingRedir
 H:\GitHub\PI_Universify\reactapp\obj\Debug\reactapp.esproj.CoreCompileInputs.cache
 C:\Users\Admin\source\repos\PI_Universify\reactapp\obj\Debug\reactapp.esproj.SuggestedBindingRedirects.cache
 C:\Users\Admin\source\repos\PI_Universify\reactapp\obj\Debug\reactapp.esproj.CoreCompileInputs.cache
+D:\dev\PI_Universify\reactapp\obj\Debug\reactapp.esproj.CoreCompileInputs.cache

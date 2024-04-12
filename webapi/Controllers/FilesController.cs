@@ -13,20 +13,21 @@ namespace webapi.Controllers
         private readonly IFileService _service;
         private string MimeType { get; set; }
         private string FileName { get; set; }
+
         public FilesController(IFileService service)
         {
             _service = service;
             MimeType = "";
             FileName = "";
         } 
-        // GET: api/<ImagesController>
+        // GET: api/Files
         [HttpGet]
-        public IEnumerable<string> Get()
+        public Task<IEnumerable<string>> Get()
         {
-            return _service.FilesArray;
+            return Task.FromResult(_service.FilesArray);
         }
 
-        // GET api/<ImagesController>/5
+        // GET api/Files/5
         [HttpGet("{id}")]
         public IActionResult GetFile(string id)
         {

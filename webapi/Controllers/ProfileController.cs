@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
 using webapi.Models;
+using webapi.Models.DTOs;
 
 namespace webapi.Controllers
 {
@@ -38,7 +39,7 @@ namespace webapi.Controllers
             {
                 return NotFound();
             }
-            var profil = await _context.Profile.FindAsync(id);
+            var profil = await GetProfileInfo(id);
 
             if (profil == null)
             {
@@ -255,7 +256,7 @@ namespace webapi.Controllers
             }
         }
 
-        private static ProfilDTO ItemToDTO(Profil profil) => new ProfilDTO
+        /*private static ProfilDTO ItemToDTO(Profil profil) => new ProfilDTO
         {
             IdProfilu = profil.IdProfilu,
             IdUżytkownika = profil.IdUżytkownika,
@@ -263,6 +264,6 @@ namespace webapi.Controllers
             PasekProfilu = profil.PasekProfilu,
             GłównaZawartość = profil.GłównaZawartość,
             Użytkownik = UzytkownicyController.ItemToDTO(profil.Użytkownik)
-        };
+        };*/
     }
 }

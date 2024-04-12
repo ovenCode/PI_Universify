@@ -34,6 +34,8 @@ public partial class UniversifyDbContext : DbContext
 
     public virtual DbSet<KierunekStudiów> KierunekiStudiów { get; set; } = null!;
 
+    public virtual DbSet<KodParkingu> KodyParkingu { get; set; } = null!;
+
     public virtual DbSet<Miejsce> Miejsca { get; set; } = null!;
 
     public virtual DbSet<Nauczyciel> Nauczyciele { get; set; } = null!;
@@ -47,6 +49,8 @@ public partial class UniversifyDbContext : DbContext
     public virtual DbSet<Przedmiot> Przedmioty { get; set; } = null!;
 
     public virtual DbSet<Rola> Role { get; set; } = null!;
+
+    public virtual DbSet<RozkładParkingu> RozkladParkingu { get; set; } = null!;
 
     public virtual DbSet<Składnik> Składniki { get; set; } = null!;
 
@@ -215,6 +219,26 @@ public partial class UniversifyDbContext : DbContext
                 .HasColumnName("Nazwa_Kierunku");
         });
 
+        modelBuilder.Entity<KodParkingu>(entity =>
+        {
+            entity.HasKey(e => e.IdKodu);
+
+            entity.ToTable("KodyParkingu");
+
+            entity.Property(e => e.IdKodu).HasColumnName("ID_KODU").IsRequired();
+            entity.Property(e => e.IdParkingu).HasColumnName("ID_PARKINGU").IsRequired();
+            entity.Property(e => e.IdMiejsca).HasColumnName("ID_MIEJSCA").IsRequired();
+            entity.Property(e => e.Kod)
+            .HasColumnType("BLOB")
+            .HasColumnName("KOD")
+            .IsRequired();
+
+            entity.HasOne(e => e.RozkładParkingu).WithMany(r => r.KodyParkingu).HasForeignKey(e => e.IdMiejsca)
+            .OnDelete(DeleteBehavior.ClientCascade).IsRequired();
+            entity.HasOne(e => e.Parking).WithMany(p => p.KodyParkingu).HasForeignKey(e => e.IdParkingu)
+            .OnDelete(DeleteBehavior.ClientCascade).IsRequired();
+        });
+
         modelBuilder.Entity<Miejsce>(entity =>
         {
             entity.HasKey(e => e.IdMiejsca);
@@ -223,8 +247,8 @@ public partial class UniversifyDbContext : DbContext
 
             entity.Property(e => e.IdMiejsca).HasColumnName("ID_MIEJSCA");
             entity.Property(e => e.Dostępność)
-                .HasColumnType("BOOLEAN")
-                .HasColumnName("DOSTĘPNOŚĆ");
+                .HasColumnType("INTEGER")
+                .HasColumnName("DOSTEPNOSC");
             entity.Property(e => e.IdTypu)
                 .HasColumnType("INT")
                 .HasColumnName("ID_TYPU");
@@ -248,6 +272,7 @@ public partial class UniversifyDbContext : DbContext
             entity.Property(e => e.IdSpecjalizacji).HasColumnName("ID_SPECJALIZACJI");
             entity.Property(e => e.IdUżytkownika).HasColumnName("ID_UZYTKOWNIKA");
             entity.Property(e => e.IdWydziału).HasColumnName("ID_WYDZIALU");
+            entity.Property(e => e.IdPrzedmiotu).HasColumnName("ID_PRZEDMIOTU");
 
             entity.HasMany(d => d.Przedmioty).WithMany(p => p.Nauczyciele);
 
@@ -276,6 +301,17 @@ public partial class UniversifyDbContext : DbContext
             entity.Property(e => e.Adres)
                 .HasColumnType("NCHAR(60)")
                 .HasColumnName("ADRES");
+            entity.Property(e => e.LiczbaRzedow)
+                .HasColumnType("INTEGER").HasColumnName("LICZBA_RZEDOW");
+
+            entity.HasMany(e => e.Miejsca).WithOne(m => m.Parking)
+            .HasForeignKey(e => e.IdMiejsca);
+
+            entity.HasMany(e => e.RozkładParkingu).WithOne(r => r.Parking).HasForeignKey(r => r.IdParkingu)
+            .OnDelete(DeleteBehavior.Cascade);
+            entity.HasMany(e => e.KodyParkingu).WithOne(k => k.Parking).HasForeignKey(k => k.IdParkingu)
+            .OnDelete(DeleteBehavior.Cascade);
+            
         });
 
         modelBuilder.Entity<Produkt>(entity =>
@@ -332,7 +368,7 @@ public partial class UniversifyDbContext : DbContext
             entity.Property(e => e.IdPrzedmiotu).HasColumnName("ID_PRZEDMIOTU");
             entity.Property(e => e.IlośćSemestrów)
                 .HasColumnType("INT")
-                .HasColumnName("ILOŚĆ_SEMESTRÓW");
+                .HasColumnName("ILOSC_SEMESTROW");
             entity.Property(e => e.Kategoria)
                 .HasColumnType("NCHAR(60)")
                 .HasColumnName("KATEGORIA");
@@ -341,7 +377,7 @@ public partial class UniversifyDbContext : DbContext
                 .HasColumnName("NAZWA");
             entity.Property(e => e.SemestrRozpoczęcia)
                 .HasColumnType("INT")
-                .HasColumnName("SEMESTR_ROZPOCZĘCIA");
+                .HasColumnName("SEMESTR_ROZPOCZECIA");
 
             entity.HasMany(d => d.Nauczyciele).WithMany(p => p.Przedmioty);
 
@@ -359,6 +395,23 @@ public partial class UniversifyDbContext : DbContext
             entity.Property(e => e.Nazwa)
                 .HasColumnType("NCHAR(50)")
                 .HasColumnName("NAZWA");
+        });
+
+        modelBuilder.Entity<RozkładParkingu>(entity =>
+        {
+            entity.ToTable("RozkladParkingu");
+
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.IdParkingu).HasColumnType("INTEGER")
+            .HasColumnName("ID_PARKINGU");
+            entity.Property(e => e.StanMiejsca).HasColumnType("INTEGER")
+            .HasColumnName("STAN_MIEJSCA");
+
+            entity.HasOne(e => e.Parking).WithMany(p => p.RozkładParkingu).HasForeignKey(e => e.IdParkingu);
+            entity.HasMany(e => e.KodyParkingu).WithOne(k => k.RozkładParkingu)
+            .HasForeignKey(e => e.IdMiejsca).OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<Składnik>(entity =>
@@ -418,9 +471,8 @@ public partial class UniversifyDbContext : DbContext
 
             entity.Property(e => e.IdStudenta).HasColumnName("ID_STUDENTA");
             entity.Property(e => e.IdGrupyStudenckiej).HasColumnName("ID_GRUPY_STUDENCKIEJ");
-            entity.Property(e => e.IdPrzedmiotu).HasColumnName("ID_PRZEDMIOTU");
             entity.Property(e => e.IdUżytkownika).HasColumnName("ID_UZYTKOWNIKA");
-            entity.Property(e => e.IdKierunkuStudiów).HasColumnName("IdKierunkuStudiów");
+            entity.Property(e => e.IdKierunkuStudiów).HasColumnName("ID_KIERUNKU_STUDIOW");
             entity.Property(e => e.RokStudiów).HasColumnName("ROK_STUDIOW");
 
             entity.HasOne(d => d.GrupaStudencka).WithMany(p => p.Studenci)

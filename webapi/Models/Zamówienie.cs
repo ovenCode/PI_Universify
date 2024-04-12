@@ -19,11 +19,11 @@ public partial class Zamówienie
 
     public string DzieńZamówienia { get; set; } = null!;
 
-    public virtual Danie Danie { get; set; } = null!;
+    public virtual Danie? Danie { get; set; }
 
-    public virtual Dieta Dieta { get; set; } = null!;
+    public virtual Dieta? Dieta { get; set; }
 
-    public virtual Użytkownik Użytkownik { get; set; } = null!;
+    public virtual Użytkownik? Użytkownik { get; set; }
 
-    public virtual Stołówka Stołówka { get; set; } = null!;
+    public virtual Stołówka? Stołówka { get; set; }
 }
