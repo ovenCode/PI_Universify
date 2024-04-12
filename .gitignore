@@ -18,6 +18,10 @@
 # production
 /build
 
+# debug
+/reactapp/obj/debug
+/webapi/obj/
+
 # misc
 .DS_Store
 .env.local
