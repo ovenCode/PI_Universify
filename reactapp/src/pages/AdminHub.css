@@ -1,0 +1,218 @@
+#admin-hub {
+    flex-direction: column;
+    padding: .3em;
+}
+
+#admin {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+
+#admin-sidebar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #9e6734af;
+    width: 24%;
+    height: 80vh;
+    padding: .5em;
+}
+
+.list-btn {
+    margin-left: 1rem;
+}
+
+#admin-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-start;
+    flex-direction: column;
+    width: 70%;
+    margin-inline: .5em;
+}
+
+#user-admin {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    /* margin-inline: .5em; */
+}
+
+#user-list {
+    width: 100%;
+    overflow-x: auto;
+}
+
+#user-table {
+    background-color: black;
+    font-size: .7em;
+    margin: .4em;
+    /* table-layout: fixed;
+    width: 100%; */
+}
+
+#list-headers {
+    padding: .4em;
+    background-color: #fff;
+}
+
+.list-rows {
+    background-color: #dfdfdf;
+    height: 2em;
+}
+
+/* #list-headers>th,
+.list-rows>td {
+    word-wrap: break-word;
+} */
+
+.list-cell {
+    padding: 0.1em;
+}
+
+.clicked {
+    background-color: #dfc779;
+}
+
+.list-pass {
+    display: flex;
+    justify-content: space-between;
+}
+
+.list-pass-btn {
+    display: inline;
+    align-self: flex-end;
+    padding: .2em;
+    background-color: #533113;
+    margin: 0 .1em 0 .5em;
+}
+
+.list-pass-btn:hover {
+    cursor: pointer;
+    opacity: .7;
+}
+
+#user-controls {
+    display: flex;
+    align-self: flex-start;
+}
+
+#add-user-dialog {
+    top: 20vh;
+}
+
+.dialog-form {
+    margin: .6em;
+}
+
+#form-content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.form-input>label {
+    display: flex;
+}
+
+.form-input>select {
+    width: 150px;
+    height: 25px;
+    font-style: 1em;
+}
+
+.form-part {
+    margin-inline: .3em;
+}
+
+.searchbox {
+    font-size: .8em;
+    width: 150px;
+}
+
+.searchbox>input {
+    width: 150px;
+    height: 27px;
+}
+
+.searchbox>div {
+    word-wrap: break-word;
+}
+
+.searchbox-el {
+    background-color: #fff;
+}
+
+.searchbox-el:hover {
+    cursor: pointer;
+    opacity: .7;
+}
+
+#student-part {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+/* LAST COMPONENT */
+
+#other-admin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#other-roles {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+#roles-list {
+    border: 1.5px solid #b4b4b4;
+    background-color: #fff;
+}
+
+#roles-list>div {
+    padding-inline: 1.5em;
+}
+
+#roles-list>div:hover {
+    cursor: pointer;
+    opacity: .7;
+    background-color: #a7d6ff;
+}
+
+.item-list-selected {
+    background-color: #71b5f1;
+}
+
+#roles-btns {
+    margin-left: .4em;
+    font-size: .9em;
+}
+
+#roles-btns>div {
+    padding: .3em;
+    border-radius: 4px;
+}
+
+.role-dialog {
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.permissions-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: auto;
+    padding: .4em;
+}

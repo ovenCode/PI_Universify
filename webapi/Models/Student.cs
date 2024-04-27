@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace webapi.Models;
 
-public partial class Student
+public class Student : Użytkownik
 {
     // public Student(Student? student, GrupaStudencka? grupaStudencka, KierunekStudiów? kierunekStudiów)
     // {
@@ -16,23 +16,23 @@ public partial class Student
     //     GrupaStudencka = grupaStudencka ?? new GrupaStudencka();
     //     KierunekStudiów = kierunekStudiów ?? new KierunekStudiów();
     // }
-    public long IdStudenta { get; set; }
+    // public long IdStudenta { get; set; }
 
-    public long IdUżytkownika { get; set; }
+    //public long IdUżytkownika { get; set; }
 
-    public long IdGrupyStudenckiej { get; set; }
+    // public long IdGrupyStudenckiej { get; set; }
 
-    public long IdKierunkuStudiów { get; set; }
+    // public long IdKierunkuStudiów { get; set; }
 
-    public long RokStudiów { get; set; }
+    // public long RokStudiów { get; set; }
 
     public virtual GrupaStudencka GrupaStudencka { get; set; } = null!;
 
     public virtual KierunekStudiów KierunekStudiów { get; set; } = null!;
 
-    public virtual ICollection<Grupa> Grupy { get; set; } = new List<Grupa>();
+    public virtual ICollection<GrupaStudent> Grupy { get; set; } = new List<GrupaStudent>();
 
-    public virtual ICollection<Przedmiot> Przedmioty { get; set; } = new List<Przedmiot>();
+    public virtual ICollection<PrzedmiotStudent> Przedmioty { get; set; } = new List<PrzedmiotStudent>();
 
-    public virtual Użytkownik Użytkownik { get; set; } = null!;
+    //public virtual Użytkownik Użytkownik { get; set; } = null!;
 }

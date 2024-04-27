@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react';
 import "./Parking.css";
 import { Loader } from "./utils/Loader";
 import { HubConnectionBuilder, HubConnectionState } from "@microsoft/signalr";
+import { useCalcTime } from "./utils/Timer";
 
-const Parking = ({ userId }) => {
+const Parking = ({ userId, setError }) => {
     const [parking, setParking] = useState({
         id: userId,
         building: { nazwa: "", adres: "" },
@@ -29,21 +30,23 @@ const Parking = ({ userId }) => {
             setParking({ ...parking, spot: { nr: "null", selected: false, QRCode: "" }, reserved: { ...parking.reserved, reservationComplete: value } })
         } catch (error) {
             console.log(error);
+            setError({ code: error.status || "No code", message: error || "No message" });
         }
     });
 
-    conn.start()
-        .then(() => console.log("Connected to SignalR hub"))
-        .catch(err => console.error("Error connecting to hub:", err));
+    // FIXME: Fix the time so that it launches and shows only after the user has successfully reserved a spot 
 
     // ON MOUNT
     useEffect(() => {
         let ignore = false;
 
-
-        // conn.start()
-        //     .then(() => console.log("Connected to SignalR hub"))
-        //     .catch(err => console.error("Error connecting to hub:", err));
+        try {
+            conn.start();
+            console.log("Connected to SignalR hub");
+        } catch (err) {
+            console.log("Error connecting to hub:", err);
+            setError({ code: err.status || "No code", message: err || "No message" });
+        }
 
         if (!ignore) {
             loadParkingData(parking, setParking);
@@ -76,12 +79,13 @@ const Parking = ({ userId }) => {
     return (
         <div>
             <div id="parking-page">
-                <div id="parking">
+                {parking.recommendations.length === 0 && <Loader message={parking.loading.message} />}
+                {parking.recommendations.length === 0 || <div id="parking" className="mainContent">
                     {parking.loading.state && <Loader message={parking.loading.message} />}
                     <div id="parking-recommendations"><ParkingRecommendations recommendationState={parking} selectRecommendation={setParking} /></div>
                     <div id="parking-info"><ParkingLayout parking={parking} selectSpot={setParking} /></div>
                     <div id="parking-content"><ParkingContent userId={userId} parking={parking} setContent={setParking} /></div>
-                </div>
+                </div>}
             </div>
         </div>
     );
@@ -110,6 +114,7 @@ const ParkingRecommendations = ({ building, recommendationState, selectRecommend
 
 const ParkingLayout = ({ parking, selectSpot }) => {
 
+    //const [spotClass, setSpotClass] = useState("");
     const tempParking = {
         matrix: parking.selected.layout ??
             [[{ stanMiejsca: 0 }, { stanMiejsca: 1 }, { stanMiejsca: 1 }, { stanMiejsca: 0 }, { stanMiejsca: 1 }, { stanMiejsca: 0 }, { stanMiejsca: 0 }, { stanMiejsca: 0 }, { stanMiejsca: 0 }, { stanMiejsca: 1 }],
@@ -155,32 +160,35 @@ const ParkingContent = ({ userId, parking, setContent }) => {
     const spot = {
         free: 0, occupied: 1, reserved: 2
     };
+    // 15 minut, aby użytkownik zarezerwowal
+    parking.count = useCalcTime(900);
 
-    useEffect(() => {
-        let interval;
-        if (parking.count.value === 0 && parking.count.start) {
-            // set reservation back to available            
-            reserveSpot(parking, setContent, spot.free);
-            console.log("0 Minutes, 0 seconds, start true");
-        } else if (parking.count.value === 0) {
-            console.log("0 Minutes, 0 seconds, start false");
-            setContent({ ...parking, count: { ...parking.count, start: false } });
-        } else if (parking.count.start) {
-            interval = setInterval(() => {
-                const secCount = parking.count.value % 60;
-                const minCount = Math.floor(parking.count.value / 60);
-                const computeSec = String(secCount).length === 1 ? `0${secCount}` : secCount;
-                const computeMin = String(minCount).length === 1 ? `0${minCount}` : minCount;
+    // useEffect(() => {
+    //     let interval;
+    //     if (parking.count.value === 0 && parking.count.start) {
+    //         // set reservation back to available            
+    //         reserveSpot(parking, setContent, spot.free);
+    //         console.log("0 Minutes, 0 seconds, start true");
+    //     } else if (parking.count.value === 0) {
+    //         // time has elapsed
+    //         console.log("0 Minutes, 0 seconds, start false");
+    //         setContent({ ...parking, count: { ...parking.count, start: false } });
+    //     } else if (parking.count.start) {
+    //         interval = setInterval(() => {
+    //             const secCount = parking.count.value % 60;
+    //             const minCount = Math.floor(parking.count.value / 60);
+    //             const computeSec = String(secCount).length === 1 ? `0${secCount}` : secCount;
+    //             const computeMin = String(minCount).length === 1 ? `0${minCount}` : minCount;
 
-                setContent({ ...parking, count: { ...parking.count, minutes: computeMin, seconds: computeSec, value: parking.count.value-- } })
-            }, 1000);
-        }
+    //             setContent({ ...parking, count: { ...parking.count, minutes: computeMin, seconds: computeSec, value: parking.count.value-- } })
+    //         }, 1000);
+    //     }
 
-        return () => {
-            clearInterval(interval);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [parking.count.value, parking.count.start]);
+    //     return () => {
+    //         clearInterval(interval);
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [parking.count.value, parking.count.start]);
     console.log("Inside Parking content");
     console.log(parking);
 
@@ -190,11 +198,10 @@ const ParkingContent = ({ userId, parking, setContent }) => {
             <div id="parking-remaining">{parking.selected.free ?? "Some number of places left"}</div>
             {parking.spot.QRCode.length !== 0 && <img id="parking-qr-image" src={`data:image/bmp;base64,${parking.spot.QRCode}`} alt="" />}
             <div id="parking-buttons">
-                <div id="parking-reserve" className={parking.spot.selected !== false ? "parking-reserve" : "disabled"} onClick={parking.spot.selected === false ? null : () => {
-                    setContent({ ...parking, count: { start: true, minutes: "15", seconds: "00", value: 900 } });
+                <div id="parking-reserve" className={parking.spot.selected !== false ? "btn" : "btn disabled"} onClick={parking.spot.selected === false ? null : () => {
                     reserveSpot(parking, setContent, spot.reserved);
                 }}>Rezerwuj miejsce</div>
-                <div id="parking-qr" onClick={() => loadQRCode(userId, parking, setContent)}>Generuj Kod QR {parking.count.value === 0 ? "" : `${parking.count.minutes}:${parking.count.seconds}`}</div>
+                <div id="parking-qr" className="btn" onClick={() => loadQRCode(userId, parking, setContent)}>Generuj Kod QR {!parking.count.start ? "" : `${parking.count.minutes}:${parking.count.seconds}`}</div>
             </div>
 
         </div>
@@ -235,7 +242,8 @@ const reserveSpot = async (parking, setSpot, state) => {
             recommendations: parkings,
             loading: { ...parking.loading, state: false },
             reserved: { value: state !== 0 ? true : false },
-            spot: { ...parking.spot, QRCode: state !== 0 ? parking.spot.QRCode : "" }
+            spot: { ...parking.spot, QRCode: state !== 0 ? parking.spot.QRCode : "" },
+            count: { start: true, minutes: "15", seconds: "00", value: 900 }
         });
         console.log("Spot reserved");
         console.log(parking);

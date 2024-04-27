@@ -22,18 +22,26 @@ namespace webapi.Controllers
     {
         private readonly UniversifyDbContext _context;
 
-        private readonly Expression<Func<Użytkownik, UżytkownikDTO>> AsUzytkownikDTO = 
-            user => new UżytkownikDTO
-            {
-                IdUżytkownika = user.IdUżytkownika,
-                Imię = user.Imię,
-                Nazwisko = user.Nazwisko,
-                Grupa = user.Grupa,
-                Budynek = user.Budynek,
-                Administrator = new AdministratorDTO(user.Administrator), //  != null ? new Administrator { IdAdministratora = user?.Administrator?.IdAdministratora ?? Convert.ToInt64(0), IdUżytkownika = user?.Administrator?.IdUżytkownika ?? Convert.ToInt64(0), IdRoli = user?.Administrator?.IdRoli ?? Convert.ToInt64(0), Rola = user?.Administrator?.Rola ?? new Rola() } : 
-                Nauczyciel = new NauczycielDTO(user.Nauczyciel), // != null ? new Nauczyciel { IdNauczyciela = user?.Nauczyciel?.IdNauczyciela ?? Convert.ToInt64(0), IdUżytkownika = user?.Nauczyciel?.IdUżytkownika ?? Convert.ToInt64(0), IdWydziału = user?.Nauczyciel?.IdWydziału ?? Convert.ToInt64(0), IdSpecjalizacji = user?.Nauczyciel?.IdSpecjalizacji ?? Convert.ToInt64(0), Specjalizacja = user?.Nauczyciel?.Specjalizacja ?? new Specjalizacja() },
-                Student = new StudentDTO(user.Student) // != null ? new Student { IdStudenta = user?.Student?.IdStudenta ?? Convert.ToInt64(0), IdUżytkownika = user?.Student?.IdUżytkownika ?? Convert.ToInt64(0), IdPrzedmiotu = user?.Student?.IdPrzedmiotu ?? Convert.ToInt64(0), IdGrupyStudenckiej = user?.Student?.IdGrupyStudenckiej ?? Convert.ToInt64(0), IdKierunkuStudiów = user?.Student?.IdKierunkuStudiów ?? Convert.ToInt64(0), RokStudiów = user?.Student?.RokStudiów ?? Convert.ToInt64(0), GrupaStudencka = user?.Student?.GrupaStudencka ?? new GrupaStudencka(), KierunekStudiów = user?.Student?.KierunekStudiów ?? new KierunekStudiów() }
-            };
+        private readonly Expression<Func<Użytkownik, UżytkownikDTO>> AsUzytkownikDTO =
+            user => user.GetType() == typeof(Nauczyciel)
+            ?
+             new NauczycielDTO((Nauczyciel)user)
+             :
+             user.GetType() == typeof(Student)
+             ?
+             new StudentDTO((Student)user)
+             :
+             new AdministratorDTO((Administrator)user);
+        /*{
+            IdUżytkownika = user.IdUżytkownika,
+            Imię = user.Imię,
+            Nazwisko = user.Nazwisko,
+            Grupa = user.Grupa,
+            Budynek = user.Budynek,
+            Administrator = new AdministratorDTO(user.Administrator), //  != null ? new Administrator { IdAdministratora = user?.Administrator?.IdAdministratora ?? Convert.ToInt64(0), IdUżytkownika = user?.Administrator?.IdUżytkownika ?? Convert.ToInt64(0), IdRoli = user?.Administrator?.IdRoli ?? Convert.ToInt64(0), Rola = user?.Administrator?.Rola ?? new Rola() } : 
+            Nauczyciel = new NauczycielDTO(user.Nauczyciel), // != null ? new Nauczyciel { IdNauczyciela = user?.Nauczyciel?.IdNauczyciela ?? Convert.ToInt64(0), IdUżytkownika = user?.Nauczyciel?.IdUżytkownika ?? Convert.ToInt64(0), IdWydziału = user?.Nauczyciel?.IdWydziału ?? Convert.ToInt64(0), IdSpecjalizacji = user?.Nauczyciel?.IdSpecjalizacji ?? Convert.ToInt64(0), Specjalizacja = user?.Nauczyciel?.Specjalizacja ?? new Specjalizacja() },
+            Student = new StudentDTO(user.Student) // != null ? new Student { IdStudenta = user?.Student?.IdStudenta ?? Convert.ToInt64(0), IdUżytkownika = user?.Student?.IdUżytkownika ?? Convert.ToInt64(0), IdPrzedmiotu = user?.Student?.IdPrzedmiotu ?? Convert.ToInt64(0), IdGrupyStudenckiej = user?.Student?.IdGrupyStudenckiej ?? Convert.ToInt64(0), IdKierunkuStudiów = user?.Student?.IdKierunkuStudiów ?? Convert.ToInt64(0), RokStudiów = user?.Student?.RokStudiów ?? Convert.ToInt64(0), GrupaStudencka = user?.Student?.GrupaStudencka ?? new GrupaStudencka(), KierunekStudiów = user?.Student?.KierunekStudiów ?? new KierunekStudiów() }
+        };*/
         public UzytkownicyController(UniversifyDbContext context)
         {
             _context = context;
@@ -41,14 +49,14 @@ namespace webapi.Controllers
 
         // GET: api/Uzytkownicy
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UżytkownikDTO>>> GetUżytkownicy()
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetUżytkownicy()
         {
             if (_context.Użytkownicy == null)
             {
                 return NotFound();
             }
 
-            IQueryable<Użytkownik> response = _context.Użytkownicy;
+            // IQueryable<Użytkownik> response = _context.Użytkownicy;
 
             /*
              * await _context.Użytkownicy
@@ -58,25 +66,67 @@ namespace webapi.Controllers
                 .Select(AsUzytkownikDTO).ToListAsync()
              */
 
-            foreach (Użytkownik item in response) {
-                _context.Entry(item)
-                    .Reference(u => u.Student)
-                    .Query()                    
-                    .Include(s => s.Przedmioty)
-                    .ThenInclude(p => p.Nauczyciele)                    
-                    .Load();
+            // foreach (Użytkownik item in response)
+            // {
+            //     /*_context.Entry(item)
+            //         .Reference(u => u.Student)
+            //         .Query()
+            //         .Include(s => s.Przedmioty)
+            //         .ThenInclude(p => p.Nauczyciele)
+            //         .Load();
 
-                _context.Entry(item)
-                    .Reference(u => u.Nauczyciel)
-                    .Query()
-                    .Include(n => n.Przedmioty)
-                    .Load();
+            //     _context.Entry(item)
+            //         .Reference(u => u.Nauczyciel)
+            //         .Query()
+            //         .Include(n => n.Przedmioty)
+            //         .Load();
 
-                _context.Entry(item)
-                    .Reference(u => u.Administrator)
-                    .Load();
+            //     _context.Entry(item)
+            //         .Reference(u => u.Administrator)
+            //         .Load();*/
+            // }
+
+            // if (response == null)
+            // {
+            //     return NotFound();
+            // }
+
+            return await _context.Użytkownicy.ToListAsync();
+        }
+
+        [HttpGet("full")]
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetFullUżytkownicy()
+        {
+            if (_context.Użytkownicy == null)
+            {
+                return NotFound();
             }
-            return await response.Select(AsUzytkownikDTO).ToListAsync();
+
+            List<Użytkownik> użytkownicy = await _context.Użytkownicy
+            .ToListAsync();
+
+            List<dynamic> response = new List<dynamic>();
+
+            foreach (Użytkownik user in użytkownicy)
+            {
+                if (user.GetType() == typeof(Administrator))
+                {
+                    System.Console.WriteLine("User is an admin");
+                    response.Add(new AdministratorDTO((Administrator)user));
+                }
+                else if (user.GetType() == typeof(Nauczyciel))
+                {
+                    System.Console.WriteLine("User is a teacher");
+                    response.Add(new NauczycielDTO((Nauczyciel)user));
+                }
+                else
+                {
+                    System.Console.WriteLine("User is a student");
+                    response.Add(new StudentDTO((Student)user));
+                }
+            }
+
+            return response;
         }
 
         // GET: api/Uzytkownicy/5
@@ -89,14 +139,16 @@ namespace webapi.Controllers
             }
 
             var użytkownik = await _context.Użytkownicy
-                .Include(u => u.Student).ThenInclude(s => s.GrupaStudencka)
+                .Where(u => u.IdUżytkownika == id)
+                /*.Include(u => u.Student).ThenInclude(s => s.GrupaStudencka)
                 .Include(u => u.Student).ThenInclude(s => s.KierunekStudiów)
-                .Include(u => u.Student).ThenInclude(s => s.Przedmioty).ThenInclude(p => p.Nauczyciele)
+                .Include(u => u.Student).ThenInclude(s => s.Przedmioty)
                 .Include(u => u.Student).ThenInclude(s => s.Grupy)
                 .Include(u => u.Nauczyciel).ThenInclude(n => n.Przedmioty)
                 .Include(u => u.Nauczyciel).ThenInclude(n => n.Specjalizacja)
-                .Include(u => u.Administrator).ThenInclude(a => a.Rola)
-                .Where(u => u.IdUżytkownika == id).Select(AsUzytkownikDTO).SingleAsync();
+                .Include(u => u.Administrator).ThenInclude(a => a.Rola)*/
+                .Select(AsUzytkownikDTO).SingleOrDefaultAsync();
+
 
             /*foreach (Użytkownik item in response)
             {
@@ -174,6 +226,9 @@ namespace webapi.Controllers
             {
                 return Problem("Entity set 'UniversifyDbContext.Użytkownicy'  is null.");
             }
+
+            użytkownik.IdUżytkownika = _context.Użytkownicy.Count() + 1;
+            użytkownik.RokStudiów = 1;
             _context.Użytkownicy.Add(użytkownik);
             await _context.SaveChangesAsync();
 
@@ -188,12 +243,12 @@ namespace webapi.Controllers
             Console.WriteLine(loginData.ToString());
             //Dictionary<String, dynamic>? loginInfo = JsonSerializer.Deserialize<Dictionary<String, dynamic>>(loginData);            
             Dictionary<string, string>? loginInfo = new Dictionary<string, string>();
-            loginInfo["username"] = JsonSerializer.Serialize(loginData).Trim('{','}',' ').Substring(JsonSerializer.Serialize(loginData).Trim('{', '}', ' ').IndexOf(":") + 2, JsonSerializer.Serialize(loginData).Trim('{', '}', ' ').IndexOf(",") - JsonSerializer.Serialize(loginData).Trim('{', '}', ' ').IndexOf(":") - 3) ?? "";
-            loginInfo["password"] = JsonSerializer.Serialize(loginData).Trim('{','}',' ').Substring(JsonSerializer.Serialize(loginData).Trim('{', '}', ' ').LastIndexOf(":") + 2, JsonSerializer.Serialize(loginData).Trim('{','}',' ').Length - JsonSerializer.Serialize(loginData).Trim('{', '}', ' ').LastIndexOf(":") - 3) ?? "";
+            loginInfo["username"] = JsonSerializer.Serialize(loginData).Trim('{', '}', ' ').Substring(JsonSerializer.Serialize(loginData).Trim('{', '}', ' ').IndexOf(":") + 2, JsonSerializer.Serialize(loginData).Trim('{', '}', ' ').IndexOf(",") - JsonSerializer.Serialize(loginData).Trim('{', '}', ' ').IndexOf(":") - 3) ?? "";
+            loginInfo["password"] = JsonSerializer.Serialize(loginData).Trim('{', '}', ' ').Substring(JsonSerializer.Serialize(loginData).Trim('{', '}', ' ').LastIndexOf(":") + 2, JsonSerializer.Serialize(loginData).Trim('{', '}', ' ').Length - JsonSerializer.Serialize(loginData).Trim('{', '}', ' ').LastIndexOf(":") - 3) ?? "";
             /*loginInfo["username"] = (string)loginData["username"] ?? "";
             loginInfo["password"] = (string)loginData["password"] ?? "";*/
             // user.Mail == (loginInfo?["username"] ?? "") && user.Hasło == (loginInfo?["password"] ?? "")
-            if(_context.Użytkownicy == null || loginInfo == null)
+            if (_context.Użytkownicy == null || loginInfo == null)
             {
                 return new string[] { "false", "-2" };
             }
@@ -202,10 +257,11 @@ namespace webapi.Controllers
             {
                 String username = loginInfo["username"], password = loginInfo["password"].ToString();
                 bool isLoggedIn = await _context.Użytkownicy!.AnyAsync(user => user.Mail == username && user.Hasło == password);
+                bool isAdmin = isLoggedIn ? (await _context.Użytkownicy!.SingleAsync(user => user.Mail == username && user.Hasło == password)).GetType() == typeof(Administrator) : false;
                 long? userId = (await _context.Użytkownicy.FirstAsync(user => user.Mail == username && user.Hasło == password)).IdUżytkownika;
 
 
-                return new string[] { isLoggedIn.ToString(), userId.ToString() ?? "-1" };
+                return new string[] { isAdmin ? "Admin" : isLoggedIn.ToString(), userId.ToString() ?? "-1" };
             }
             catch (Exception)
             {
@@ -216,21 +272,30 @@ namespace webapi.Controllers
 
         // DELETE: api/Uzytkownicy/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUżytkownik(long id)
+        public async Task<IActionResult> DeleteUżytkownik(long id, [FromBody] List<int> ids)
         {
             if (_context.Użytkownicy == null)
             {
                 return NotFound();
             }
-            var użytkownik = await _context.Użytkownicy.FindAsync(id);
-            if (użytkownik == null)
+            if (ids == null || ids.Count == 1)
             {
-                return NotFound();
+                var użytkownik = await _context.Użytkownicy.FindAsync(id);
+                if (użytkownik == null)
+                {
+                    return NotFound();
+                }
+
+                _context.Użytkownicy.Remove(użytkownik);
+                await _context.SaveChangesAsync();
             }
+            else
+            {
+                var użytkownicy = await _context.Użytkownicy.Where(u => ids.Any(el => el.Equals(u.IdUżytkownika - 1))).ToListAsync();
 
-            _context.Użytkownicy.Remove(użytkownik);
-            await _context.SaveChangesAsync();
-
+                _context.Użytkownicy.RemoveRange(użytkownicy);
+                await _context.SaveChangesAsync();
+            }
             return NoContent();
         }
 

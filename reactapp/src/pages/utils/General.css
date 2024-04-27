@@ -1,0 +1,42 @@
+/* Plik zawierający style, które pojawiają się w wielu częściach aplikacji */
+
+/* Przyciski */
+
+.btn {
+    padding: 0.8em;
+    background-color: #533113;
+    font-size: 0.8em;
+    margin: 5px;
+    color: #BFBCCB;
+    text-align: center;
+}
+
+.btn:hover {
+    cursor: pointer;
+    background: rgba(83, 49, 19, 0.7);
+}
+
+.disabled {
+    background-color: #211408;
+    color: #E9E8ED;
+}
+
+.disabled:hover {
+    cursor: default;
+}
+
+/* Okna dialogowe */
+
+.dialog {
+    position: fixed;
+    z-index: 2;
+    background-color: #d5c4af;
+    padding: 1.5em;
+    box-shadow: 0 0 20px rgb(0, 0, 0, 0.4);
+}
+
+/* Specjalizowane kontrolki */
+
+.searchbox {
+    border: 1px solid ghostwhite;
+}

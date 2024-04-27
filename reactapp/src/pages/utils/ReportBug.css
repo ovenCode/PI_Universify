@@ -1,3 +1,7 @@
+textarea {
+    resize: none;
+}
+
 #report-bug {
     display: flex;
     justify-content: center;
@@ -13,7 +17,7 @@
 }
 
 #report-title {
-    padding-inline: .5em;    
+    padding-inline: .5em;
 }
 
 #report-form {
@@ -40,35 +44,25 @@
     border-radius: 5px;
 }
 
-#attach-img, #attach-input {
+#attach-img,
+#attach-input {
     background-color: #fff;
     height: 98%;
     border: none;
 }
 
 #attach-img {
-    border-right: 3px solid gray;    
+    border-right: 3px solid gray;
 }
 
-    #attach-img:hover {
-        background-color: rgb(255, 255, 255, .7);
-    }
+#attach-img:hover {
+    background-color: rgb(255, 255, 255, .7);
+}
 
 #attach-input {
     padding: 0;
 }
 
-.btn {
-    padding: 0.8em;
-    background-color: #533113;
-    font-size: 0.8em;
+#report-close {
     width: 80%;
-    margin: 5px;
-    color: #BFBCCB;
-    text-align: center;
 }
-
-    .btn:hover {
-        cursor: pointer;
-        background: rgba(83,49,19,0.7);
-    }

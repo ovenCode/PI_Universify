@@ -55,10 +55,10 @@ namespace webapi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ParkingDTO>>> GetParkingi()
         {
-          if (_context.Parkingi == null)
-          {
-              return NotFound();
-          }
+            if (_context.Parkingi == null)
+            {
+                return NotFound();
+            }
             return await _context.Parkingi
                 .Include(p => p.Miejsca).ThenInclude(m => m.Typ).Select(AsParkingDTO).ToListAsync();
         }
@@ -67,10 +67,10 @@ namespace webapi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ParkingDTO>> GetParking(long id)
         {
-          if (_context.Parkingi == null)
-          {
-              return NotFound();
-          }
+            if (_context.Parkingi == null)
+            {
+                return NotFound();
+            }
             var parking = await _context.Parkingi
                 .Include(p => p.Miejsca).ThenInclude(m => m.Typ)
                 .Where(p => p.IdParkingu == id).Select(AsParkingDTO).SingleAsync();
@@ -94,7 +94,7 @@ namespace webapi.Controllers
             var parkingi = await _context.Parkingi!
                 .Include(p => p.Miejsca).ThenInclude(m => m.Typ)
                 .Include(p => p.RozkładParkingu).Select(AsParkingDTO).ToListAsync();
-            
+
 
             if (parkingi == null)
             {
@@ -114,7 +114,7 @@ namespace webapi.Controllers
                     ["Miejsca"] = parkingi[id].Miejsca ?? new List<MiejsceDTO>(),
                     ["Rozklad"] = parkingi[id].Rozkład ?? new List<RozkładParkinguDTO>(),
                 });
-            }            
+            }
 
             return answer;
         }
@@ -183,7 +183,7 @@ namespace webapi.Controllers
                         foreach (var rozklad in parking.RozkładParkingu)
                         {
                             rozklad.StanMiejsca = 0;
-                        }                        
+                        }
                     }
 
                     await _context.SaveChangesAsync();
@@ -226,7 +226,7 @@ namespace webapi.Controllers
                 {
                     return NotFound();
                 }
-                                
+
                 //int? index = (int?)(parking?.RozkładParkingu?.ElementAt(0).Id) - 1 ?? 0;
 
                 if (parking?.LiczbaRzedow != 0)
@@ -242,13 +242,13 @@ namespace webapi.Controllers
                         }));
                         await _context.SaveChangesAsync();
                         // rozpoczecie naliczania czasu przy rezerwacji miejsca
-                        if(val == 2)
-                        _timer.startTimer(new Dictionary<String, dynamic> 
-                        { 
-                            ["row"] = row,
-                            ["col"] = col,
-                            ["parking"] = parking
-                        });
+                        if (val == 2)
+                            _timer.startTimer(new Dictionary<String, dynamic>
+                            {
+                                ["row"] = row,
+                                ["col"] = col,
+                                ["parking"] = parking
+                            });
                         //await _parkingiHub.Clients.All.SendAsync("LayoutUpdate");
                     }
                     catch (DbUpdateConcurrencyException)
@@ -262,7 +262,7 @@ namespace webapi.Controllers
                             throw;
                         }
                     }
-                }    
+                }
 
                 return new Dictionary<String, dynamic>
                 {
@@ -277,7 +277,7 @@ namespace webapi.Controllers
         [HttpGet("~/api/Parkingi/QR/{id}")]
         public async Task<ActionResult<Dictionary<String, dynamic>>> GetQrCode(string id)
         {
-            if(_context.Użytkownicy == null)
+            if (_context.Użytkownicy == null)
             {
                 return NotFound();
             }
@@ -287,7 +287,7 @@ namespace webapi.Controllers
             int spotId = Int32.TryParse(id[(id.LastIndexOf("_") + 1)..], out spotId) ? spotId : -1;
 
             var uzytkownik = await _context.Użytkownicy.FindAsync((long)user);
-            if(uzytkownik == null) { return Forbid(); }
+            if (uzytkownik == null) { return Forbid(); }
             Parking? parking = await _context.Parkingi
                 .Include(p => p.RozkładParkingu)
                 .Include(p => p.KodyParkingu).SingleAsync(p => p.IdParkingu == parkingId);
@@ -296,8 +296,8 @@ namespace webapi.Controllers
             try
             {
                 Console.WriteLine("Path: " + Request.Host + " " + Request.GetDisplayUrl());
-                Guid guid = Guid.NewGuid();                
-                var qrCode = QrCode.EncodeText("https://" + Request.Host + "/api/Parkingi/rezerwacja/" + guid.ToString(), QrCode.Ecc.Medium);
+                Guid guid = Guid.NewGuid();
+                var qrCode = QrCode.EncodeText("https://" + Request.Host + "/api/Parkingi/rezerwacja/" + 7, QrCode.Ecc.Medium);
                 string svg = qrCode.ToSvgString(4);
                 byte[] buffer = qrCode.ToBmpBitmap(4, 8);
                 parking.KodyParkingu.Add(new KodParkingu { IdParkingu = parkingId, IdMiejsca = spotId, Kod = guid, Parking = parking, RozkładParkingu = parking.RozkładParkingu.Single(r => r.Id == spotId) });
@@ -325,11 +325,11 @@ namespace webapi.Controllers
         public async Task<IActionResult> PutParkingSpot(string guid)
         {
             Guid id = Guid.TryParse(guid, out id) ? id : Guid.Empty;
-            if(id == Guid.Empty) { return BadRequest(); }
+            if (id == Guid.Empty) { return BadRequest(); }
             Parking? change = await _context.Parkingi
                 .Include(p => p.KodyParkingu)
                 .Include(p => p.RozkładParkingu).SingleAsync(p => p.KodyParkingu.Single(k => k.Kod == id).IdParkingu == p.IdParkingu);
-            
+
             if (change == null)
             {
                 return BadRequest();
@@ -346,7 +346,7 @@ namespace webapi.Controllers
                 change.RozkładParkingu.Single(r => r.Id == change.KodyParkingu.Single(k => k.Kod == id).IdMiejsca).StanMiejsca = 1;
                 _context.KodyParkingu.Remove(_context.KodyParkingu.Single(k => k.Kod == id));
 
-                
+
                 //change.KodyParkingu.Remove(change.KodyParkingu.Single(k => k.Kod == id));                
                 //change.RozkładParkingu.Single(r => r.Id == change.KodyParkingu.Single(k => k.Kod == id).IdMiejsca).KodyParkingu.Remove(change.KodyParkingu.Single(k => k.Kod == id));
                 await _context.SaveChangesAsync();
@@ -394,7 +394,7 @@ namespace webapi.Controllers
                 miejsce.Typ = typ;
                 miejsce.Dostępność = m?.Dostępność;
                 return miejsce;
-                }).ToList() ?? new List<Miejsce>();
+            }).ToList() ?? new List<Miejsce>();
 
             _context.Entry(change).State = EntityState.Modified;
 
@@ -422,10 +422,10 @@ namespace webapi.Controllers
         [HttpPost]
         public async Task<ActionResult<Parking>> PostParking(Parking parking)
         {
-          if (_context.Parkingi == null)
-          {
-              return Problem("Entity set 'UniversifyDbContext.Parkingi'  is null.");
-          }
+            if (_context.Parkingi == null)
+            {
+                return Problem("Entity set 'UniversifyDbContext.Parkingi'  is null.");
+            }
             _context.Parkingi.Add(parking);
             await _context.SaveChangesAsync();
 
@@ -457,19 +457,21 @@ namespace webapi.Controllers
             return (_context.Parkingi?.Any(e => e.IdParkingu == id)).GetValueOrDefault();
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         public Task<NoContentResult> Update()
         {
             // Nie ma potrzeby czegokolwiek robić
             return Task.FromResult(NoContent());
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> Reset(Object item)
         {
-            if(item == null)
+            if (item == null)
             {
                 throw new ArgumentNullException(nameof(item));
             }
-            if(_context == null)
+            if (_context == null)
             {
                 throw new ArgumentNullException(nameof(_context));
             }

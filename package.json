@@ -5,6 +5,10 @@
     "@material-ui/core": "^4.12.4",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.12.2",
-    "@mui/styles": "^5.12.0"
+    "@mui/styles": "^5.12.0",
+    "react-animate-height": "^3.2.3"
+  },
+  "devDependencies": {
+    "@microsoft/signalr": "^8.0.0"
   }
 }

@@ -26,10 +26,10 @@ namespace webapi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AdministratorDTO>>> GetAdministratorzy()
         {
-          if (_context.Administratorzy == null)
-          {
-              return NotFound();
-          }
+            if (_context.Administratorzy == null)
+            {
+                return NotFound();
+            }
             return await _context.Administratorzy.Select(AsAdministratorDTO).ToListAsync();
         }
 
@@ -37,10 +37,10 @@ namespace webapi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<AdministratorDTO>> GetAdministrator(long id)
         {
-          if (_context.Administratorzy == null)
-          {
-              return NotFound();
-          }
+            if (_context.Administratorzy == null)
+            {
+                return NotFound();
+            }
             var administrator = await _context.Administratorzy.Where(admin => admin.IdAdministratora == id).Select(AsAdministratorDTO).SingleAsync();
 
             if (administrator == null)
@@ -61,14 +61,14 @@ namespace webapi.Controllers
                 return BadRequest();
             }
 
-/*            Administrator? admin = await _context.Administratorzy.FindAsync(id);
-            if(admin == null)
-            {
-                return NotFound();
-            }
+            /*            Administrator? admin = await _context.Administratorzy.FindAsync(id);
+                        if(admin == null)
+                        {
+                            return NotFound();
+                        }
 
-            admin.IdUżytkownika = administrator.IdUżytkownika;
-            admin.IdRoli = administrator.IdRoli;*/
+                        admin.IdUżytkownika = administrator.IdUżytkownika;
+                        admin.IdRoli = administrator.IdRoli;*/
 
             _context.Entry(administrator).State = EntityState.Modified;
 
@@ -96,12 +96,14 @@ namespace webapi.Controllers
         [HttpPost]
         public async Task<ActionResult<AdministratorDTO>> PostAdministrator(Administrator administrator)
         {
-          if (_context.Administratorzy == null)
-          {
-              return Problem("Entity set 'UniversifyDbContext.Administratorzy'  is null.");
-          }
+            if (_context.Administratorzy == null)
+            {
+                return Problem("Entity set 'UniversifyDbContext.Administratorzy'  is null.");
+            }
 
-            
+            administrator.IdUżytkownika = _context.Użytkownicy.Count() + 1;
+            administrator.IdAdministratora = _context.Administratorzy.Count() + 1;
+            administrator.Rola = _context.Role.Where(r => r.IdRoli == administrator.IdRoli).First();
             _context.Administratorzy.Add(administrator);
             await _context.SaveChangesAsync();
 

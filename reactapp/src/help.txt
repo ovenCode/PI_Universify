@@ -1,11 +1,37 @@
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Tincidunt augue interdum velit euismod in pellentesque massa.In cursus turpis massa tincidunt dui ut ornare lectus.Feugiat in fermentum posuere urna nec tincidunt praesent.Egestas purus viverra accumsan in nisl nisi scelerisque eu.Aliquet nec ullamcorper sit amet risus nullam.Vulputate sapien nec sagittis aliquam malesuada.Sit amet facilisis magna etiam tempor orci.Vitae nunc sed velit dignissim sodales ut eu sem.Phasellus vestibulum lorem sed risus.Faucibus scelerisque eleifend donec pretium vulputate.Eget est lorem ipsum dolor.Donec adipiscing tristique risus nec feugiat.Luctus accumsan tortor posuere ac.
+- Główne -
 
-Placerat duis ultricies lacus sed turpis.Ultrices dui sapien eget mi proin sed.In metus vulputate eu scelerisque felis imperdiet proin.Cursus turpis massa tincidunt dui ut ornare.Lacinia quis vel eros donec ac odio.Arcu vitae elementum curabitur vitae nunc sed.Nam at lectus urna duis convallis convallis tellus id interdum.Interdum varius sit amet mattis vulputate.Praesent semper feugiat nibh sed pulvinar proin gravida hendrerit.Ac turpis egestas sed tempus urna et pharetra pharetra massa.Eget velit aliquet sagittis id consectetur purus ut faucibus pulvinar.Natoque penatibus et magnis dis parturient.Aliquet nibh praesent tristique magna sit amet purus. Ut aliquam purus sit amet luctus.Vitae congue mauris rhoncus aenean.Ultrices eros in cursus turpis massa tincidunt dui.Donec ultrices tincidunt arcu non sodales neque sodales.In arcu cursus euismod quis viverra nibh cras pulvinar mattis.
-
-Venenatis urna cursus eget nunc scelerisque viverra.Nibh venenatis cras sed felis eget velit.Euismod quis viverra nibh cras pulvinar mattis nunc.Vulputate mi sit amet mauris commodo quis.Urna porttitor rhoncus dolor purus non. Non nisi est sit amet facilisis magna etiam tempor.Enim sed faucibus turpis in eu mi bibendum neque.Consequat ac felis donec et odio.Etiam sit amet nisl purus in mollis nunc sed.Nunc sed id semper risus in.Dui vivamus arcu felis bibendum ut tristique.
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Tincidunt augue interdum velit euismod in pellentesque massa.In cursus turpis massa tincidunt dui ut ornare lectus.Feugiat in fermentum posuere urna nec tincidunt praesent.Egestas purus viverra accumsan in nisl nisi scelerisque eu.Aliquet nec ullamcorper sit amet risus nullam.Vulputate sapien nec sagittis aliquam malesuada.Sit amet facilisis magna etiam tempor orci.Vitae nunc sed velit dignissim sodales ut eu sem.Phasellus vestibulum lorem sed risus.Faucibus scelerisque eleifend donec pretium vulputate.Eget est lorem ipsum dolor.Donec adipiscing tristique risus nec feugiat.Luctus accumsan tortor posuere ac.
-
 Placerat duis ultricies lacus sed turpis.Ultrices dui sapien eget mi proin sed.In metus vulputate eu scelerisque felis imperdiet proin.Cursus turpis massa tincidunt dui ut ornare.Lacinia quis vel eros donec ac odio.Arcu vitae elementum curabitur vitae nunc sed.Nam at lectus urna duis convallis convallis tellus id interdum.Interdum varius sit amet mattis vulputate.Praesent semper feugiat nibh sed pulvinar proin gravida hendrerit.Ac turpis egestas sed tempus urna et pharetra pharetra massa.Eget velit aliquet sagittis id consectetur purus ut faucibus pulvinar.Natoque penatibus et magnis dis parturient.Aliquet nibh praesent tristique magna sit amet purus. Ut aliquam purus sit amet luctus.Vitae congue mauris rhoncus aenean.Ultrices eros in cursus turpis massa tincidunt dui.Donec ultrices tincidunt arcu non sodales neque sodales.In arcu cursus euismod quis viverra nibh cras pulvinar mattis.
-
 Venenatis urna cursus eget nunc scelerisque viverra.Nibh venenatis cras sed felis eget velit.Euismod quis viverra nibh cras pulvinar mattis nunc.Vulputate mi sit amet mauris commodo quis.Urna porttitor rhoncus dolor purus non. Non nisi est sit amet facilisis magna etiam tempor.Enim sed faucibus turpis in eu mi bibendum neque.Consequat ac felis donec et odio.Etiam sit amet nisl purus in mollis nunc sed.Nunc sed id semper risus in.Dui vivamus arcu felis bibendum ut tristique.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Tincidunt augue interdum velit euismod in pellentesque massa.In cursus turpis massa tincidunt dui ut ornare lectus.Feugiat in fermentum posuere urna nec tincidunt praesent.Egestas purus viverra accumsan in nisl nisi scelerisque eu.Aliquet nec ullamcorper sit amet risus nullam.Vulputate sapien nec sagittis aliquam malesuada.Sit amet facilisis magna etiam tempor orci.Vitae nunc sed velit dignissim sodales ut eu sem.Phasellus vestibulum lorem sed risus.Faucibus scelerisque eleifend donec pretium vulputate.Eget est lorem ipsum dolor.Donec adipiscing tristique risus nec feugiat.Luctus accumsan tortor posuere ac.
+Placerat duis ultricies lacus sed turpis.Ultrices dui sapien eget mi proin sed.In metus vulputate eu scelerisque felis imperdiet proin.Cursus turpis massa tincidunt dui ut ornare.Lacinia quis vel eros donec ac odio.Arcu vitae elementum curabitur vitae nunc sed.Nam at lectus urna duis convallis convallis tellus id interdum.Interdum varius sit amet mattis vulputate.Praesent semper feugiat nibh sed pulvinar proin gravida hendrerit.Ac turpis egestas sed tempus urna et pharetra pharetra massa.Eget velit aliquet sagittis id consectetur purus ut faucibus pulvinar.Natoque penatibus et magnis dis parturient.Aliquet nibh praesent tristique magna sit amet purus. Ut aliquam purus sit amet luctus.Vitae congue mauris rhoncus aenean.Ultrices eros in cursus turpis massa tincidunt dui.Donec ultrices tincidunt arcu non sodales neque sodales.In arcu cursus euismod quis viverra nibh cras pulvinar mattis.
+Venenatis urna cursus eget nunc scelerisque viverra.Nibh venenatis cras sed felis eget velit.Euismod quis viverra nibh cras pulvinar mattis nunc.Vulputate mi sit amet mauris commodo quis.Urna porttitor rhoncus dolor purus non. Non nisi est sit amet facilisis magna etiam tempor.Enim sed faucibus turpis in eu mi bibendum neque.Consequat ac felis donec et odio.Etiam sit amet nisl purus in mollis nunc sed.Nunc sed id semper risus in.Dui vivamus arcu felis bibendum ut tristique.
+
+
+- Profil -
+
+
+Interfejs, w którym użytkownicy mogą sobie wyświetlić informacje dotyczące siebie oraz
+sprawdzić najbliższe nadchodzące elementy
+
+
+- Parking -
+
+
+Interfejs, w którym użytkownicy mogą zarezerwować miejsce parkingowe oraz uzyskać następnie
+dostęp do tego parkingu za pomocą kodu QR, do zeskanowania
+
+
+- Stołówka -
+
+
+Interfejs, w którym użytkownicy mogą zarezerwować posiłki, zapisać się na dietę i śledzić
+z łatwością swoje posiłki i nimi zarządzać
+
+
+- Przedmiot -
+
+
+Interfejs, w którym użytkownicy mogą wyświetlić informacje dotyczące ich przedmiotów,
+w tym nauczyciele uczelni mają możliwość zarządzania swoimi przedmiotami

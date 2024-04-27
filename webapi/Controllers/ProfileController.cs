@@ -28,7 +28,7 @@ namespace webapi.Controllers
             {
                 return NotFound();
             }
-            return await GetProfileInfo();
+            return await GetProfileInfo() ?? NotFound("No profiles were found");
         }
 
         // GET: api/Profile/5
@@ -37,13 +37,14 @@ namespace webapi.Controllers
         {
             if (_context.Profile == null)
             {
-                return NotFound();
+                return NotFound("Brak profili. Skontaktuj się z administratorem uczelni.");
             }
             var profil = await GetProfileInfo(id);
 
             if (profil == null)
             {
-                return NotFound();
+                return NotFound("Nie znaleziono profilu. Skontaktuj się z administratorem uczelni.");
+                //Problem(statusCode: StatusCodes.Status404NotFound, detail: "Nie znaleziono profilu. Skontaktuj się z administratorem uczelni.");
             }
 
             //IEnumerable<Dictionary<String, dynamic>> profileInfo = await GetProfileInfo(id);
@@ -124,21 +125,51 @@ namespace webapi.Controllers
             return (_context.Profile?.Any(e => e.IdProfilu == id)).GetValueOrDefault();
         }
 
-        private async Task<ActionResult<IEnumerable<Dictionary<String, dynamic>>>> GetProfileInfo(long id = -1)
+        private async Task<ActionResult<IEnumerable<Dictionary<String, dynamic>>>?> GetProfileInfo(long id = -1)
         {
             if (id != -1)
             {
 #pragma warning disable CS8602 // Wyłuskanie odwołania, które może mieć wartość null.
                 //var profil = await _context.Profile.Select(p => new ProfilDTO() { IdProfilu = p.IdProfilu, ObrazProfilu = p.ObrazProfilu, Użytkownik = UzytkownicyController.ItemToDTO(p.Użytkownik, p.Użytkownik.Administrator, p.Użytkownik.Administrator.Rola, p.Użytkownik.Nauczyciel, p.Użytkownik.Nauczyciel.Specjalizacja, p.Użytkownik.Student, p.Użytkownik.Student.GrupaStudencka, p.Użytkownik.Student.KierunekStudiów), }).SingleAsync(p => p.IdProfilu == id);
-                var profil = await _context.Profile
-                    .Include(p => p.Użytkownik).ThenInclude(p => p.Administrator).ThenInclude(p => p.Rola)
-                    .Include(p => p.Użytkownik).ThenInclude(p => p.Student).ThenInclude(p => p.GrupaStudencka)
-                    .Include(p => p.Użytkownik).ThenInclude(p => p.Student).ThenInclude(p => p.KierunekStudiów)
-                    .Include(p => p.Użytkownik).ThenInclude(p => p.Nauczyciel).ThenInclude(p => p.Specjalizacja).SingleOrDefaultAsync(p => p.IdProfilu == id);
+                var profil = await _context.Profile.Include(p => p.Użytkownik).SingleOrDefaultAsync(p => p.IdProfilu == id);
+                /*.Include(p => p.Użytkownik).ThenInclude(p => p.Administrator).ThenInclude(p => p.Rola)
+                .Include(p => p.Użytkownik).ThenInclude(p => p.Student).ThenInclude(p => p.GrupaStudencka)
+                .Include(p => p.Użytkownik).ThenInclude(p => p.Student).ThenInclude(p => p.KierunekStudiów)
+                .Include(p => p.Użytkownik).ThenInclude(p => p.Nauczyciel).ThenInclude(p => p.Specjalizacja).SingleOrDefaultAsync(p => p.IdProfilu == id);*/
 #pragma warning restore CS8602 // Wyłuskanie odwołania, które może mieć wartość null.
                 if (profil == null)
                 {
-                    return new List<Dictionary<String, dynamic>>();
+                    return null;
+                }
+                else
+                {
+                    if (profil.Użytkownik.GetType() == typeof(Student))
+                    {
+                        // Student
+                        profil = await _context.Profile
+                            .Where(p => p.IdProfilu == id)
+                            .Include(p => p.Użytkownik).ThenInclude(u => ((Student)u).GrupaStudencka)
+                            .Include(p => p.Użytkownik).ThenInclude(u => ((Student)u).KierunekStudiów)
+                            .SingleAsync();
+
+                    }
+                    else if (profil.Użytkownik.GetType() == typeof(Nauczyciel))
+                    {
+                        // Nauczyciel
+                        profil = await _context.Profile
+                            .Where(p => p.IdProfilu == id)
+                            .Include(p => p.Użytkownik).ThenInclude(u => ((Nauczyciel)u).Specjalizacja)
+                            .Include(p => p.Użytkownik).ThenInclude(u => ((Nauczyciel)u).Wydział)
+                            .SingleAsync();
+                    }
+                    else
+                    {
+                        // Administrator
+                        profil = await _context.Profile
+                            .Where(p => p.IdProfilu == id)
+                            .Include(p => p.Użytkownik).ThenInclude(u => ((Administrator)u).Rola)
+                            .SingleAsync();
+                    }
                 }
                 Dictionary<String, dynamic> profilMap = new Dictionary<string, dynamic>();
                 List<Dictionary<String, dynamic>> answer = new List<Dictionary<string, dynamic>>();
@@ -150,21 +181,21 @@ namespace webapi.Controllers
                         {"mail", profil.Użytkownik.Mail}
                     };
 
-                if (profil.Użytkownik.Administrator != null)
+                if (profil.Użytkownik.GetType().Name == "Adminstrator")
                 {
-                    profilMap["info"].Add("group", profil.Użytkownik.Administrator.Rola != null ? profil.Użytkownik.Administrator.Rola.Nazwa : profil.Użytkownik.Administrator.IdRoli.ToString());
+                    profilMap["info"].Add("group", ((Administrator)profil.Użytkownik).Rola != null ? ((Administrator)profil.Użytkownik).Rola.Nazwa : ((Administrator)profil.Użytkownik).IdRoli.ToString());
                     profilMap["info"].Add("curriculum", "");
 
                 }
-                else if (profil.Użytkownik.Nauczyciel != null)
+                else if (profil.Użytkownik.GetType().Name == "Nauczyciel")
                 {
-                    profilMap["info"].Add("group", profil.Użytkownik.Nauczyciel.Specjalizacja != null ? profil.Użytkownik.Nauczyciel.Specjalizacja.Nazwa : profil.Użytkownik.Nauczyciel.IdSpecjalizacji.ToString());
+                    profilMap["info"].Add("group", ((Nauczyciel)profil.Użytkownik).Specjalizacja != null ? ((Nauczyciel)profil.Użytkownik).Specjalizacja.Nazwa : ((Nauczyciel)profil.Użytkownik).IdSpecjalizacji.ToString());
                     profilMap["info"].Add("curriculum", "");
                 }
-                else if (profil.Użytkownik.Student != null)
+                else if (profil.Użytkownik.GetType().Name == "Student")
                 {
-                    profilMap["info"].Add("group", profil.Użytkownik.Student.GrupaStudencka.Nazwa);
-                    profilMap["info"].Add("curriculum", profil.Użytkownik.Student.KierunekStudiów.NazwaKierunku);
+                    profilMap["info"].Add("group", ((Student)profil.Użytkownik).GrupaStudencka.Nazwa);
+                    profilMap["info"].Add("curriculum", ((Student)profil.Użytkownik).KierunekStudiów.NazwaKierunku);
                 }
                 profilMap["sidebar"] = new Dictionary<String, dynamic>() {
                     {"info", ""}
@@ -202,8 +233,13 @@ namespace webapi.Controllers
                 List<Dictionary<String, dynamic>> profileInfo = new List<Dictionary<string, dynamic>>();
 
 #pragma warning disable CS8602 // Wyłuskanie odwołania, które może mieć wartość null.
-                var profile = await _context.Profile.Select(p => new { p.ObrazProfilu, p.Użytkownik, p.Użytkownik.Administrator, p.Użytkownik.Administrator.Rola, p.Użytkownik.Nauczyciel, p.Użytkownik.Nauczyciel.Specjalizacja, p.Użytkownik.Student, p.Użytkownik.Student.GrupaStudencka, p.Użytkownik.Student.KierunekStudiów }).ToListAsync();
+                var profile = await _context.Profile.Select(p => new { p.ObrazProfilu, p.Użytkownik, ((Administrator)p.Użytkownik).Rola, ((Nauczyciel)p.Użytkownik).Specjalizacja, ((Student)p.Użytkownik).GrupaStudencka, ((Student)p.Użytkownik).KierunekStudiów }).ToListAsync();
 #pragma warning restore CS8602 // Wyłuskanie odwołania, które może mieć wartość null.
+
+                if (profile == null)
+                {
+                    return null;
+                }
 
                 //List<Użytkownik> użytkownicy = await _context.Użytkownicy.ToListAsync();
                 //List<Student> studenci = await _context.Studenci.ToListAsync();
@@ -218,8 +254,8 @@ namespace webapi.Controllers
                     {"name", profile[i].Użytkownik.Imię},
                     {"lastname", profile[i].Użytkownik.Nazwisko},
                     {"mail", profile[i].Użytkownik.Mail},
-                    {"group", profile[i].Użytkownik.Student != null ? profile[i]!.Użytkownik!.Student!.GrupaStudencka.Nazwa : (profile[i].Użytkownik.Nauczyciel != null ? profile[i]!.Użytkownik!.Nauczyciel!.Specjalizacja : profile[i]!.Użytkownik!.Administrator!.Rola.Nazwa) }, //studenci.Where(s => s.IdUżytkownika == i + 1).IsNullOrEmpty() ? (nauczyciele.Where(n => n.IdUżytkownika == i + 1).IsNullOrEmpty() ? administratorzy.Where(n => n.IdUżytkownika == i + 1).First().IdRoli : nauczyciele.Where(n => n.IdUżytkownika == i + 1).First().IdSpecjalizacji ) : studenci[i].GrupaStudencka },
-                    {"curriculum", profile[i].Użytkownik.Student != null ? profile[i]!.Użytkownik!.Student!.KierunekStudiów.NazwaKierunku : ""}//studenci.Where(s => s.IdUżytkownika == i + 1).IsNullOrEmpty() ? "" : studenci[i].KierunekStudiów }
+                    {"group", profile[i].Użytkownik.GetType().Name == "Student" ? ((Student)profile[i]!.Użytkownik!).GrupaStudencka.Nazwa : (profile[i].Użytkownik.GetType().Name == "Nauczyciel" ? ((Nauczyciel)profile[i]!.Użytkownik!).Specjalizacja : ((Administrator) profile[i]!.Użytkownik!).Rola.Nazwa) }, //studenci.Where(s => s.IdUżytkownika == i + 1).IsNullOrEmpty() ? (nauczyciele.Where(n => n.IdUżytkownika == i + 1).IsNullOrEmpty() ? administratorzy.Where(n => n.IdUżytkownika == i + 1).First().IdRoli : nauczyciele.Where(n => n.IdUżytkownika == i + 1).First().IdSpecjalizacji ) : studenci[i].GrupaStudencka },
+                    {"curriculum", profile[i].Użytkownik.GetType().Name != "Student" ? ((Student)profile[i]!.Użytkownik!).KierunekStudiów.NazwaKierunku : ""}//studenci.Where(s => s.IdUżytkownika == i + 1).IsNullOrEmpty() ? "" : studenci[i].KierunekStudiów }
                 };
                     profileMap["sidebar"] = new Dictionary<String, dynamic>()
                     {

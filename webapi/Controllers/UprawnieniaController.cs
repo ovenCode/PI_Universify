@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using webapi.Data;
 using webapi.Models;
 
@@ -23,23 +26,28 @@ namespace webapi.Controllers
 
         // GET: api/Uprawnienia
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Uprawnienie>>> GetUprawnienia()
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetUprawnienia()
         {
-          if (_context.Uprawnienia == null)
-          {
-              return NotFound();
-          }
-            return await _context.Uprawnienia.ToListAsync();
+            if (_context.Uprawnienia == null)
+            {
+                return NotFound();
+            }
+
+            // Uprawnienia mają być posortowane tak, aby ZX, DX, MX, UX, ZY, DY, MY, UY
+            Regex sort = new Regex(@"[Z,D,M,U]\w+"); // .OrderBy(u => sort.Match(u.Nazwa).Value)
+            List<char> sortOrder = new List<char> { 'Z', 'D', 'M', 'U' };
+            System.Console.WriteLine(sort.Match("ZU").Value);
+            return await _context.Uprawnienia.OrderBy(u => u.Nazwa.Substring(1)).ThenBy(u => "Z").ThenBy(u => "D").ThenBy(u => "M").ThenBy(u => "U").ToListAsync();
         }
 
         // GET: api/Uprawnienia/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Uprawnienie>> GetUprawnienie(long id)
         {
-          if (_context.Uprawnienia == null)
-          {
-              return NotFound();
-          }
+            if (_context.Uprawnienia == null)
+            {
+                return NotFound();
+            }
             var uprawnienie = await _context.Uprawnienia.FindAsync(id);
 
             if (uprawnienie == null)
@@ -86,10 +94,10 @@ namespace webapi.Controllers
         [HttpPost]
         public async Task<ActionResult<Uprawnienie>> PostUprawnienie(Uprawnienie uprawnienie)
         {
-          if (_context.Uprawnienia == null)
-          {
-              return Problem("Entity set 'UniversifyDbContext.Uprawnienia'  is null.");
-          }
+            if (_context.Uprawnienia == null)
+            {
+                return Problem("Entity set 'UniversifyDbContext.Uprawnienia'  is null.");
+            }
             _context.Uprawnienia.Add(uprawnienie);
             await _context.SaveChangesAsync();
 

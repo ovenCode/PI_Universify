@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph GraphDirection="LeftToRight" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="Database" Label="UniversifyDB.db" Category="Database" Group="Expanded" />
+    <Node Id="Alergeny" Label="Alergeny" Category="Table" Group="Collapsed" />
+    <Node Id="Alergeny_ID_ALERGENU" Label="ID_ALERGENU" Category="Field Primary" Description="bigint" />
+    <Node Id="Alergeny_IdDiety" Label="IdDiety" Category="Field Foreign" Description="bigint" />
+    <Node Id="Alergeny_NAZWA" Label="NAZWA" Category="Field" Description="nchar(50)" />
+    <Node Id="Budynki" Label="Budynki" Category="Table" Group="Collapsed" />
+    <Node Id="Budynki_ID_BUDYNKU" Label="ID_BUDYNKU" Category="Field Primary" Description="bigint" />
+    <Node Id="Budynki_NAZWA" Label="NAZWA" Category="Field" Description="nchar(40)" />
+    <Node Id="Budynki_ADRES" Label="ADRES" Category="Field" Description="nchar(40)" />
+    <Node Id="Dania" Label="Dania" Category="Table" Group="Collapsed" />
+    <Node Id="Dania_ID_DANIA" Label="ID_DANIA" Category="Field Primary" Description="bigint" />
+    <Node Id="Dania_NAZWA" Label="NAZWA" Category="Field" Description="nchar(50)" />
+    <Node Id="Dania_ILOSC_KALORII" Label="ILOSC_KALORII" Category="Field" Description="bigint" />
+    <Node Id="Dania_ID_SKLADNIKA" Label="ID_SKLADNIKA" Category="Field" Description="bigint" />
+    <Node Id="Dania_ID_DIETY" Label="ID_DIETY" Category="Field Foreign" Description="bigint" />
+    <Node Id="Diety" Label="Diety" Category="Table" Group="Collapsed" />
+    <Node Id="Diety_ID_DIETY" Label="ID_DIETY" Category="Field Primary" Description="bigint" />
+    <Node Id="Diety_NAZWA" Label="NAZWA" Category="Field" Description="nchar(70)" />
+    <Node Id="Diety_ID_KATEGORII" Label="ID_KATEGORII" Category="Field Foreign" Description="bigint" />
+    <Node Id="Diety_ID_ALERGENU" Label="ID_ALERGENU" Category="Field" Description="bigint" />
+    <Node Id="Diety_CENA" Label="CENA" Category="Field" Description="real" />
+    <Node Id="Diety_ID_DANIA" Label="ID_DANIA" Category="Field" Description="bigint" />
+    <Node Id="GrupaNauczyciel" Label="GrupaNauczyciel" Category="Table" Group="Collapsed" />
+    <Node Id="GrupaNauczyciel_GrupyIdGrupy" Label="GrupyIdGrupy" Category="Field Primary" Description="bigint" />
+    <Node Id="GrupaNauczyciel_NauczycieleIdUzytkownika" Label="NauczycieleIdUzytkownika" Category="Field Primary" Description="bigint" />
+    <Node Id="GrupaStudent" Label="GrupaStudent" Category="Table" Group="Collapsed" />
+    <Node Id="GrupaStudent_GrupyIdGrupy" Label="GrupyIdGrupy" Category="Field Primary" Description="bigint" />
+    <Node Id="GrupaStudent_StudenciIdStudenta" Label="StudenciIdStudenta" Category="Field Primary" Description="bigint" />
+    <Node Id="Grupy" Label="Grupy" Category="Table" Group="Collapsed" />
+    <Node Id="Grupy_ID_GRUPY" Label="ID_GRUPY" Category="Field Primary" Description="bigint" />
+    <Node Id="Grupy_NAZWA" Label="NAZWA" Category="Field" Description="nchar(50)" />
+    <Node Id="GrupyStudenckie" Label="GrupyStudenckie" Category="Table" Group="Collapsed" />
+    <Node Id="GrupyStudenckie_ID_GRUPY" Label="ID_GRUPY" Category="Field Primary" Description="bigint" />
+    <Node Id="GrupyStudenckie_NAZWA" Label="NAZWA" Category="Field" Description="nchar(60)" />
+    <Node Id="Kategorie" Label="Kategorie" Category="Table" Group="Collapsed" />
+    <Node Id="Kategorie_ID_KATEGORII" Label="ID_KATEGORII" Category="Field Primary" Description="bigint" />
+    <Node Id="Kategorie_NAZWA" Label="NAZWA" Category="Field" Description="nchar(60)" />
+    <Node Id="KierunkiStudiów" Label="KierunkiStudiów" Category="Table" Group="Collapsed" />
+    <Node Id="KierunkiStudiów_ID_KIERUNKU_STUDIOW" Label="ID_KIERUNKU_STUDIOW" Category="Field Primary" Description="bigint" />
+    <Node Id="KierunkiStudiów_Nazwa_Kierunku" Label="Nazwa_Kierunku" Category="Field" Description="nchar&#xA;" />
+    <Node Id="KodyParkingu" Label="KodyParkingu" Category="Table" Group="Collapsed" />
+    <Node Id="KodyParkingu_ID_KODU" Label="ID_KODU" Category="Field Primary" Description="bigint" />
+    <Node Id="KodyParkingu_ID_PARKINGU" Label="ID_PARKINGU" Category="Field Foreign" Description="bigint" />
+    <Node Id="KodyParkingu_ID_MIEJSCA" Label="ID_MIEJSCA" Category="Field Foreign" Description="bigint" />
+    <Node Id="KodyParkingu_KOD" Label="KOD" Category="Field" Description="image" />
+    <Node Id="Miejsca" Label="Miejsca" Category="Table" Group="Collapsed" />
+    <Node Id="Miejsca_ID_MIEJSCA" Label="ID_MIEJSCA" Category="Field Primary" Description="bigint" />
+    <Node Id="Miejsca_IdParkingu" Label="IdParkingu" Category="Field Foreign" Description="bigint" />
+    <Node Id="Miejsca_ID_TYPU" Label="ID_TYPU" Category="Field Foreign" Description="int" />
+    <Node Id="Miejsca_DOSTEPNOSC" Label="DOSTEPNOSC" Category="Field Optional" Description="bigint" />
+    <Node Id="NauczycielPrzedmiot" Label="NauczycielPrzedmiot" Category="Table" Group="Collapsed" />
+    <Node Id="NauczycielPrzedmiot_NauczycieleIdUzytkownika" Label="NauczycieleIdUzytkownika" Category="Field Primary" Description="bigint" />
+    <Node Id="NauczycielPrzedmiot_PrzedmiotyIdPrzedmiotu" Label="PrzedmiotyIdPrzedmiotu" Category="Field Primary" Description="bigint" />
+    <Node Id="Parkingi" Label="Parkingi" Category="Table" Group="Collapsed" />
+    <Node Id="Parkingi_ID_PARKINGU" Label="ID_PARKINGU" Category="Field Primary" Description="bigint" />
+    <Node Id="Parkingi_ADRES" Label="ADRES" Category="Field" Description="nchar(60)" />
+    <Node Id="Parkingi_LICZBA_RZEDOW" Label="LICZBA_RZEDOW" Category="Field Optional" Description="bigint" />
+    <Node Id="Produkty" Label="Produkty" Category="Table" Group="Collapsed" />
+    <Node Id="Produkty_ID_PRODUKTU" Label="ID_PRODUKTU" Category="Field Primary" Description="bigint" />
+    <Node Id="Produkty_NAZWA" Label="NAZWA" Category="Field" Description="nchar(70)" />
+    <Node Id="Produkty_ILOSC_PRODUKTU" Label="ILOSC_PRODUKTU" Category="Field" Description="real" />
+    <Node Id="Produkty_JEDNOSTKA" Label="JEDNOSTKA" Category="Field" Description="nchar(10)" />
+    <Node Id="Produkty_IdStolówki" Label="IdStolówki" Category="Field Foreign" Description="bigint" />
+    <Node Id="Profile" Label="Profile" Category="Table" Group="Collapsed" />
+    <Node Id="Profile_ID_PROFILU" Label="ID_PROFILU" Category="Field Primary" Description="bigint" />
+    <Node Id="Profile_ID_UZYTKOWNIKA" Label="ID_UZYTKOWNIKA" Category="Field Foreign" Description="int" />
+    <Node Id="Profile_OBRAZ_PROFILU" Label="OBRAZ_PROFILU" Category="Field" Description="nchar(60)" />
+    <Node Id="Profile_PASEK_PROFILU" Label="PASEK_PROFILU" Category="Field" Description="nchar(150)" />
+    <Node Id="Profile_GLOWNA_ZAWARTOSC" Label="GLOWNA_ZAWARTOSC" Category="Field" Description="nvarchar(1500)" />
+    <Node Id="PrzedmiotStudent" Label="PrzedmiotStudent" Category="Table" Group="Collapsed" />
+    <Node Id="PrzedmiotStudent_PrzedmiotyIdPrzedmiotu" Label="PrzedmiotyIdPrzedmiotu" Category="Field Primary" Description="bigint" />
+    <Node Id="PrzedmiotStudent_StudenciIdUzytkownika" Label="StudenciIdUzytkownika" Category="Field Primary" Description="bigint" />
+    <Node Id="Przedmioty" Label="Przedmioty" Category="Table" Group="Collapsed" />
+    <Node Id="Przedmioty_ID_PRZEDMIOTU" Label="ID_PRZEDMIOTU" Category="Field Primary" Description="bigint" />
+    <Node Id="Przedmioty_NAZWA" Label="NAZWA" Category="Field" Description="nchar(120)" />
+    <Node Id="Przedmioty_KATEGORIA" Label="KATEGORIA" Category="Field" Description="nchar(60)" />
+    <Node Id="Przedmioty_SEMESTR_ROZPOCZECIA" Label="SEMESTR_ROZPOCZECIA" Category="Field" Description="int" />
+    <Node Id="Przedmioty_ILOSC_SEMESTROW" Label="ILOSC_SEMESTROW" Category="Field" Description="int" />
+    <Node Id="RolaUprawnienie" Label="RolaUprawnienie" Category="Table" Group="Collapsed" />
+    <Node Id="RolaUprawnienie_RoleIdRoli" Label="RoleIdRoli" Category="Field Primary" Description="bigint" />
+    <Node Id="RolaUprawnienie_UprawnieniaIdUprawnienia" Label="UprawnieniaIdUprawnienia" Category="Field Primary" Description="bigint" />
+    <Node Id="Role" Label="Role" Category="Table" Group="Collapsed" />
+    <Node Id="Role_ID_ROLI" Label="ID_ROLI" Category="Field Primary" Description="bigint" />
+    <Node Id="Role_NAZWA" Label="NAZWA" Category="Field" Description="nchar(50)" />
+    <Node Id="RozkladParkingu" Label="RozkladParkingu" Category="Table" Group="Collapsed" />
+    <Node Id="RozkladParkingu_ID" Label="ID" Category="Field Primary" Description="bigint" />
+    <Node Id="RozkladParkingu_ID_PARKINGU" Label="ID_PARKINGU" Category="Field Foreign" Description="bigint" />
+    <Node Id="RozkladParkingu_STAN_MIEJSCA" Label="STAN_MIEJSCA" Category="Field" Description="bigint" />
+    <Node Id="Skladniki" Label="Skladniki" Category="Table" Group="Collapsed" />
+    <Node Id="Skladniki_ID_SKLADNIKA" Label="ID_SKLADNIKA" Category="Field Primary" Description="bigint" />
+    <Node Id="Skladniki_IdDania" Label="IdDania" Category="Field Foreign" Description="bigint" />
+    <Node Id="Skladniki_NAZWA" Label="NAZWA" Category="Field" Description="nchar(50)" />
+    <Node Id="Specjalizacje" Label="Specjalizacje" Category="Table" Group="Collapsed" />
+    <Node Id="Specjalizacje_ID_SPECJALIZACJI" Label="ID_SPECJALIZACJI" Category="Field Primary" Description="bigint" />
+    <Node Id="Specjalizacje_NAZWA" Label="NAZWA" Category="Field Optional" Description="nchar(80)" />
+    <Node Id="Stolówki" Label="Stolówki" Category="Table" Group="Collapsed" />
+    <Node Id="Stolówki_ID_STOLOWKI" Label="ID_STOLOWKI" Category="Field Primary" Description="bigint" />
+    <Node Id="Stolówki_ID_BUDYNKU" Label="ID_BUDYNKU" Category="Field Foreign" Description="bigint" />
+    <Node Id="Stolówki_ID_ZAMOWIENIA" Label="ID_ZAMOWIENIA" Category="Field" Description="bigint" />
+    <Node Id="Stolówki_ID_PRODUKTU" Label="ID_PRODUKTU" Category="Field" Description="bigint" />
+    <Node Id="Stolówki_INFORMACJE_DODATKOWE" Label="INFORMACJE_DODATKOWE" Category="Field Optional" Description="nchar(1000)" />
+    <Node Id="TypyMiejsc" Label="TypyMiejsc" Category="Table" Group="Collapsed" />
+    <Node Id="TypyMiejsc_ID_TYPU" Label="ID_TYPU" Category="Field Primary" Description="bigint" />
+    <Node Id="TypyMiejsc_TYP_MIEJSCA" Label="TYP_MIEJSCA" Category="Field" Description="nchar(40)" />
+    <Node Id="Uprawnienia" Label="Uprawnienia" Category="Table" Group="Collapsed" />
+    <Node Id="Uprawnienia_ID_UPRAWNIENIA" Label="ID_UPRAWNIENIA" Category="Field Primary" Description="bigint" />
+    <Node Id="Uprawnienia_NAZWA" Label="NAZWA" Category="Field" Description="nchar(80)" />
+    <Node Id="Uzytkownicy" Label="Uzytkownicy" Category="Table" Group="Collapsed" />
+    <Node Id="Uzytkownicy_ID_UZYTKOWNIKA" Label="ID_UZYTKOWNIKA" Category="Field Primary" Description="bigint" />
+    <Node Id="Uzytkownicy_IMIE" Label="IMIE" Category="Field" Description="nchar(30)" />
+    <Node Id="Uzytkownicy_NAZWISKO" Label="NAZWISKO" Category="Field" Description="nchar(50)" />
+    <Node Id="Uzytkownicy_MAIL" Label="MAIL" Category="Field" Description="nchar(70)" />
+    <Node Id="Uzytkownicy_HASLO" Label="HASLO" Category="Field" Description="nchar(40)" />
+    <Node Id="Uzytkownicy_GRUPA" Label="GRUPA" Category="Field Optional" Description="nchar(40)" />
+    <Node Id="Uzytkownicy_NUMER_TEL" Label="NUMER_TEL" Category="Field Optional" Description="nchar(15)" />
+    <Node Id="Uzytkownicy_ID_BUDYNKU" Label="ID_BUDYNKU" Category="Field Foreign" Description="bigint" />
+    <Node Id="Uzytkownicy_TYP_UZYTKOWNIKA" Label="TYP_UZYTKOWNIKA" Category="Field" Description="nchar(14)" />
+    <Node Id="Uzytkownicy_ID_ADMINISTRATORA" Label="ID_ADMINISTRATORA" Category="Field Optional" Description="bigint" />
+    <Node Id="Uzytkownicy_ID_ROLI" Label="ID_ROLI" Category="Field Foreign" Description="int" />
+    <Node Id="Uzytkownicy_ID_NAUCZYCIELA" Label="ID_NAUCZYCIELA" Category="Field Optional" Description="bigint" />
+    <Node Id="Uzytkownicy_ID_WYDZIALU" Label="ID_WYDZIALU" Category="Field Foreign" Description="bigint" />
+    <Node Id="Uzytkownicy_ID_SPECJALIZACJI" Label="ID_SPECJALIZACJI" Category="Field Foreign" Description="bigint" />
+    <Node Id="Uzytkownicy_ID_STUDENTA" Label="ID_STUDENTA" Category="Field Optional" Description="bigint" />
+    <Node Id="Uzytkownicy_ID_GRUPY_STUDENCKIEJ" Label="ID_GRUPY_STUDENCKIEJ" Category="Field Foreign" Description="bigint" />
+    <Node Id="Uzytkownicy_ID_KIERUNKU_STUDIOW" Label="ID_KIERUNKU_STUDIOW" Category="Field Foreign" Description="bigint" />
+    <Node Id="Uzytkownicy_ROK_STUDIOW" Label="ROK_STUDIOW" Category="Field Optional" Description="bigint" />
+    <Node Id="Wydzialy" Label="Wydzialy" Category="Table" Group="Collapsed" />
+    <Node Id="Wydzialy_ID_WYDZIALU" Label="ID_WYDZIALU" Category="Field Primary" Description="bigint" />
+    <Node Id="Wydzialy_NAZWA" Label="NAZWA" Category="Field" Description="nchar(80)" />
+    <Node Id="Zamówienia" Label="Zamówienia" Category="Table" Group="Collapsed" />
+    <Node Id="Zamówienia_ID_ZAMOWIENIA" Label="ID_ZAMOWIENIA" Category="Field Primary" Description="bigint" />
+    <Node Id="Zamówienia_NAZWA" Label="NAZWA" Category="Field Optional" Description="nchar(70)" />
+    <Node Id="Zamówienia_ID_UZYTKOWNIKA" Label="ID_UZYTKOWNIKA" Category="Field Foreign" Description="bigint" />
+    <Node Id="Zamówienia_IdStolówki" Label="IdStolówki" Category="Field Foreign" Description="bigint" />
+    <Node Id="Zamówienia_ID_DIETY" Label="ID_DIETY" Category="Field Foreign" Description="bigint" />
+    <Node Id="Zamówienia_ID_DANIA" Label="ID_DANIA" Category="Field Foreign" Description="bigint" />
+    <Node Id="Zamówienia_DZIEN_ZAMOWIENIA" Label="DZIEN_ZAMOWIENIA" Category="Field" Description="datetime" />
+  </Nodes>
+  <Links>
+    <Link Source="Database" Target="Alergeny" Category="Contains" />
+    <Link Source="Alergeny" Target="Alergeny_ID_ALERGENU" Category="Contains" />
+    <Link Source="Alergeny" Target="Alergeny_IdDiety" Category="Contains" />
+    <Link Source="Alergeny" Target="Alergeny_NAZWA" Category="Contains" />
+    <Link Source="Alergeny_IdDiety" Target="Diety_ID_DIETY" Label="FK_Alergeny_0_0" Category="Foreign Key" />
+    <Link Source="Database" Target="Budynki" Category="Contains" />
+    <Link Source="Budynki" Target="Budynki_ID_BUDYNKU" Category="Contains" />
+    <Link Source="Budynki" Target="Budynki_NAZWA" Category="Contains" />
+    <Link Source="Budynki" Target="Budynki_ADRES" Category="Contains" />
+    <Link Source="Database" Target="Dania" Category="Contains" />
+    <Link Source="Dania" Target="Dania_ID_DANIA" Category="Contains" />
+    <Link Source="Dania" Target="Dania_NAZWA" Category="Contains" />
+    <Link Source="Dania" Target="Dania_ILOSC_KALORII" Category="Contains" />
+    <Link Source="Dania" Target="Dania_ID_SKLADNIKA" Category="Contains" />
+    <Link Source="Dania" Target="Dania_ID_DIETY" Category="Contains" />
+    <Link Source="Dania_ID_DIETY" Target="Diety_ID_DIETY" Label="FK_Dania_0_0" Category="Foreign Key" />
+    <Link Source="Database" Target="Diety" Category="Contains" />
+    <Link Source="Diety" Target="Diety_ID_DIETY" Category="Contains" />
+    <Link Source="Diety" Target="Diety_NAZWA" Category="Contains" />
+    <Link Source="Diety" Target="Diety_ID_KATEGORII" Category="Contains" />
+    <Link Source="Diety" Target="Diety_ID_ALERGENU" Category="Contains" />
+    <Link Source="Diety" Target="Diety_CENA" Category="Contains" />
+    <Link Source="Diety" Target="Diety_ID_DANIA" Category="Contains" />
+    <Link Source="Diety_ID_KATEGORII" Target="Kategorie_ID_KATEGORII" Label="FK_Diety_0_0" Category="Foreign Key" />
+    <Link Source="Database" Target="GrupaNauczyciel" Category="Contains" />
+    <Link Source="GrupaNauczyciel" Target="GrupaNauczyciel_GrupyIdGrupy" Category="Contains" />
+    <Link Source="GrupaNauczyciel" Target="GrupaNauczyciel_NauczycieleIdUzytkownika" Category="Contains" />
+    <Link Source="GrupaNauczyciel_NauczycieleIdUzytkownika" Target="Nauczyciele_ID_UZYTKOWNIKA" Label="FK_GrupaNauczyciel_0_0" Category="Foreign Key" />
+    <Link Source="GrupaNauczyciel_GrupyIdGrupy" Target="Grupy_ID_GRUPY" Label="FK_GrupaNauczyciel_1_0" Category="Foreign Key" />
+    <Link Source="Database" Target="GrupaStudent" Category="Contains" />
+    <Link Source="GrupaStudent" Target="GrupaStudent_GrupyIdGrupy" Category="Contains" />
+    <Link Source="GrupaStudent" Target="GrupaStudent_StudenciIdStudenta" Category="Contains" />
+    <Link Source="GrupaStudent_StudenciIdStudenta" Target="Studenci_ID_STUDENTA" Label="FK_GrupaStudent_0_0" Category="Foreign Key" />
+    <Link Source="GrupaStudent_GrupyIdGrupy" Target="Grupy_ID_GRUPY" Label="FK_GrupaStudent_1_0" Category="Foreign Key" />
+    <Link Source="Database" Target="Grupy" Category="Contains" />
+    <Link Source="Grupy" Target="Grupy_ID_GRUPY" Category="Contains" />
+    <Link Source="Grupy" Target="Grupy_NAZWA" Category="Contains" />
+    <Link Source="Database" Target="GrupyStudenckie" Category="Contains" />
+    <Link Source="GrupyStudenckie" Target="GrupyStudenckie_ID_GRUPY" Category="Contains" />
+    <Link Source="GrupyStudenckie" Target="GrupyStudenckie_NAZWA" Category="Contains" />
+    <Link Source="Database" Target="Kategorie" Category="Contains" />
+    <Link Source="Kategorie" Target="Kategorie_ID_KATEGORII" Category="Contains" />
+    <Link Source="Kategorie" Target="Kategorie_NAZWA" Category="Contains" />
+    <Link Source="Database" Target="KierunkiStudiów" Category="Contains" />
+    <Link Source="KierunkiStudiów" Target="KierunkiStudiów_ID_KIERUNKU_STUDIOW" Category="Contains" />
+    <Link Source="KierunkiStudiów" Target="KierunkiStudiów_Nazwa_Kierunku" Category="Contains" />
+    <Link Source="Database" Target="KodyParkingu" Category="Contains" />
+    <Link Source="KodyParkingu" Target="KodyParkingu_ID_KODU" Category="Contains" />
+    <Link Source="KodyParkingu" Target="KodyParkingu_ID_PARKINGU" Category="Contains" />
+    <Link Source="KodyParkingu" Target="KodyParkingu_ID_MIEJSCA" Category="Contains" />
+    <Link Source="KodyParkingu" Target="KodyParkingu_KOD" Category="Contains" />
+    <Link Source="KodyParkingu_ID_MIEJSCA" Target="ROZKLADPARKINGU_ID" Label="FK_KodyParkingu_0_0" Category="Foreign Key" />
+    <Link Source="KodyParkingu_ID_PARKINGU" Target="PARKINGI_ID_PARKINGU" Label="FK_KodyParkingu_1_0" Category="Foreign Key" />
+    <Link Source="Database" Target="Miejsca" Category="Contains" />
+    <Link Source="Miejsca" Target="Miejsca_ID_MIEJSCA" Category="Contains" />
+    <Link Source="Miejsca" Target="Miejsca_IdParkingu" Category="Contains" />
+    <Link Source="Miejsca" Target="Miejsca_ID_TYPU" Category="Contains" />
+    <Link Source="Miejsca" Target="Miejsca_DOSTEPNOSC" Category="Contains" />
+    <Link Source="Miejsca_ID_TYPU" Target="TypyMiejsc_ID_TYPU" Label="FK_Miejsca_0_0" Category="Foreign Key" />
+    <Link Source="Miejsca_IdParkingu" Target="Parkingi_ID_PARKINGU" Label="FK_Miejsca_1_0" Category="Foreign Key" />
+    <Link Source="Database" Target="NauczycielPrzedmiot" Category="Contains" />
+    <Link Source="NauczycielPrzedmiot" Target="NauczycielPrzedmiot_NauczycieleIdUzytkownika" Category="Contains" />
+    <Link Source="NauczycielPrzedmiot" Target="NauczycielPrzedmiot_PrzedmiotyIdPrzedmiotu" Category="Contains" />
+    <Link Source="NauczycielPrzedmiot_PrzedmiotyIdPrzedmiotu" Target="Przedmioty_ID_PRZEDMIOTU" Label="FK_NauczycielPrzedmiot_0_0" Category="Foreign Key" />
+    <Link Source="NauczycielPrzedmiot_NauczycieleIdUzytkownika" Target="Nauczyciele_ID_UZYTKOWNIKA" Label="FK_NauczycielPrzedmiot_1_0" Category="Foreign Key" />
+    <Link Source="Database" Target="Parkingi" Category="Contains" />
+    <Link Source="Parkingi" Target="Parkingi_ID_PARKINGU" Category="Contains" />
+    <Link Source="Parkingi" Target="Parkingi_ADRES" Category="Contains" />
+    <Link Source="Parkingi" Target="Parkingi_LICZBA_RZEDOW" Category="Contains" />
+    <Link Source="Database" Target="Produkty" Category="Contains" />
+    <Link Source="Produkty" Target="Produkty_ID_PRODUKTU" Category="Contains" />
+    <Link Source="Produkty" Target="Produkty_NAZWA" Category="Contains" />
+    <Link Source="Produkty" Target="Produkty_ILOSC_PRODUKTU" Category="Contains" />
+    <Link Source="Produkty" Target="Produkty_JEDNOSTKA" Category="Contains" />
+    <Link Source="Produkty" Target="Produkty_IdStolówki" Category="Contains" />
+    <Link Source="Produkty_IdStolówki" Target="Stolówki_ID_STOLOWKI" Label="FK_Produkty_0_0" Category="Foreign Key" />
+    <Link Source="Database" Target="Profile" Category="Contains" />
+    <Link Source="Profile" Target="Profile_ID_PROFILU" Category="Contains" />
+    <Link Source="Profile" Target="Profile_ID_UZYTKOWNIKA" Category="Contains" />
+    <Link Source="Profile" Target="Profile_OBRAZ_PROFILU" Category="Contains" />
+    <Link Source="Profile" Target="Profile_PASEK_PROFILU" Category="Contains" />
+    <Link Source="Profile" Target="Profile_GLOWNA_ZAWARTOSC" Category="Contains" />
+    <Link Source="Profile_ID_UZYTKOWNIKA" Target="Uzytkownicy_ID_UZYTKOWNIKA" Label="FK_Profile_0_0" Category="Foreign Key" />
+    <Link Source="Database" Target="PrzedmiotStudent" Category="Contains" />
+    <Link Source="PrzedmiotStudent" Target="PrzedmiotStudent_PrzedmiotyIdPrzedmiotu" Category="Contains" />
+    <Link Source="PrzedmiotStudent" Target="PrzedmiotStudent_StudenciIdUzytkownika" Category="Contains" />
+    <Link Source="PrzedmiotStudent_StudenciIdUzytkownika" Target="Uzytkownicy_ID_UZYTKOWNIKA" Label="FK_PrzedmiotStudent_0_0" Category="Foreign Key" />
+    <Link Source="PrzedmiotStudent_PrzedmiotyIdPrzedmiotu" Target="Przedmioty_ID_PRZEDMIOTU" Label="FK_PrzedmiotStudent_1_0" Category="Foreign Key" />
+    <Link Source="Database" Target="Przedmioty" Category="Contains" />
+    <Link Source="Przedmioty" Target="Przedmioty_ID_PRZEDMIOTU" Category="Contains" />
+    <Link Source="Przedmioty" Target="Przedmioty_NAZWA" Category="Contains" />
+    <Link Source="Przedmioty" Target="Przedmioty_KATEGORIA" Category="Contains" />
+    <Link Source="Przedmioty" Target="Przedmioty_SEMESTR_ROZPOCZECIA" Category="Contains" />
+    <Link Source="Przedmioty" Target="Przedmioty_ILOSC_SEMESTROW" Category="Contains" />
+    <Link Source="Database" Target="RolaUprawnienie" Category="Contains" />
+    <Link Source="RolaUprawnienie" Target="RolaUprawnienie_RoleIdRoli" Category="Contains" />
+    <Link Source="RolaUprawnienie" Target="RolaUprawnienie_UprawnieniaIdUprawnienia" Category="Contains" />
+    <Link Source="RolaUprawnienie_UprawnieniaIdUprawnienia" Target="Uprawnienia_ID_UPRAWNIENIA" Label="FK_RolaUprawnienie_0_0" Category="Foreign Key" />
+    <Link Source="RolaUprawnienie_RoleIdRoli" Target="Role_ID_ROLI" Label="FK_RolaUprawnienie_1_0" Category="Foreign Key" />
+    <Link Source="Database" Target="Role" Category="Contains" />
+    <Link Source="Role" Target="Role_ID_ROLI" Category="Contains" />
+    <Link Source="Role" Target="Role_NAZWA" Category="Contains" />
+    <Link Source="Database" Target="RozkladParkingu" Category="Contains" />
+    <Link Source="RozkladParkingu" Target="RozkladParkingu_ID" Category="Contains" />
+    <Link Source="RozkladParkingu" Target="RozkladParkingu_ID_PARKINGU" Category="Contains" />
+    <Link Source="RozkladParkingu" Target="RozkladParkingu_STAN_MIEJSCA" Category="Contains" />
+    <Link Source="RozkladParkingu_ID_PARKINGU" Target="Parkingi_ID_PARKINGU" Label="FK_RozkladParkingu_0_0" Category="Foreign Key" />
+    <Link Source="Database" Target="Skladniki" Category="Contains" />
+    <Link Source="Skladniki" Target="Skladniki_ID_SKLADNIKA" Category="Contains" />
+    <Link Source="Skladniki" Target="Skladniki_IdDania" Category="Contains" />
+    <Link Source="Skladniki" Target="Skladniki_NAZWA" Category="Contains" />
+    <Link Source="Skladniki_IdDania" Target="Dania_ID_DANIA" Label="FK_Skladniki_0_0" Category="Foreign Key" />
+    <Link Source="Database" Target="Specjalizacje" Category="Contains" />
+    <Link Source="Specjalizacje" Target="Specjalizacje_ID_SPECJALIZACJI" Category="Contains" />
+    <Link Source="Specjalizacje" Target="Specjalizacje_NAZWA" Category="Contains" />
+    <Link Source="Database" Target="Stolówki" Category="Contains" />
+    <Link Source="Stolówki" Target="Stolówki_ID_STOLOWKI" Category="Contains" />
+    <Link Source="Stolówki" Target="Stolówki_ID_BUDYNKU" Category="Contains" />
+    <Link Source="Stolówki" Target="Stolówki_ID_ZAMOWIENIA" Category="Contains" />
+    <Link Source="Stolówki" Target="Stolówki_ID_PRODUKTU" Category="Contains" />
+    <Link Source="Stolówki" Target="Stolówki_INFORMACJE_DODATKOWE" Category="Contains" />
+    <Link Source="Stolówki_ID_BUDYNKU" Target="Budynki_ID_BUDYNKU" Label="FK_Stolówki_0_0" Category="Foreign Key" />
+    <Link Source="Database" Target="TypyMiejsc" Category="Contains" />
+    <Link Source="TypyMiejsc" Target="TypyMiejsc_ID_TYPU" Category="Contains" />
+    <Link Source="TypyMiejsc" Target="TypyMiejsc_TYP_MIEJSCA" Category="Contains" />
+    <Link Source="Database" Target="Uprawnienia" Category="Contains" />
+    <Link Source="Uprawnienia" Target="Uprawnienia_ID_UPRAWNIENIA" Category="Contains" />
+    <Link Source="Uprawnienia" Target="Uprawnienia_NAZWA" Category="Contains" />
+    <Link Source="Database" Target="Uzytkownicy" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_ID_UZYTKOWNIKA" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_IMIE" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_NAZWISKO" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_MAIL" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_HASLO" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_GRUPA" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_NUMER_TEL" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_ID_BUDYNKU" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_TYP_UZYTKOWNIKA" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_ID_ADMINISTRATORA" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_ID_ROLI" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_ID_NAUCZYCIELA" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_ID_WYDZIALU" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_ID_SPECJALIZACJI" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_ID_STUDENTA" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_ID_GRUPY_STUDENCKIEJ" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_ID_KIERUNKU_STUDIOW" Category="Contains" />
+    <Link Source="Uzytkownicy" Target="Uzytkownicy_ROK_STUDIOW" Category="Contains" />
+    <Link Source="Uzytkownicy_ID_KIERUNKU_STUDIOW" Target="KierunkiStudiów_ID_KIERUNKU_STUDIOW" Label="FK_Uzytkownicy_0_0" Category="Foreign Key" />
+    <Link Source="Uzytkownicy_ID_GRUPY_STUDENCKIEJ" Target="GrupyStudenckie_ID_GRUPY" Label="FK_Uzytkownicy_1_0" Category="Foreign Key" />
+    <Link Source="Uzytkownicy_ID_SPECJALIZACJI" Target="Specjalizacje_ID_SPECJALIZACJI" Label="FK_Uzytkownicy_2_0" Category="Foreign Key" />
+    <Link Source="Uzytkownicy_ID_WYDZIALU" Target="Wydzialy_ID_WYDZIALU" Label="FK_Uzytkownicy_3_0" Category="Foreign Key" />
+    <Link Source="Uzytkownicy_ID_ROLI" Target="Role_ID_ROLI" Label="FK_Uzytkownicy_4_0" Category="Foreign Key" />
+    <Link Source="Uzytkownicy_ID_BUDYNKU" Target="Budynki_ID_BUDYNKU" Label="FK_Uzytkownicy_5_0" Category="Foreign Key" />
+    <Link Source="Database" Target="Wydzialy" Category="Contains" />
+    <Link Source="Wydzialy" Target="Wydzialy_ID_WYDZIALU" Category="Contains" />
+    <Link Source="Wydzialy" Target="Wydzialy_NAZWA" Category="Contains" />
+    <Link Source="Database" Target="Zamówienia" Category="Contains" />
+    <Link Source="Zamówienia" Target="Zamówienia_ID_ZAMOWIENIA" Category="Contains" />
+    <Link Source="Zamówienia" Target="Zamówienia_NAZWA" Category="Contains" />
+    <Link Source="Zamówienia" Target="Zamówienia_ID_UZYTKOWNIKA" Category="Contains" />
+    <Link Source="Zamówienia" Target="Zamówienia_IdStolówki" Category="Contains" />
+    <Link Source="Zamówienia" Target="Zamówienia_ID_DIETY" Category="Contains" />
+    <Link Source="Zamówienia" Target="Zamówienia_ID_DANIA" Category="Contains" />
+    <Link Source="Zamówienia" Target="Zamówienia_DZIEN_ZAMOWIENIA" Category="Contains" />
+    <Link Source="Zamówienia_ID_UZYTKOWNIKA" Target="Uzytkownicy_ID_UZYTKOWNIKA" Label="FK_Zamówienia_0_0" Category="Foreign Key" />
+    <Link Source="Zamówienia_IdStolówki" Target="Stolówki_ID_STOLOWKI" Label="FK_Zamówienia_1_0" Category="Foreign Key" />
+    <Link Source="Zamówienia_ID_DIETY" Target="Diety_ID_DIETY" Label="FK_Zamówienia_2_0" Category="Foreign Key" />
+    <Link Source="Zamówienia_ID_DANIA" Target="Dania_ID_DANIA" Label="FK_Zamówienia_3_0" Category="Foreign Key" />
+  </Links>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="Table" ValueLabel="True">
+      <Condition Expression="HasCategory('Table')" />
+      <Setter Property="Background" Value="#FFC0C0C0" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Schema" ValueLabel="True">
+      <Condition Expression="HasCategory('Schema')" />
+      <Setter Property="Background" Value="#FF7F9169" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Field Primary" ValueLabel="True">
+      <Condition Expression="HasCategory('Field Primary')" />
+      <Setter Property="Background" Value="#FF008000" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Field Optional" ValueLabel="True">
+      <Condition Expression="HasCategory('Field Optional')" />
+      <Setter Property="Background" Value="#FF808040" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Field Foreign" ValueLabel="True">
+      <Condition Expression="HasCategory('Field Foreign')" />
+      <Setter Property="Background" Value="#FF8080FF" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Field" ValueLabel="True">
+      <Condition Expression="HasCategory('Field')" />
+      <Setter Property="Background" Value="#FFC0A000" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Database" ValueLabel="True">
+      <Condition Expression="HasCategory('Database')" />
+      <Setter Property="Background" Value="#FFFFFFFF" />
+    </Style>
+  </Styles>
+</DirectedGraph>

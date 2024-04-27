@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 import "./App.css";
+import "./pages/utils/General.css";
 import "./AppLogin.js";
 import helpTxt from "./help.txt";
 import { AppLogin } from './AppLogin.js';
@@ -9,6 +10,7 @@ import { Profile } from "./pages/Profile";
 import { Parking } from "./pages/Parking";
 import { Cantine } from "./pages/Cantine";
 import { Subject } from "./pages/Subject";
+import AdminHub from "./pages/AdminHub.js";
 import { Loader } from "./pages/utils/Loader.js";
 import ReportBug from "./pages/utils/ReportBug.js";
 import ErrorBox from "./pages/utils/ErrorBox.js";
@@ -78,15 +80,16 @@ export const App = () => {
         <div className="App">
             <Header profile={[profileClassName, loginClassName]} vis={isVisible} toggleVis={toggleVis} isUserLoggedIn={isUserLoggedIn} setLoggedIn={setLoggedIn} setError={setError} />
             <div id="App-content">
-                {isUserLoggedIn[0] === "Logging" && <Loader message={"Loading"} />}
-                {isUserLoggedIn[0] === false && <AppLogin id="login" className={loginClassName} login={setLoggedIn} toggleVis={toggleVis} vis={isVisible} setError={setError} />}
+                {error.message && <ErrorBox className="fixed-dialog" error={error} setError={setError} />}
+                {(error.message != null || isUserLoggedIn[0] === "Logging") && <Loader message={"Loading"} />}
+                {isUserLoggedIn[0] === false && <AppLogin id="login" className={loginClassName} login={setLoggedIn} toggleVis={toggleVis} setError={setError} />}
                 {isUserLoggedIn[0] === "True" && (isVisible.includes("Profile")) && <Profile id="profile" className={profileClassName} setError={setError} userId={isUserLoggedIn[1]} />}
                 {isUserLoggedIn[0] === "True" && (isVisible === "Parking" || isVisible === "Parking ShowHelp") && <Parking className="mainContent" setError={setError} userId={isUserLoggedIn[1]} />}
                 {isUserLoggedIn[0] === "True" && (isVisible === "Cantine" || isVisible === "Cantine ShowHelp") && <Cantine className="mainContent" setError={setError} userId={isUserLoggedIn[1]} />}
                 {isUserLoggedIn[0] === "True" && (isVisible === "Subject" || isVisible === "Subject ShowHelp") && <Subject className="mainContent" setError={setError} userId={isUserLoggedIn[1]} />}
+                {isUserLoggedIn[0] === "Admin" && (isVisible === "AdminHub" || isVisible === "AdminHub ShowHelp") && <AdminHub className="mainContent" setError={setError} userId={isUserLoggedIn[1]} />}
                 {isVisible.includes("ReportBug") && <ReportBug toggleVis={toggleVis} vis={isVisible} />}
                 {isVisible.includes("ShowHelp") && <ShowHelp className="fixed-dialog" toggleVis={toggleVis} vis={isVisible} />}
-                {isVisible.includes("ErrorBox") && <ErrorBox className="fixed-dialog" error={error} toggleVis={toggleVis} vis={isVisible} />}
             </div>
             {/*<Footer/>*/}
 
@@ -99,12 +102,35 @@ export const App = () => {
 
 const ShowHelp = ({ className, vis, toggleVis }) => {
     //
-    const [content, setContent] = useState("");
+    const [content, setContent] = useState({ all: [], links: [], main: "" });
     const dialog = useRef(null);
 
     useEffect(() => {
         let ignore = false;
-        if (!ignore) fetch(helpTxt).then(r => r.text()).then(o => setContent(o));
+        if (!ignore) fetch(helpTxt).then(r => r.text()).then(o => {
+            console.log("FILE CONTENT");
+            console.log(o.split("\r\n\r\n\r\n"));
+            const _links = [], _all = [];
+            o.split("\r\n").forEach(el => {
+                if (el.match(/(?<=-\s)\D+(?=\s-)/) === null) {
+                    // Nic nie rób
+                } else {
+                    _links.push(el.match(/(?<=-\s)\D+(?=\s-)/));
+                }
+            });
+            o.split("\r\n\r\n\r\n").forEach(el => {
+                if (el.match(/(?<=-\s)\D+(?=\s-)/) === null) {
+                    _all.push(el);
+                } else {
+                    // Nic nie rób
+                }
+            });
+            setContent({
+                links: _links,
+                all: _all,
+                main: _all[0]
+            });
+        });
 
         const handleClick = (e) => {
             if (dialog.current && !dialog.current.contains(e.target)) {
@@ -118,6 +144,7 @@ const ShowHelp = ({ className, vis, toggleVis }) => {
             ignore = true;
             document.removeEventListener("mousedown", handleClick);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (<div>
@@ -126,7 +153,7 @@ const ShowHelp = ({ className, vis, toggleVis }) => {
                 <div id="help-short">Some short</div>
                 <div id="help-main">
                     <div id="help-navigation"><HelpNav content={content} setContent={setContent} /></div>
-                    <div id="help-content">{content || "Brak informacji"}</div>
+                    <div id="help-content">{content.main || "Brak informacji"}</div>
                 </div>
             </div>
         </div>
@@ -134,12 +161,14 @@ const ShowHelp = ({ className, vis, toggleVis }) => {
 }
 
 const HelpNav = ({ content, setContent }) => {
-    const links = ["1", "Drugi link", "Dluzsza nazwa linku"]; // fetch() ?? ["1","Drugi link", "Dluzsza nazwa linku"];
-    const first = content;
-    const contents = [first, "Drugi link", "Dluzsza nazwa linku"];
+    const links = content.links; // fetch() ?? ["1","Drugi link", "Dluzsza nazwa linku"];
+    const contents = content.all;
+
+    console.log("HELP LINKS");
+    console.log(content.links);
 
     return (<div>
-        <div>{links.length === 0 ? "Some nav" : links.map((l, k) => <div className="help-links" key={k} onClick={() => { console.log(contents[k]); setContent(contents[k]); }}>{l}</div>)}</div>
+        <div>{links.length === 0 ? "Some nav" : links.map((l, k) => <div className="help-links" key={k} onClick={() => { console.log(contents); setContent({ ...content, main: contents[k] }); }}>{l}</div>)}</div>
     </div>);
 }
 

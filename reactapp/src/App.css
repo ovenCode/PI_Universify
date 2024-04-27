@@ -1,5 +1,6 @@
 .App {
-    background-color: #997950;
+  background-color: #997950;
+  /* TODO: Adjust the height so that it always fits full screen */
 }
 
 .App-logo {
@@ -32,83 +33,104 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
 
 #App-content {
-    position: relative;
-    z-index: 1;
-    background-color: #997950;
-    width: 100vw;
-    height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+  font-family: "Google Noto Sans Bold";
+  z-index: 1;
+  background-color: #997950;
+  width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+  max-height: none;
+}
+
+.mainContent {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: #dccebc;
+  max-width: 1700px;
+  min-width: 700px;
+  width: 50vw;
+  min-height: 80vh;
+  margin: 50px 0 60px 0;
 }
 
 .fixed-dialog {
-    position: fixed;
-    top: 10vh;
-    left: 15vw;
-    z-index: 3;
-    box-shadow: 0 0 20px rgb(0,0,0,0.4);
+  position: absolute;
+  top: 10vh;
+  left: 15vw;
+  z-index: 3;
+  box-shadow: 0 0 20px rgb(0, 0, 0, 0.4);
 }
 
-#help-dialog {    
-    width: 70%;
-    height: 80vh;
-    border-radius: 15%;
-    background-color: #dccebc;
-    border: solid 0.3em #c08a3c;
+#help-dialog {
+  width: 70%;
+  border-radius: 15%;
+  background-color: #dccebc;
+  border: solid 0.3em #c08a3c;
 }
 
 #help {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: column;
-    margin-top: 1em;
-    height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 1em;
+  max-height: 100%;
+  overflow: auto;
 }
 
 #help-short {
-    font-size: 1.5em;
-    border-bottom: 1px solid gray;
-    padding: 1em;
+  font-size: 1.5em;
+  border-bottom: 1px solid gray;
+  padding: 1em;
 }
 
 #help-main {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  max-height: 60%;
+  overflow: hidden;
 }
 
 #help-navigation {
-    display: flex;
-    margin: 1.5em;
-    margin-right: 3em;
-    height: 90%;
+  display: flex;
+  margin: 1.5em;
+  margin-right: 3em;
+  max-height: 100%;
 }
 
 .help-links {
-    margin: 1em;
+  margin: 1em;
 }
 
-    .help-links:hover {
-        cursor: pointer;
-        color: #997950;
-    }
+.help-links:hover {
+  cursor: pointer;
+  color: #997950;
+}
 
 #help-content {
-    margin: 1em;
-    margin-top: 2em;
-    font-size: 0.6em;
-    padding: 1em;
-    width: 60%;
-    height: 60%;
-    overflow-y: auto;
-    white-space: pre-line;
+  margin: 1em;
+  margin-top: 2em;
+  font-size: 0.6em;
+  padding: 1em;
+  width: 60%;
+  max-height: 100%;
+  overflow-y: auto;
+  white-space: pre-line;
 }
 
 .hidden {
-    display:none;
+  display: none;
 }

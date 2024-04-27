@@ -4,9 +4,11 @@
     {
         public WydziałDTO(Wydział? wydział)
         {
-            Wydział = wydział;
+            IdWydziału = wydział?.IdWydziału ?? -1;
+            Nazwa = wydział?.Nazwa ?? "";
         }
 
-        public Wydział? Wydział { get; }
+        public long IdWydziału { get; }
+        public string Nazwa { get; set; } = null!;
     }
 }

@@ -3,8 +3,8 @@
     public class GrupaDTO
     {
         public String? Nazwa { get; private set; }
-        
-        public GrupaDTO(Grupa? grupa) 
+
+        public GrupaDTO(Grupa? grupa)
         {
             Nazwa = grupa?.Nazwa ?? "";
         }

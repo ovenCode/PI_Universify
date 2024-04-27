@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using webapi.Models;
 
@@ -27,18 +28,21 @@ public partial class UniversifyDbContext : DbContext
     public virtual DbSet<Dieta> Diety { get; set; } = null!;
 
     public virtual DbSet<Grupa> Grupy { get; set; } = null!;
+    public virtual DbSet<GrupaNauczyciel> GrupyNauczyciele { get; set; } = null!;
 
+    public virtual DbSet<GrupaStudent> GrupyStudenci { get; set; } = null!;
     public virtual DbSet<GrupaStudencka> GrupyStudenckie { get; set; } = null!;
 
     public virtual DbSet<Kategoria> Kategorie { get; set; } = null!;
 
-    public virtual DbSet<KierunekStudiów> KierunekiStudiów { get; set; } = null!;
+    public virtual DbSet<KierunekStudiów> KierunkiStudiów { get; set; } = null!;
 
     public virtual DbSet<KodParkingu> KodyParkingu { get; set; } = null!;
 
     public virtual DbSet<Miejsce> Miejsca { get; set; } = null!;
 
     public virtual DbSet<Nauczyciel> Nauczyciele { get; set; } = null!;
+    public virtual DbSet<NauczycielPrzedmiot> NauczycielePrzedmioty { get; set; } = null!;
 
     public virtual DbSet<Parking> Parkingi { get; set; } = null!;
 
@@ -48,7 +52,11 @@ public partial class UniversifyDbContext : DbContext
 
     public virtual DbSet<Przedmiot> Przedmioty { get; set; } = null!;
 
+    //public virtual DbSet<PrzedmiotStudent> PrzedmiotyStudenci { get; set; } = null!;
+
     public virtual DbSet<Rola> Role { get; set; } = null!;
+
+    // public virtual DbSet<RolaUprawnienie> RoleUprawnienia { get; set; } = null!;
 
     public virtual DbSet<RozkładParkingu> RozkladParkingu { get; set; } = null!;
 
@@ -71,15 +79,22 @@ public partial class UniversifyDbContext : DbContext
     public virtual DbSet<Zamówienie> Zamówienia { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlite(@"DataSource=.\\Data\\UniversifyDB.db;");
+    {
+        // optionsBuilder.LogTo(Console.WriteLine);
+        optionsBuilder.EnableSensitiveDataLogging();
+        optionsBuilder.EnableDetailedErrors();
+        optionsBuilder.UseSqlite(@"DataSource=.\\Data\\UniversifyDB.db;");
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        //modelBuilder.Ignore<Użytkownik>();
+        //modelBuilder.Entity<Administrator>();
         modelBuilder.Entity<Administrator>(entity =>
         {
-            entity.HasKey(e => e.IdAdministratora);
+            //entity.HasKey(e => e.IdUżytkownika);
 
-            entity.ToTable("Administratorzy");
+            //entity.ToTable("Administratorzy");
 
             entity.Property(e => e.IdAdministratora).HasColumnName("ID_ADMINISTRATORA");
             entity.Property(e => e.IdRoli)
@@ -89,12 +104,9 @@ public partial class UniversifyDbContext : DbContext
                 .HasColumnType("INT")
                 .HasColumnName("ID_UZYTKOWNIKA");
 
-            entity.HasOne(d => d.Użytkownik).WithOne(p => p.Administrator)
-                .HasForeignKey<Administrator>(d => d.IdUżytkownika)
-                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
-            entity.HasOne(d => d.Rola).WithOne(p => p.Administrator)
-                .HasForeignKey<Administrator>(d => d.IdRoli)
-                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
+            // entity.HasOne(d => d.Użytkownik).WithOne(p => p.Administrator)
+            //     .HasForeignKey<Administrator>(d => d.IdUżytkownika)
+            //     .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
         });
 
         modelBuilder.Entity<Alergen>(entity =>
@@ -178,9 +190,51 @@ public partial class UniversifyDbContext : DbContext
                 .HasColumnType("NCHAR(50)")
                 .HasColumnName("NAZWA");
 
-            entity.HasMany(d => d.Nauczyciele).WithMany(p => p.Grupy);
+            /*entity.HasMany(e => e.Nauczyciele).WithMany(e => e.Grupy);
+            entity.HasMany(e => e.Studenci).WithMany(e => e.Grupy);
+            entity.HasMany(d => d.Nauczyciele).WithMany(p => p.Grupy).UsingEntity<GrupaNauczyciel>(
+                l => l.HasOne<Nauczyciel>().WithMany().HasForeignKey(e => e.NauczycieleIdNauczyciela),
+                r => r.HasOne<Grupa>().WithMany().HasForeignKey(e => e.GrupyIdGrupy)
+            );*/
 
-            entity.HasMany(d => d.Studenci).WithMany(p => p.Grupy);
+            /*entity.HasMany(d => d.Studenci).WithMany(p => p.Grupy).UsingEntity<GrupaStudent>(
+                l => l.HasOne<Student>().WithMany().HasForeignKey(e => e.StudenciIdStudenta),
+                r => r.HasOne<Grupa>().WithMany().HasForeignKey(e => e.GrupyIdGrupy)
+            );*/
+        });
+
+        modelBuilder.Entity<GrupaNauczyciel>(entity =>
+        {
+            entity.HasKey(e => new { e.GrupyIdGrupy, e.NauczycieleIdUzytkownika });
+            entity.ToTable("GrupaNauczyciel");
+
+            entity.Property(e => e.GrupyIdGrupy).HasColumnName("GrupyIdGrupy")
+            .HasColumnType("INT");
+            entity.Property(e => e.NauczycieleIdUzytkownika).HasColumnName("NauczycieleIdUzytkownika")
+            .HasColumnType("INT");
+
+            entity.HasOne(e => e.Grupa).WithMany(e => e.Nauczyciele).HasForeignKey(e => e.GrupyIdGrupy);
+            entity.HasOne(e => e.Nauczyciel).WithMany(e => e.Grupy).HasForeignKey(e => e.NauczycieleIdUzytkownika);
+
+            //entity.HasOne(e => e.Grupa).WithMany(e => e.Nauczyciele).HasForeignKey(e => e.NauczycieleIdNauczyciela);
+            //entity.HasOne(e => e.Nauczyciel).WithMany(e => e.Grupy).HasForeignKey(e => e.GrupyIdGrupy);
+        });
+
+        modelBuilder.Entity<GrupaStudent>(entity =>
+        {
+            entity.HasKey(e => new { e.GrupyIdGrupy, e.StudenciIdStudenta });
+            //entity.HasKey(e => new { e.GrupyIdGrupy, e.StudenciIdStudenta });
+            entity.ToTable("GrupaStudent");
+
+            entity.Property(e => e.GrupyIdGrupy).HasColumnName("GrupyIdGrupy")
+            .HasColumnType("INT");
+            entity.Property(e => e.StudenciIdStudenta).HasColumnName("StudenciIdStudenta")
+            .HasColumnType("INT");
+
+            entity.HasOne(e => e.Grupa).WithMany(e => e.Studenci).HasForeignKey(e => e.GrupyIdGrupy);
+            entity.HasOne(e => e.Student).WithMany(e => e.Grupy).HasForeignKey(e => e.StudenciIdStudenta);
+            //entity.HasOne(e => e.Grupa).WithMany(e => e.Studenci).HasForeignKey(e => e.GrupyIdGrupy);
+            //entity.HasOne(e => e.Student).WithMany(e => e.Grupy).HasForeignKey(e => e.StudenciIdStudenta);
         });
 
         modelBuilder.Entity<GrupaStudencka>(entity =>
@@ -191,8 +245,8 @@ public partial class UniversifyDbContext : DbContext
 
             entity.Property(e => e.IdGrupy).HasColumnName("ID_GRUPY");
             entity.Property(e => e.Nazwa)
-                .HasColumnType("NCHAR(60)")
-                .HasColumnName("NAZWA");
+                        .HasColumnType("NCHAR(60)")
+                        .HasColumnName("NAZWA");
         });
 
         modelBuilder.Entity<Kategoria>(entity =>
@@ -203,8 +257,8 @@ public partial class UniversifyDbContext : DbContext
 
             entity.Property(e => e.IdKategorii).HasColumnName("ID_KATEGORII");
             entity.Property(e => e.Nazwa)
-                .HasColumnType("NCHAR(60)")
-                .HasColumnName("NAZWA");
+                            .HasColumnType("NCHAR(60)")
+                            .HasColumnName("NAZWA");
         });
 
         modelBuilder.Entity<KierunekStudiów>(entity =>
@@ -262,33 +316,78 @@ public partial class UniversifyDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
         });
 
+        //modelBuilder.Entity<Nauczyciel>();
         modelBuilder.Entity<Nauczyciel>(entity =>
         {
-            entity.HasKey(e => e.IdNauczyciela);
+            //entity.HasKey(e => e.IdUżytkownika);
 
-            entity.ToTable("Nauczyciele");
-
+            //entity.ToTable("Nauczyciele");
             entity.Property(e => e.IdNauczyciela).HasColumnName("ID_NAUCZYCIELA");
             entity.Property(e => e.IdSpecjalizacji).HasColumnName("ID_SPECJALIZACJI");
             entity.Property(e => e.IdUżytkownika).HasColumnName("ID_UZYTKOWNIKA");
             entity.Property(e => e.IdWydziału).HasColumnName("ID_WYDZIALU");
-            entity.Property(e => e.IdPrzedmiotu).HasColumnName("ID_PRZEDMIOTU");
+            //entity.Property(e => e.IdPrzedmiotu).HasColumnName("ID_PRZEDMIOTU");
 
-            entity.HasMany(d => d.Przedmioty).WithMany(p => p.Nauczyciele);
+            //entity.HasMany(e => e.Grupy).WithMany(e => e.Nauczyciele);
+            entity.HasMany(e => e.Przedmioty).WithOne(e => e.Nauczyciel).HasForeignKey(e => e.NauczycieleIdUżytkownika);
 
-            entity.HasMany(d => d.Grupy).WithMany(p => p.Nauczyciele);
+            /*entity.HasMany(e => e.Przedmioty).WithMany(e => e.Nauczyciele)
+            .UsingEntity("NauczycielPrzedmiot",
+            l => l.HasOne(typeof(Przedmiot)).WithMany().HasForeignKey("PrzedmiotyIdPrzedmiotu").HasPrincipalKey(nameof(Przedmiot.IdPrzedmiotu)),
+            r => r.HasOne(typeof(Nauczyciel)).WithMany().HasForeignKey("NauczycieleIdNauczyciela").HasPrincipalKey(nameof(Nauczyciel.IdNauczyciela)),
+            j => j.HasKey("NauczycieleIdNauczyciela", "PrzedmiotyIdPrzedmiotu"));*/
+
+            /*entity.HasMany(d => d.Przedmioty).WithMany(p => p.Nauczyciele).UsingEntity<NauczycielPrzedmiot>(
+                 l => l.HasOne<Przedmiot>().WithMany().HasForeignKey(e => e.PrzedmiotyIdPrzedmiotu),
+                 r => r.HasOne<Nauczyciel>().WithMany().HasForeignKey(e => e.NauczycieleIdNauczyciela)
+            );*/
+
+            // entity.HasMany(d => d.Grupy).WithMany(p => p.Nauczyciele).UsingEntity<GrupaNauczyciel>(
+            //     l => l.HasOne<Grupa>().WithMany().HasForeignKey(e => e.GrupyIdGrupy),
+            //     r => r.HasOne<Nauczyciel>().WithMany().HasForeignKey(e => e.NauczycieleIdNauczyciela)
+            // );
+            // entity.HasMany(d => d.Przedmioty).WithMany(p => p.Nauczyciele).UsingEntity(
+            //     l => l.HasOne(typeof(Przedmiot)).WithMany().HasForeignKey("PrzedmiotyIdPrzedmiotu"),
+            //     r => r.HasOne(typeof(Nauczyciel)).WithMany().HasForeignKey("NauczycieleIdNauczyciela")
+            // );
+
+            // entity.HasMany(d => d.Grupy).WithMany(p => p.Nauczyciele).UsingEntity<GrupaNauczyciel>(
+            //     l => l.HasOne<Grupa>().WithMany().HasForeignKey(e => e.GrupyIdGrupy),
+            //     r => r.HasOne<Nauczyciel>().WithMany().HasForeignKey(e => e.NauczycieleIdNauczyciela)
+            // );
+
+
 
             entity.HasOne(d => d.Specjalizacja).WithMany(p => p.Nauczyciele)
                 .HasForeignKey(d => d.IdSpecjalizacji)
                 .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
 
-            entity.HasOne(d => d.Użytkownik).WithOne(p => p.Nauczyciel)
-                .HasForeignKey<Nauczyciel>(d => d.IdUżytkownika)
-                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
+            // entity.HasOne(d => d.Użytkownik).WithOne(p => p.Nauczyciel)
+            //     .HasForeignKey<Nauczyciel>(d => d.IdUżytkownika)
+            //     .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
 
             entity.HasOne(d => d.Wydział).WithMany(p => p.Nauczyciele)
                 .HasForeignKey(d => d.IdWydziału)
                 .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
+        });
+
+        modelBuilder.Entity<NauczycielPrzedmiot>(entity =>
+        {
+            entity.ToTable("NauczycielPrzedmiot");
+            //entity.HasKey(e => new { e.NauczycieleIdNauczyciela, e.PrzedmiotyIdPrzedmiotu });
+            entity.HasKey(e => new { e.NauczycieleIdUżytkownika, e.PrzedmiotyIdPrzedmiotu });
+            entity.ToTable("NauczycielPrzedmiot");
+
+            //entity.Property(e => e.Id).HasColumnName("ID").HasColumnType("INTEGER");
+            entity.Property(e => e.PrzedmiotyIdPrzedmiotu).HasColumnName("PrzedmiotyIdPrzedmiotu")
+            .HasColumnType("INTEGER");
+            entity.Property(e => e.NauczycieleIdUżytkownika).HasColumnName("NauczycieleIdUzytkownika")
+            .HasColumnType("INTEGER");
+
+            entity.HasOne(e => e.Nauczyciel).WithMany(e => e.Przedmioty).HasForeignKey(e => e.NauczycieleIdUżytkownika);
+            entity.HasOne(e => e.Przedmiot).WithMany(e => e.Nauczyciele).HasForeignKey(e => e.PrzedmiotyIdPrzedmiotu);
+            //entity.HasOne(typeof()).WithMany(e => e.NauczycielPrzedmioty).HasForeignKey(e => e.NauczycieleIdNauczyciela);
+            //entity.HasOne(e => e.Przedmiot).WithMany(e => e.NauczycielPrzedmiot).HasForeignKey(e => e.PrzedmiotyIdPrzedmiotu);
         });
 
         modelBuilder.Entity<Parking>(entity =>
@@ -311,7 +410,7 @@ public partial class UniversifyDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
             entity.HasMany(e => e.KodyParkingu).WithOne(k => k.Parking).HasForeignKey(k => k.IdParkingu)
             .OnDelete(DeleteBehavior.Cascade);
-            
+
         });
 
         modelBuilder.Entity<Produkt>(entity =>
@@ -379,9 +478,35 @@ public partial class UniversifyDbContext : DbContext
                 .HasColumnType("INT")
                 .HasColumnName("SEMESTR_ROZPOCZECIA");
 
-            entity.HasMany(d => d.Nauczyciele).WithMany(p => p.Przedmioty);
+            //entity.HasMany(e => e.Nauczyciele).WithMany(e => e.Przedmioty).UsingEntity<NauczycielPrzedmiot>();
+            //entity.HasMany(e => e.Studenci).WithMany(e => e.Przedmioty);
+            entity.HasMany(e => e.Nauczyciele).WithOne(e => e.Przedmiot).HasForeignKey(e => e.PrzedmiotyIdPrzedmiotu);
 
-            entity.HasMany(d => d.Studenci).WithMany(p => p.Przedmioty);
+            /*entity.HasMany(d => d.Nauczyciele).WithMany(p => p.Przedmioty).UsingEntity<NauczycielPrzedmiot>(
+                l => l.HasOne<Nauczyciel>().WithMany().HasForeignKey(e => e.NauczycieleIdNauczyciela),
+                r => r.HasOne<Przedmiot>().WithMany().HasForeignKey(e => e.PrzedmiotyIdPrzedmiotu)
+            );*/
+
+            /*entity.HasMany(d => d.Studenci).WithMany(p => p.Przedmioty).UsingEntity<PrzedmiotStudent>(
+                l => l.HasOne<Student>().WithMany().HasForeignKey(e => e.StudenciIdStudenta),
+                r => r.HasOne<Przedmiot>().WithMany().HasForeignKey(e => e.PrzedmiotyIdPrzedmiotu)
+            );*/
+        });
+
+        modelBuilder.Entity<PrzedmiotStudent>(entity =>
+        {
+            entity.HasKey(e => new { e.PrzedmiotyIdPrzedmiotu, e.StudenciIdUzytkownika });
+            //entity.HasKey("PrzedmiotyIdPrzedmiotu", "StudentIdStudenta");
+            entity.ToTable("PrzedmiotStudent");
+
+            entity.Property(e => e.PrzedmiotyIdPrzedmiotu).HasColumnName("PrzedmiotyIdPrzedmiotu")
+            .HasColumnType("INT");
+            entity.Property(e => e.StudenciIdUzytkownika).HasColumnName("StudenciIdUzytkownika").HasColumnType("INT");
+
+            entity.HasOne(e => e.Przedmiot).WithMany(e => e.Studenci).HasForeignKey(e => e.PrzedmiotyIdPrzedmiotu);
+            entity.HasOne(e => e.Student).WithMany(e => e.Przedmioty).HasForeignKey(e => e.StudenciIdUzytkownika);
+            //entity.HasOne(e => e.Przedmiot).WithMany(e => e.Studenci).HasForeignKey(e => e.PrzedmiotyIdPrzedmiotu);
+            //entity.HasOne(e => e.Student).WithMany(e => e.Przedmioty).HasForeignKey(e => e.StudenciIdStudenta);
         });
 
         modelBuilder.Entity<Rola>(entity =>
@@ -391,11 +516,30 @@ public partial class UniversifyDbContext : DbContext
             entity.ToTable("Role");
 
             entity.Property(e => e.IdRoli).HasColumnName("ID_ROLI");
-            entity.Property(e => e.IdUprawnienia).HasColumnName("ID_UPRAWNIENIA");
             entity.Property(e => e.Nazwa)
                 .HasColumnType("NCHAR(50)")
                 .HasColumnName("NAZWA");
+
+            entity.HasMany<Uprawnienie>(d => d.Uprawnienia).WithMany(p => p.Role);
+            // .UsingEntity<RolaUprawnienie>(
+            //     l => l.HasOne<Uprawnienie>().WithMany().HasForeignKey(e => e.UprawnienieIdUprawnienia),
+            //     r => r.HasOne<Rola>().WithMany().HasForeignKey(e => e.RolaIdRoli),
+            //     j => j.HasKey(e => new { e.RolaIdRoli, e.UprawnienieIdUprawnienia })
+            // );
         });
+
+        // modelBuilder.Entity<RolaUprawnienie>(entity =>
+        // {
+        //     entity.HasKey(e => new { e.RolaIdRoli, e.UprawnienieIdUprawnienia });
+
+        //     // entity.ToTable("RolaUprawnienie");
+
+        //     // entity.Property(e => e.RoleIdRoli).HasColumnName("RoleIdRoli").HasColumnType("INT");
+        //     // entity.Property(e => e.UprawnieniaIdUprawnienia).HasColumnName("UprawnieniaIdUprawnienia").HasColumnType("INT");
+
+        //     // entity.HasOne(e => e.Rola).WithMany(e => e.RoleUprawnienia).HasForeignKey(e => e.RoleIdRoli);
+        //     // entity.HasOne(e => e.Uprawnienie).WithMany(e => e.RoleUprawnienia).HasForeignKey(e => e.UprawnieniaIdUprawnienia);
+        // });
 
         modelBuilder.Entity<RozkładParkingu>(entity =>
         {
@@ -463,11 +607,12 @@ public partial class UniversifyDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
         });
 
+        //modelBuilder.Entity<Student>();
         modelBuilder.Entity<Student>(entity =>
         {
-            entity.HasKey(e => e.IdStudenta);
+            //entity.HasKey(e => e.IdUżytkownika);
 
-            entity.ToTable("Studenci");
+            //entity.ToTable("Studenci");
 
             entity.Property(e => e.IdStudenta).HasColumnName("ID_STUDENTA");
             entity.Property(e => e.IdGrupyStudenckiej).HasColumnName("ID_GRUPY_STUDENCKIEJ");
@@ -483,13 +628,23 @@ public partial class UniversifyDbContext : DbContext
                 .HasForeignKey(d => d.IdKierunkuStudiów)
                 .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
 
-            entity.HasMany(d => d.Grupy).WithMany(p => p.Studenci);
+            //entity.HasMany(e => e.Przedmioty).WithMany(e => e.Studenci);
+            //entity.HasMany(e => e.Grupy).WithMany(e => e.Studenci);
+            //entity.HasMany(e => e.)
 
-            entity.HasMany(d => d.Przedmioty).WithMany(p => p.Studenci);
+            // entity.HasMany(d => d.Grupy).WithMany(p => p.Studenci).UsingEntity<GrupaStudent>(
+            //     l => l.HasOne<Grupa>().WithMany().HasForeignKey(e => e.GrupyIdGrupy),
+            //     r => r.HasOne<Student>().WithMany().HasForeignKey(e => e.StudenciIdStudenta)
+            // );
 
-            entity.HasOne(d => d.Użytkownik).WithOne(p => p.Student)
-                .HasForeignKey<Student>(d => d.IdUżytkownika)
-                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
+            // entity.HasMany(d => d.Przedmioty).WithMany(p => p.Studenci).UsingEntity<PrzedmiotStudent>(
+            //     l => l.HasOne<Przedmiot>().WithMany().HasForeignKey(e => e.PrzedmiotyIdPrzedmiotu),
+            //     r => r.HasOne<Student>().WithMany().HasForeignKey(e => e.StudenciIdStudenta)
+            // );
+
+            // entity.HasOne(d => d.Użytkownik).WithOne(p => p.Student)
+            //     .HasForeignKey<Student>(d => d.IdUżytkownika)
+            //     .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
         });
 
         modelBuilder.Entity<TypMiejsca>(entity =>
@@ -513,9 +668,12 @@ public partial class UniversifyDbContext : DbContext
                 .HasColumnType("NCHAR(80)")
                 .HasColumnName("NAZWA");
 
-            entity.HasOne(d => d.Rola).WithMany(p => p.Uprawnienia)
-                .HasForeignKey(d => d.IdRoli)
-                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
+            entity.HasMany<Rola>(d => d.Role).WithMany(p => p.Uprawnienia);
+            // .UsingEntity<RolaUprawnienie>(
+            //     l => l.HasOne<Rola>().WithMany().HasForeignKey(e => e.RolaIdRoli),
+            //     r => r.HasOne<Uprawnienie>().WithMany().HasForeignKey(e => e.UprawnienieIdUprawnienia),
+            //     j => j.HasKey(e => new { e.RolaIdRoli, e.UprawnienieIdUprawnienia })
+            // );
         });
 
         modelBuilder.Entity<Użytkownik>(entity =>
@@ -524,10 +682,16 @@ public partial class UniversifyDbContext : DbContext
 
             entity.ToTable("Uzytkownicy");
 
+            entity.HasDiscriminator<string>("TYP_UZYTKOWNIKA")
+            .HasValue<Administrator>("Administrator")
+            .HasValue<Nauczyciel>("Nauczyciel")
+            .HasValue<Student>("Student");
+            //entity.HasDiscriminator<string>(e => e.TypUżytkownika);
+
             entity.Property(e => e.IdUżytkownika).HasColumnName("ID_UZYTKOWNIKA");
-            entity.Property(e => e.Budynek)
-                .HasColumnType("NCHAR(40)")
-                .HasColumnName("BUDYNEK");
+            entity.Property(e => e.IdBudynku)
+                .HasColumnType("INTEGER")
+                .HasColumnName("ID_BUDYNKU");
             entity.Property(e => e.Grupa)
                 .HasColumnType("NCHAR(40)")
                 .HasColumnName("GRUPA");
@@ -546,6 +710,50 @@ public partial class UniversifyDbContext : DbContext
             entity.Property(e => e.NumerTel)
                 .HasColumnType("NCHAR(15)")
                 .HasColumnName("NUMER_TEL");
+            // entity.Property("TYP_UZYTKOWNIKA")
+            // .HasColumnType("NCHAR(14)")
+            // .HasColumnName("TYP_UZYTKOWNIKA");
+            entity.Property(e => e.IdAdministratora)
+                .HasColumnType("INTEGER")
+                .HasColumnName("ID_ADMINISTRATORA")
+                .IsRequired(false);
+            entity.Property(e => e.IdRoli)
+                .HasColumnType("INTEGER")
+                .HasColumnName("ID_ROLI")
+                .IsRequired(false);
+            entity.Property(e => e.IdNauczyciela)
+                .HasColumnType("INTEGER")
+                .HasColumnName("ID_NAUCZYCIELA")
+                .IsRequired(false);
+            entity.Property(e => e.IdWydziału)
+                .HasColumnType("INTEGER")
+                .HasColumnName("ID_WYDZIALU")
+                .IsRequired(false);
+            entity.Property(e => e.IdSpecjalizacji)
+                .HasColumnType("INTEGER")
+                .HasColumnName("ID_SPECJALIZACJI")
+                .IsRequired(false);
+            entity.Property(e => e.IdStudenta)
+                .HasColumnType("INTEGER")
+                .HasColumnName("ID_STUDENTA")
+                .IsRequired(false);
+            entity.Property(e => e.IdGrupyStudenckiej)
+                .HasColumnType("INTEGER")
+                .HasColumnName("ID_GRUPY_STUDENCKIEJ")
+                .IsRequired(false);
+            entity.Property(e => e.IdKierunkuStudiów)
+                .HasColumnType("INTEGER")
+                .HasColumnName("ID_KIERUNKU_STUDIOW")
+                .IsRequired(false);
+            entity.Property(e => e.RokStudiów)
+                .HasColumnType("INTEGER")
+                .HasColumnName("ROK_STUDIOW")
+                .IsRequired(false);
+
+
+            entity.HasOne(d => d.Rola).WithOne(p => p.Użytkownik)
+                .HasForeignKey<Użytkownik>(d => d.IdRoli)
+                .OnDelete(DeleteBehavior.ClientSetNull).IsRequired();
         });
 
         modelBuilder.Entity<Wydział>(entity =>

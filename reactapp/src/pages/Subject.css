@@ -1,3 +1,9 @@
+a:link,
+a:visited {
+    color: black;
+    text-decoration: none;
+}
+
 #subject-page {
     display: flex;
     align-items: flex-start;
@@ -7,7 +13,7 @@
     height: 92vh;
 }
 
-#subject {
+/* #subject {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -15,7 +21,7 @@
     width: 60%;
     height: 80vh;
     margin: 50px 0 60px 0;
-}
+} */
 
 #subject-select {
     display: flex;
@@ -23,12 +29,12 @@
     align-items: center;
     width: 25%;
     height: 100%;
-    padding-left: .5em;
-    padding-right: .5em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
 }
 
 #subject-select>div {
-    margin-top: .5em;
+    margin-top: 0.5em;
 }
 
 #subject-panel-toggle {
@@ -38,7 +44,7 @@
     width: 1em;
     height: 1em;
     background-color: #533113;
-    color: #BFBCCB;
+    color: #bfbccb;
     padding: 0.5em;
     margin: 0 0 auto 1em;
 }
@@ -51,7 +57,7 @@
 #toggle-panel-img {
     width: inherit;
     height: inherit;
-    margin: .5em;
+    margin: 0.5em;
 }
 
 #subjects {
@@ -64,8 +70,8 @@
 }
 
 .subject-side {
-    font-size: .9em;
-    margin-top: .5em;
+    font-size: 0.9em;
+    margin-top: 0.5em;
 }
 
 .subject-side:hover {
@@ -96,7 +102,7 @@
 }
 
 #subject-header>div {
-    padding: .2em;
+    padding: 0.2em;
 }
 
 #subject-title {
@@ -118,8 +124,8 @@
     align-items: center;
     align-self: flex-end;
     background-color: #533113;
-    color: #BFBCCB;
-    font-size: .8em;
+    color: #bfbccb;
+    font-size: 0.8em;
     padding: 0.5em;
     margin-inline: 3em;
 }
@@ -127,6 +133,106 @@
 #subject-teachers:hover {
     cursor: pointer;
     background-color: rgba(83, 49, 19, 0.4);
+}
+
+#subject-teachers-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-30%, -50%);
+    padding: .5em;
+    background-color: #533113;
+}
+
+.dialog-btn-light {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-end;
+    padding: .5em;
+    background-color: #bfbccb;
+    overflow: auto;
+}
+
+.dialog-btn-light:hover {
+    opacity: .7;
+}
+
+#subject-teachers-data {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.teacher-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+    color: #bfbccb;
+    padding: .3em;
+}
+
+.teacher-info>div {
+    padding: .4em;
+
+}
+
+#subject-edit {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+
+#subject-main {
+    overflow-y: auto;
+    width: 100%;
+}
+
+#subjects-tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.subject-tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    background-color: #fff;
+    padding: .4em;
+}
+
+.subject-tab:hover {
+    cursor: pointer;
+    opacity: .7;
+}
+
+.tab-selected {
+    background-color: #dfdfdf;
+}
+
+.tab-selected:hover {
+    cursor: default;
+    opacity: 1;
+}
+
+#subject-introduction {
+    display: flex;
+    flex-direction: column;
+    margin: .5em 0 .5em 0;
+}
+
+.subject-intro {
+    border: none;
+}
+
+.editable {
+    border: 1px solid aliceblue;
 }
 
 #subject-resources {
@@ -140,20 +246,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: .7em;
 }
 
 .subject-resource {
-    padding: .5em 2em;
+    padding: 0.5em 2em;
     background-color: #fff;
     border: 1px solid #fff;
     border-radius: 4px;
     margin-inline: 1em;
 }
 
-    .subject-resource:hover {
-        cursor: pointer;
-        opacity: .8;
-    }
+.subject-resource:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
 
 #resources-links {
     display: flex;
@@ -162,8 +269,8 @@
     background-color: #fff;
     border: 1px solid #fff;
     border-radius: 6px;
-    margin: .6em 1em;
-    transition: height 0.3s ease-out;
+    padding: 0.6em 1em;
+    transition: max-height 0.3s ease-out;
     /* overflow-y: auto; */
     /* animation-name: unfold;
     animation-duration: 10s; */
@@ -173,18 +280,23 @@
     0% {
         max-height: 0;
     }
+
     20% {
         max-height: 40px;
     }
+
     45% {
         max-height: 94px;
     }
+
     70% {
         max-height: 140px;
     }
+
     90% {
         max-height: 260px;
     }
+
     100% {
         max-height: 300px;
     }
@@ -193,10 +305,98 @@
 .resource-link {
     text-align: center;
     padding: .3em;
-    width: 10vw;
+    /* width: 10vw; */
 }
 
-    .resource-link:hover {
-        cursor: pointer;
-        opacity: .4;
-    }
+.resource-link:hover {
+    cursor: pointer;
+    opacity: 0.4;
+}
+
+#resources-lessons {
+    margin-top: .6em;
+}
+
+.resource-lesson {
+    display: flex;
+    flex-direction: column;
+}
+
+.lesson-sources {
+    display: flex;
+}
+
+.lesson-source {
+    padding: .5em 1em;
+}
+
+.lesson-source a:active {
+    text-decoration: none;
+    color: rgb(220, 206, 188, .7);
+}
+
+#resource-tests {
+    padding: 1em;
+}
+
+#add-resource {
+    padding: 1em;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#add-recording-form {
+    margin: .3em;
+}
+
+#add-recording {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: .7em .4em;
+    background-color: #fff;
+    border-radius: 4px;
+    margin: .2em;
+    font-size: .8em;
+}
+
+/* #add-recording-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+.dialog-form-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .2em;
+}
+
+.btn-dark {
+    color: #bfbccb;
+    background-color: #533113;
+}
+
+.btn-light {
+    background-color: #dccebc;
+}
+
+#add-recording-btn {
+    border-radius: 3px;
+}
+
+#add-recording-btn:hover {
+    cursor: pointer;
+    opacity: .7;
+}
+
+#add-lesson-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: .4em;
+}

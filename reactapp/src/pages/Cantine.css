@@ -9,17 +9,10 @@
 }
 
 #cantine {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
     flex-direction: column;
-    background: #dccebc;
-    width: 60%;
-    padding: 20px 0 50px 0;
-    margin: 50px 0 60px 0;
 }
 
-#cantine > div {
+#cantine>div {
     margin: 10px 0 0 0;
 }
 
@@ -44,10 +37,10 @@
     padding-right: .5em;
 }
 
-    .alert-close:hover {
-        cursor: pointer;
-        color: rgba(83,49,19,0.4);
-    }
+.alert-close:hover {
+    cursor: pointer;
+    color: rgba(83, 49, 19, 0.4);
+}
 
 .hidden {
     display: none;
@@ -55,9 +48,9 @@
 
 #cantine-title {
     display: flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 #choose-cantine {
@@ -70,14 +63,20 @@
     text-align: center;
 }
 
-    #choose-cantine:hover {
-        cursor: pointer;
-        background-color: rgba(83,49,19,0.4);
-    }
+#choose-cantine:hover {
+    cursor: pointer;
+    background-color: rgba(83, 49, 19, 0.4);
+}
 
 #cantine-info {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
     align-items: center;
+}
+
+#cantine-info>div {
+    margin-inline: .7em;
 }
 
 #cantine-address {
@@ -112,7 +111,7 @@
 
 #cantine-orders {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     width: 100%;
     height: 100%;
     align-items: center;
@@ -157,10 +156,10 @@
     width: fit-content;
 }
 
-    .order-modify:hover {
-        cursor: pointer;
-        background-color: rgba(83,49,19,0.4);
-    }
+.order-modify:hover {
+    cursor: pointer;
+    background-color: rgba(83, 49, 19, 0.4);
+}
 
 .order-delete {
     display: flex;
@@ -175,10 +174,10 @@
     width: fit-content;
 }
 
-    .order-delete:hover {
-        cursor: pointer;
-        background-color: rgba(83,49,19,0.4);
-    }
+.order-delete:hover {
+    cursor: pointer;
+    background-color: rgba(83, 49, 19, 0.4);
+}
 
 #cantine-order-actions {
     display: flex;
@@ -190,19 +189,19 @@
     text-align: center;
 }
 
-    #cantine-order-actions > div {
-        padding: 0.7em;
-        background-color: #533113;
-        font-size: 0.8em;
-        width: 80%;
-        margin: 5px;
-        color: #BFBCCB;
-    }
+#cantine-order-actions>div {
+    padding: 0.7em;
+    background-color: #533113;
+    font-size: 0.8em;
+    width: 80%;
+    margin: 5px;
+    color: #BFBCCB;
+}
 
-        #cantine-order-actions > div:hover {
-            cursor: pointer;
-            background-color: rgba(83,49,19,0.4);
-        }
+#cantine-order-actions>div:hover {
+    cursor: pointer;
+    background-color: rgba(83, 49, 19, 0.4);
+}
 
 #cantine-choose-diet {
     display: flex;
@@ -210,14 +209,6 @@
     justify-content: center;
     align-items: center;
 
-}
-
-.dialog {
-    position: fixed;
-    z-index: 2;
-    background-color: #d5c4af;
-    padding: 1.5em;
-    box-shadow: 0 0 20px rgb(0,0,0,0.4);
 }
 
 .dialog-title {
@@ -232,24 +223,25 @@
     background-color: #533113;
     color: #BFBCCB;
 }
-    .dialog-confirm:hover {
-        cursor: pointer;
-        background-color: rgba(83,49,19,0.4);
-    }
+
+.dialog-confirm:hover {
+    cursor: pointer;
+    background-color: rgba(83, 49, 19, 0.4);
+}
 
 .dialog-close {
     align-self: flex-end;
     padding: 0.7em;
-    /*margin: 0 0.5em 0 0.5em;*/    
+    /*margin: 0 0.5em 0 0.5em;*/
     margin-right: 0;
     background-color: #533113;
     color: #BFBCCB;
 }
 
-    .dialog-close:hover {
-        cursor: pointer;
-        background-color: rgba(83,49,19,0.4);        
-    }
+.dialog-close:hover {
+    cursor: pointer;
+    background-color: rgba(83, 49, 19, 0.4);
+}
 
 #dialog-btns {
     display: flex;
@@ -328,11 +320,11 @@
     flex-direction: column;
 }
 
-    /*#order-add-dialog-main > div {
+/*#order-add-dialog-main > div {
         font-size: 0.8em;
     }*/
 
-#select-course {    
+#select-course {
     height: 10%;
 }
 
@@ -346,10 +338,10 @@
     padding: 0.7em;
 }
 
-    .btn-dark:hover {
-        cursor: pointer;
-        background-color: rgba(83,49,19,0.4);
-    }
+.btn-dark:hover {
+    cursor: pointer;
+    background-color: rgba(83, 49, 19, 0.4);
+}
 
 #add-course-btn {
     align-self: flex-end;

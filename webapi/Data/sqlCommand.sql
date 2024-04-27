@@ -2,12 +2,12 @@
 
 
 INSERT INTO Uzytkownicy
-    (IMIE, NAZWISKO, MAIL, HASLO, GRUPA, NUMER_TEL, BUDYNEK)
+    (IMIE, NAZWISKO, MAIL, HASLO, GRUPA, NUMER_TEL, ID_BUDYNKU,TYP_UZYTKOWNIKA,ID_ADMINISTRATORA,ID_ROLI,ID_NAUCZYCIELA,ID_WYDZIALU,ID_SPECJALIZACJI,ID_STUDENTA,ID_GRUPY_STUDENCKIEJ,ID_KIERUNKU_STUDIOW,ROK_STUDIOW)
 VALUES
-    ('Jan', 'Kowalski', 'jkowalski@gmail.com', 'htupsju', NULL, NULL, NULL),
-    ('Magda', 'Karet', 'mkaret@gmail.com', 'fsdauyb', NULL, NULL, NULL),
-    ('Filip', 'Mielski', 'fmielski@gmail.com', 'hdgdfnjkuy', NULL, NULL, NULL),
-    ('Konrad', 'Wikrat', 'kwikrat@gmail.com', 'rthfgsdfgt', NULL, NULL, NULL);
+    ('Jan', 'Kowalski', 'jkowalski@gmail.com', 'htupsju', NULL, NULL, NULL,"Student", NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 2),
+    ('Magda', 'Karet', 'mkaret@gmail.com', 'fsdauyb', NULL, NULL, NULL, "Student", NULL, NULL, NULL, NULL, NULL, 2, 2, 1, 2),
+    ('Filip', 'Mielski', 'fmielski@gmail.com', 'hdgdfnjkuy', NULL, NULL, NULL, "Nauczyciel", NULL, NULL, 1, 1, 1, NULL, NULL, NULL, NULL),
+    ('Konrad', 'Wikrat', 'kwikrat@gmail.com', 'rthfgsdfgt', NULL, NULL, NULL, "Administrator", 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 
 INSERT INTO Administratorzy

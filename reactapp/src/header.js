@@ -17,7 +17,7 @@ export default function Header(props) {
         <div id="header-background">
             <span id="site-logo">Universify</span>
             <nav id="nav-bar">
-                <div className="nav-button-border only-bottom" onClick={() => { console.log("Clicked profile"); props.toggleVis("Profile"); }}>
+                <div className="nav-button-border only-bottom" onClick={() => { props.toggleVis("Profile"); }}>
                     <div className="nav-button">Profil</div>
                     <div className="nav-button-bottom">
                         <div className="nav-button-bottom-left"></div>
@@ -53,6 +53,7 @@ export default function Header(props) {
                 <div id="nav-submenu" className={dropdown} style={{ margin: margin.current }} onAnimationEnd={() => { margin.current = margin.current === "0.1em 0 0 0" ? margin.current : "-160% 0 0 0"; }}> {/* dropdown === "" ? dropdown : dropdown === "nav-submenu-animate" ? margin.current === "-160% 0 0 0" ? dropdown : "nav-submenu-close-animate" : "" */}
                     <div id="logout" className="dropdown-button" style={props.isUserLoggedIn[0] === false ? { display: "none" } : {}} onClick={props.isUserLoggedIn[0] === false ? null : () => props.setLoggedIn([false, -1])}>WYLOGUJ</div>
                     <div id="bug-report" className="dropdown-button" onClick={() => { props.toggleVis(props.vis + " ReportBug") }}>ZGŁOŚ BŁĄD</div>
+                    {props.isUserLoggedIn[0] === "Admin" && <div id="admin-hub-btn" className="dropdown-button" onClick={() => { props.toggleVis("AdminHub") }}>ADMIN</div>}
                     <div className="dropdown-button" onClick={() => setDropdown("nav-submenu-close-animate")}>ZAMKNIJ</div>
                 </div>
             </div>

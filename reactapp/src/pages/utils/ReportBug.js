@@ -10,17 +10,17 @@ const ReportBug = ({ vis, toggleVis }) => {
         <form id="report-form" method="post" onSubmit={() => sendReport()}>
             <div className="report-data">
                 <label>Temat</label>
-                <input />
+                <input required />
             </div>
             <div className="report-data">
                 <label>Rodzaj błędu</label>
-                <select>
+                <select required>
                     {types.map((type, k) => <option key={k}>{type}</option>)}
                 </select>
             </div>
             <div className="report-data">
                 <label>Opisz dokładnie problem</label>
-                <textarea id="report-details" />
+                <textarea id="report-details" required />
             </div>
             <div className="report-data">
                 <label>Dodaj załączniki</label>
@@ -29,8 +29,9 @@ const ReportBug = ({ vis, toggleVis }) => {
                     <input id="attach-input" />
                 </div>
             </div>
+            {/* TODO: Ukryc jesli wymagane pola nie beda wypelnione*/<input type="submit" value="Zglos" />}
         </form>
-        <div className="btn" onClick={() => toggleVis(vis.substring(0, vis.indexOf("ReportBug") - 1))}>CLOSE</div>
+        <div id="report-close" className="btn" onClick={() => toggleVis(vis.substring(0, vis.indexOf("ReportBug") - 1))}>CLOSE</div>
     </div>);
 }
 

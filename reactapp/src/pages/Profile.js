@@ -1,27 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 import "./Profile.css";
+import { Loader } from "./utils/Loader";
 
 
 
 const Profile = (props) => {
     //const [loading, setLoading] = useState(true);
-    const [profileInfo, setProfileInfo] = useState({ picture: "", info: { name: "", lastname: "", mail: "", group: "", curriculum: "" }, sidebar: { info: "", }, content: { calendar: { name: "Some calendar", currentMonth: "", months: [{ name: "", days: [{ number: 1, upcoming: [{name: "", date: ""}] }]}]}, feed: ["",] } });
+    const [profileInfo, setProfileInfo] = useState({ picture: "", info: { name: "", lastname: "", mail: "", group: "", curriculum: "" }, sidebar: { info: "", }, content: { calendar: { name: "Some calendar", currentMonth: "", months: [{ name: "", days: [{ number: 1, upcoming: [{ name: "", date: "" }] }] }] }, feed: ["",] } }); //{ picture: "", info: { name: "", lastname: "", mail: "", group: "", curriculum: "" }, sidebar: { info: "", }, content: { calendar: { name: "Some calendar", currentMonth: "", months: [{ name: "", days: [{ number: 1, upcoming: [{name: "", date: ""}] }]}]}, feed: ["",] } }
     //const [img, setPicture] = useState({ img: "" });
     const id = props.userId;
     // ON MOUNT EFFECT
     useEffect(() => {
         let ignore = false;
-        loadProfileInfo({ ignore, setProfileInfo, id });
+        loadProfileInfo(ignore, setProfileInfo, id, props.setError);
 
         return () => {
             ignore = true;
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <div id="profile-page">
-            <div id="profile">
+            {profileInfo.picture !== "" || <Loader message={"Loading"} />}
+            {profileInfo.picture !== "" && <div id="profile" className="mainContent">
                 <div id="profile-container">
                     <div id="profile-picture"><RenderPicture id="picture-image" img={profileInfo.picture} /></div>
                     <div id="profile-info"><RenderProfileInfo data={profileInfo.info} /></div>
@@ -29,7 +31,7 @@ const Profile = (props) => {
                 <div id="profile-sidebar">TEST 3</div>
                 <div id="profile-divider"></div>
                 <div id="profile-content"><RenderProfileContent content={profileInfo.content} /></div>
-            </div>
+            </div>}
         </div>
     )
 }
@@ -38,9 +40,16 @@ const RenderPicture = ({ id, img }) => {
     return <img id={id} src={img} alt="" />
 }
 
-const loadProfileInfo = async (props) => {
+const loadProfileInfo = async (ignore, setProfileInfo, id, setError) => {
     try {
-        const response = await fetch("/api/Profile/"+ props.id + "/");
+        const response = await fetch("/api/Profile/" + id + "/");
+
+        if (response.status !== 200) {
+            console.log(response);
+            setError({ code: response.status, message: await response.text() || "" });
+            return;
+        }
+
         const data = await response.json();
         //const response_picture = await fetch("/api/Files/basic_temp.jpg");
         //const picture = await response_picture.url;
@@ -51,15 +60,16 @@ const loadProfileInfo = async (props) => {
         console.log("This is the response: ");
         console.log(data);
         console.log("loadProfileInfo::props: ");
-        console.log(props);
+        console.log({ ignore, setProfileInfo, id, setError });
 
-        if (!props.ignore) {
+        if (!ignore) {
             //props.setLoading(false);
-            props.setProfileInfo(data);
+            setProfileInfo(data);
             //props.setPicture(picture);
         }
     } catch (e) {
         console.log(e);
+        setError({ code: e.code || "", message: e || "" });
         return false;
     }
 
@@ -107,7 +117,7 @@ const RenderProfileContent = ({ content }) => {
         return () => {
             ignore = true;
         };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // content.calendar, upcomingEvents
 
     /*useEffect(() => {
@@ -122,15 +132,15 @@ const RenderProfileContent = ({ content }) => {
         if (calEvent.current !== null && selectedDay !== 0) {
             //calEvent.current.children[upcomingEvents.findIndex(event => event.date === selectedDay) !== -1 ? upcomingEvents.findIndex(event => event.date === selectedDay) + 1 : 0].scrollIntoView(false);
         }
-    },[selectedDay, upcomingEvents]);
+    }, [selectedDay, upcomingEvents]);
 
     const ProfileContent = (<div>
         <div id="profile-calendar"><Calendar calendar={content.calendar} handleDay={setDay} /></div>
-        <div id="profile-upcoming" ref={calEvent}>{upcomingEvents.map((event, id) => 
+        <div id="profile-upcoming" ref={calEvent}>{upcomingEvents.map((event, id) =>
             <div key={id} className="profile-event"> {/*event.date.substring((`${event.date}` === `${selectedDay}` ? calEvent : event.date.indexOf('/') + 1)) === `${new Date(Date.now()).getMonth() + 1}` ? event.date.substring(0, event.date.indexOf('/')) === `${new Date(Date.now()).getDate()}` ? calEvent : null : null*/}
-            <div className="profile-event-title">{event.name}</div>
-            <div className="profile-event-date">{event.date}</div>
-        </div>
+                <div className="profile-event-title">{event.name}</div>
+                <div className="profile-event-date">{event.date}</div>
+            </div>
         )}</div>
         <div id="profile-feed">Some feed {content.feed}</div>
     </div>);
@@ -145,7 +155,7 @@ const Calendar = ({ calendar, handleDay }) => {
         if (calendar.months.length > 1) {
             setMonth(calendar.months[new Date(Date.now()).getMonth()]);
         }
-    },[calendar.months]);
+    }, [calendar.months]);
 
     return (<div className="calendar">
         <div id="calendar-name">{calendar.name}</div>

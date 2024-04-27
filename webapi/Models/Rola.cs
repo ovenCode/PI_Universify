@@ -9,8 +9,7 @@ public partial class Rola
 
     public string Nazwa { get; set; } = null!;
 
-    public long IdUprawnienia { get; set; }
-
     public virtual ICollection<Uprawnienie> Uprawnienia { get; set; } = new List<Uprawnienie>();
-    public virtual Administrator? Administrator { get; set; }
+    // public virtual ICollection<RolaUprawnienie> RoleUprawnienia { get; set; } = new List<RolaUprawnienie>();
+    public virtual Użytkownik? Użytkownik { get; set; }
 }

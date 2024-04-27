@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace webapi.Models;
 
-public partial class Administrator
+public class Administrator : Użytkownik
 {
     // public Administrator() { }
     // public Administrator(Administrator? admin, Rola? rola)
@@ -13,12 +13,12 @@ public partial class Administrator
     //     IdRoli = admin?.IdRoli ?? Convert.ToInt64(0);
     //     Rola = rola ?? new Rola();
     // }
-    public long IdAdministratora { get; set; }
+    //public long IdAdministratora { get; set; }
 
-    public long IdUżytkownika { get; set; }
+    //public long IdUżytkownika { get; set; }
 
-    public long IdRoli { get; set; }
+    //public long IdRoli { get; set; }
 
-    public virtual Użytkownik Użytkownik { get; set; } = null!;
-    public virtual Rola Rola { get; set; } = null!;
+    //public virtual Użytkownik Użytkownik { get; set; } = null!;
+    // public virtual Rola Rola { get; set; } = null!;
 }
